@@ -107,7 +107,6 @@ class ImageUploader extends StatefulWidget {
 class _ImageUploaderState extends State<ImageUploader> {
   File? _image;
   final picker = ImagePicker();
-  bool _showDialog = true;
 
   ///비동기 처리 > 갤러리에서 이미지 가져오기
   Future<void> _pickImage(ImageSource source) async {
@@ -115,7 +114,6 @@ class _ImageUploaderState extends State<ImageUploader> {
     if (pickedFile != Null) { ///if없어도 될 듯. 어차피 !.로 null이 아님을 정해줘서
     setState(() {
       _image = File(pickedFile!.path);
-      _showDialog = false;
     });
     }
   }
@@ -128,11 +126,13 @@ class _ImageUploaderState extends State<ImageUploader> {
           FloatingActionButton(
             child: Icon(Icons.add_a_photo),
               onPressed: (){
+              Navigator.of(context).pop();
             _pickImage(ImageSource.camera);
           }),
           FloatingActionButton(
               child: Icon(Icons.wallpaper),
               onPressed: (){
+                Navigator.of(context).pop();
                 _pickImage(ImageSource.gallery);
               }),
         ],
@@ -150,11 +150,7 @@ class _ImageUploaderState extends State<ImageUploader> {
       ),
       child: _image == null
           ? InkWell(
-              onTap: () {
-                if (_showDialog) {
-                  showDialog(context: context, builder: (_) => _optionDialog());
-                }
-              },
+              onTap: () => showDialog(context: context, builder: (_) => _optionDialog()),
               child: Icon(Icons.camera_alt),
             )
           : Image.file(_image!),
