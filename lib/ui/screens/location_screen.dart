@@ -8,7 +8,8 @@ class LocationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView( ///textfield가 늘어남에 따라 스크롤 가능하게
+      body: SingleChildScrollView(
+        ///textfield가 늘어남에 따라 스크롤 가능하게
         child: Container(
           child: Column(
             children: [
@@ -52,18 +53,22 @@ class LocationScreen extends StatelessWidget {
                 child: Text('부산광역시 남구 용소로 45, 부경대학교 대연캠퍼스'),
               ),
               Container(
-                margin: EdgeInsets.all(MediaQuery.of(context).size.width*0.05),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black)
+                margin:
+                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+                decoration:
+                    BoxDecoration(border: Border.all(color: Colors.black)),
+                child: TextField(
+                  decoration: InputDecoration(focusedBorder: InputBorder.none),
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
                 ),
-                child : TextField(
-                  decoration: InputDecoration(
-                    focusedBorder: InputBorder.none
-                  ),
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
               ),
-              ),
+              OutlinedButton(
+                  onPressed: () {},
+                  child: Text(
+                    '신고',
+                    style: TextStyle(color: Colors.black),
+                  ))
             ],
           ),
         ),
