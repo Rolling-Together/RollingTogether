@@ -1,29 +1,39 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:json_annotation/json_annotation.dart';
-part 'dangerouszone.g.dart';
 
-@JsonSerializable()
-class DangerousZone {
-  @JsonKey(name: 'id')
-  String id;
-  @JsonKey(name: 'categoryId')
+class DangerousZoneDto {
+  String? id;
   String categoryId;
-  @JsonKey(name: 'description')
   String description;
-  @JsonKey(name: 'latitude')
   String latitude;
-  @JsonKey(name: 'longitude')
   String longitude;
-  @JsonKey(name: 'informerId')
   String informerId;
-  @JsonKey(name: 'informerName')
   String informerName;
 
-  DangerousZone(this.id, this.categoryId, this.description, this.latitude,
-      this.longitude, this.informerId, this.informerName);
+  DangerousZoneDto(
+      {this.id,
+      required this.categoryId,
+      required this.description,
+      required this.latitude,
+      required this.longitude,
+      required this.informerId,
+      required this.informerName});
 
-  factory DangerousZone.fromJson(Map<String, dynamic> json)
-  => _$DangerousZoneFromJson(json);
+  Map<String, dynamic> toMap() => {
+        'categoryId': categoryId,
+        'description': description,
+        'latitude': latitude,
+        'longitude': longitude,
+        'informerId': informerId,
+        'informerName': informerName
+      };
 
-  Map<String, dynamic> toJson() => _$DangerousZoneToJson(this);
+  DangerousZoneDto.fromDocument(DocumentSnapshot snapshot) {
+    id = snapshot.id;
+    categoryId = snapshot['categoryId'];
+    description = snapshot['description'];
+    latitude = snapshot['latitude'];
+    longitude = snapshot['longitude'];
+    informerId = snapshot['informerId'];
+    informerName = snapshot['informerName'];
+  }
 }
