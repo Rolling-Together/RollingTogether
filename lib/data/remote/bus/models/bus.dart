@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class BusDto {
-  final String? id;
-  final String routeNum;
-  final String carNum;
-  final bool lift;
-  final bool liftStatus;
+  late String? id;
+  late String routeNum;
+  late String carNum;
+  late bool lift;
+  late bool liftStatus;
+  late DocumentReference reference;
 
   BusDto(
       {this.id,
@@ -18,4 +21,24 @@ class BusDto {
         'lift': lift,
         'liftStatus': liftStatus
       };
+
+  BusDto.fromSnapshot(DocumentSnapshot snapshot) {
+    var map = snapshot.data() as Map<String, dynamic>;
+
+    id = map['id'];
+    routeNum = map['routeNum'];
+    carNum = map['carNum'];
+    lift = map['lift'];
+    liftStatus = map['liftStatus'];
+
+    reference = snapshot.reference;
+  }
+
+  BusDto.fromMap(Map<String, dynamic>? map) {
+    id = map?['id'];
+    routeNum = map?['routeNum'];
+    carNum = map?['carNum'];
+    lift = map?['lift'];
+    liftStatus = map?['liftStatus'];
+  }
 }

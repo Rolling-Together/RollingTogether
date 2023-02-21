@@ -1,12 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class FacilityCheckList {
-  final bool toilet;
-  final bool elevator;
-
+  late bool toilet;
+  late bool elevator;
   //문턱
-  final bool threshold;
-
+  late bool threshold;
   //경사로
-  final bool ramp;
+  late bool ramp;
+
+  late DocumentReference reference;
 
   FacilityCheckList(
       {required this.toilet,
@@ -20,4 +22,21 @@ class FacilityCheckList {
         'threshold': threshold,
         'ramp': ramp
       };
+
+  FacilityCheckList.fromSnapshot(DocumentSnapshot snapshot) {
+    var map = snapshot.data() as Map<String, dynamic>;
+    toilet = map['toilet'];
+    elevator = map['elevator'];
+    threshold = map['threshold'];
+    ramp = map['ramp'];
+
+    reference = snapshot.reference;
+  }
+
+  FacilityCheckList.fromMap(Map<String, dynamic>? map) {
+    toilet = map?['toilet'];
+    elevator = map?['elevator'];
+    threshold = map?['threshold'];
+    ramp = map?['ramp'];
+  }
 }

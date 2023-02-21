@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DangerousZoneDto {
-  String? id;
-  String categoryId;
-  String description;
-  String latitude;
-  String longitude;
-  String informerId;
-  String informerName;
+  late String? id;
+  late String categoryId;
+  late String description;
+  late double latitude;
+  late double longitude;
+  late String informerId;
+  late String informerName;
+  late DocumentReference? reference;
 
   DangerousZoneDto(
       {this.id,
@@ -27,13 +28,26 @@ class DangerousZoneDto {
         'informerName': informerName
       };
 
-  DangerousZoneDto.fromDocument(DocumentSnapshot snapshot) {
-    id = snapshot.id;
-    categoryId = snapshot['categoryId'];
-    description = snapshot['description'];
-    latitude = snapshot['latitude'];
-    longitude = snapshot['longitude'];
-    informerId = snapshot['informerId'];
-    informerName = snapshot['informerName'];
+  DangerousZoneDto.fromSnapshot(DocumentSnapshot snapshot) {
+    var map = snapshot.data() as Map<String, dynamic>;
+    //id = map['id'];
+    //categoryId = map['categoryId'];
+    //description = map['description'];
+    latitude = map['latitude'];
+    longitude = map['longitude'];
+   // informerId = map['informerId'];
+  //  informerName = map['informerName'];
+
+   // reference = snapshot.reference;
+  }
+
+  DangerousZoneDto.fromMap(Map<String, dynamic>? map) {
+    id = map?['id'];
+    categoryId = map?['categoryId'];
+    description = map?['description'];
+    latitude = map?['latitude'];
+    longitude = map?['longitude'];
+    informerId = map?['informerId'];
+    informerName = map?['informerName'];
   }
 }

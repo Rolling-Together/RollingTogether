@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FacilityReview {
-  final String? id;
-  final String userId;
-  final String userName;
-  final Timestamp dateTime;
-  final String content;
+class FacilityReviewDto {
+  late String? id;
+  late String userId;
+  late String userName;
+  late Timestamp dateTime;
+  late String content;
+  late DocumentReference reference;
 
-  FacilityReview(
+  FacilityReviewDto(
       {this.id,
       required this.userId,
       required this.userName,
@@ -21,4 +22,21 @@ class FacilityReview {
         'dateTime': dateTime,
         'content': content
       };
+
+  FacilityReviewDto.fromSnapshot(DocumentSnapshot snapshot) {
+    var map = snapshot.data() as Map<String, dynamic>;
+    userId = map['userId'];
+    userName = map['userName'];
+    dateTime = map['dateTime'];
+    content = map['content'];
+
+    reference = snapshot.reference;
+  }
+
+  FacilityReviewDto.fromMap(Map<String, dynamic>? map) {
+    userId = map?['userId'];
+    userName = map?['userName'];
+    dateTime = map?['dateTime'];
+    content = map?['content'];
+  }
 }
