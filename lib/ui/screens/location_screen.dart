@@ -2,8 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-class LocationScreen extends StatelessWidget {
+class LocationScreen extends StatefulWidget {
   const LocationScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LocationScreen> createState() => _LocationScreenState();
+}
+
+class _LocationScreenState extends State<LocationScreen> {
+
+  Widget RegisterDialog() {
+    return AlertDialog(
+      title: Container(
+        alignment: Alignment.center,
+        child: Text('등록되었습니다'),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +46,14 @@ class LocationScreen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.9,
                   decoration: BoxDecoration(),
                   child: CategoryButton()),
-              ImageUploader(),
+              /*Row(children: [
+                Column(
+                  children: List.generate(imageUploaders.length, (index) {
+                    return imageUploaders[index];
+                  }),
+                ),*/
+                ImageUploader(),
+              //]),
               Container(
                 padding:
                     EdgeInsets.all(MediaQuery.of(context).size.width * 0.2),
@@ -63,12 +85,20 @@ class LocationScreen extends StatelessWidget {
                   maxLines: null,
                 ),
               ),
-              OutlinedButton(
-                  onPressed: () {},
+              Container(
+                margin: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).size.height * 0.03),
+                child: OutlinedButton(
+                  onPressed: () => showDialog(
+                    context: context,
+                    builder: (_) => RegisterDialog(),
+                  ),
                   child: Text(
-                    '신고',
+                    '등록',
                     style: TextStyle(color: Colors.black),
-                  ))
+                  ),
+                ),
+              ),
             ],
           ),
         ),
