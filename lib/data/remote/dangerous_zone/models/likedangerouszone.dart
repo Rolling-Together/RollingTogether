@@ -15,7 +15,6 @@ class LikeDangerousZoneDto {
     id = map['id'];
     userId = map['userId'];
     userName = map['userName'];
-
     reference = snapshot.reference;
   }
 
