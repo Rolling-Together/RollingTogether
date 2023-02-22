@@ -1,46 +1,57 @@
 import 'package:flutter/material.dart';
-//import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MyMapScreen extends StatefulWidget {
+  const MyMapScreen({super.key});
+
   @override
   _MyMapScreenState createState() => _MyMapScreenState();
 }
 
-class _MyMapScreenState extends State<MyMapScreen> {
-  TextEditingController _textController = TextEditingController();
+class _MyMapScreenState extends State<MyMapScreen>
+    with AutomaticKeepAliveClientMixin<MyMapScreen> {
+  final TextEditingController _textController = TextEditingController();
 
   // initialize markers
-  Set<Marker> _markers = {
-    Marker(
-      markerId: MarkerId("blue_marker"),
-      position: LatLng(37.422, -122.084),
-      onTap: () {
-        _showBlueMarkerBottomSheet();
-      },
-    ),
-    Marker(
-      markerId: MarkerId("red_marker"),
-      position: LatLng(37.432, -122.094),
-      onTap: () {
-        _showRedMarkerBottomSheet();
-      },
-    ),
-    Marker(
-      markerId: MarkerId("yellow_marker"),
-      position: LatLng(37.442, -122.104),
-      onTap: () {
-        _showYellowMarkerBottomSheet();
-      },
-    ),
-  };
+  Set<Marker> _markers = {};
+
+  @override
+  bool get wantKeepAlive => true;
+
+  initMarkers() {
+    _markers = {
+      Marker(
+        markerId: MarkerId("blue_marker"),
+        position: LatLng(37.422, -122.084),
+        onTap: () {
+          _showBlueMarkerBottomSheet();
+        },
+      ),
+      Marker(
+        markerId: MarkerId("red_marker"),
+        position: LatLng(37.432, -122.094),
+        onTap: () {
+          _showRedMarkerBottomSheet();
+        },
+      ),
+      Marker(
+        markerId: MarkerId("yellow_marker"),
+        position: LatLng(37.442, -122.104),
+        onTap: () {
+          _showYellowMarkerBottomSheet();
+        },
+      ),
+    };
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("test"),
-      ),
-      body: Stack(
+    super.build(context);
+    initMarkers();
+
+    return PageStorage(
+      bucket: PageStorageBucket(),
+      child: Stack(
         children: [
           GoogleMap(
             markers: _markers,
@@ -50,11 +61,11 @@ class _MyMapScreenState extends State<MyMapScreen> {
             ),
           ),
         ],
-      ),
+      ), // Unique bucket for this page
     );
   }
 
-  void _showBlueMarkerBottomSheet() {
+  _showBlueMarkerBottomSheet() {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -81,7 +92,7 @@ class _MyMapScreenState extends State<MyMapScreen> {
     );
   }
 
-  void _showRedMarkerBottomSheet() {
+  _showRedMarkerBottomSheet() {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -100,7 +111,7 @@ class _MyMapScreenState extends State<MyMapScreen> {
     );
   }
 
-  void _showYellowMarkerBottomSheet() {
+  _showYellowMarkerBottomSheet() {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
