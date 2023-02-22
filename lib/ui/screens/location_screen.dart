@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({Key? key}) : super(key: key);
@@ -19,7 +22,6 @@ class _LocationScreenState extends State<LocationScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: SingleChildScrollView(
         ///textfield가 늘어남에 따라 스크롤 가능하게
@@ -287,7 +289,7 @@ class _ImageUploaderState extends State<ImageUploader> {
             border: Border.all(color: Colors.black),
           ),
           child: InkWell(
-            child : Icon(Icons.camera_alt),
+            child: Icon(Icons.camera_alt),
             onTap: () =>
                 showDialog(context: context, builder: (_) => _optionDialog()),
           ),
@@ -310,5 +312,4 @@ class _ImageUploaderState extends State<ImageUploader> {
       ],
     );
   }
-
 }

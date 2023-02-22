@@ -7,6 +7,7 @@ class DangerousZoneController extends GetxController {
   final RxList<DangerousZoneDto> dangerousZoneList = <DangerousZoneDto>[].obs;
 
   getDangerousZoneList(String latitude, String longitude) {
+    // 위험 장소 목록 가져오기
     dangerousZoneList
         .bindStream(service.getDangerousZoneList(latitude, longitude));
   }

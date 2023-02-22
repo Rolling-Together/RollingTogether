@@ -6,6 +6,7 @@ class DangerousZoneService {
 
   Stream<List<DangerousZoneDto>> getDangerousZoneList(
       String latitude, String longitude) async* {
+    // 해당하는 위경도 근처에 있는 위험 장소 목록 로드
     const rangeKM = 0.005;
     final double minLat = double.parse(latitude) - rangeKM;
     final double maxLat = double.parse(latitude) + rangeKM;
