@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:rolling_together/data/remote/dangerous_zone/controllers/dangerous_zone_controller.dart';
 
 import '../../commons/widgets/bottom_navbar.dart';
 

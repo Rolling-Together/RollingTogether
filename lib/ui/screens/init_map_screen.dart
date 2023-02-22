@@ -10,11 +10,11 @@ class InitMapScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.yellowAccent,
       body: Text('test'),
-        bottomNavigationBar: ClipRRect(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
-          child: BottomNavbar(),
-        ),
+      bottomNavigationBar: ClipRRect(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20.0), topRight: Radius.circular(20.0)),
+        child: BottomNavbar(),
+      ),
     );
   }
 }
