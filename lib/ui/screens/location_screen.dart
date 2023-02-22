@@ -10,7 +10,6 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
-
   Widget RegisterDialog() {
     return AlertDialog(
       title: Container(
@@ -52,7 +51,7 @@ class _LocationScreenState extends State<LocationScreen> {
                     return imageUploaders[index];
                   }),
                 ),*/
-                ImageUploader(),
+              ImageUploader(),
               //]),
               Container(
                 padding:
@@ -153,7 +152,7 @@ class _CategoryButtonState extends State<CategoryButton> {
 }
 
 ///image_picker 방법2
-class ImageUploader extends StatefulWidget {
+/*class ImageUploader extends StatefulWidget {
   const ImageUploader({Key? key}) : super(key: key);
 
   @override
@@ -231,4 +230,85 @@ class _ImageUploaderState extends State<ImageUploader> {
     );
   }*/
 
+}*/
+
+class ImageUploader extends StatefulWidget {
+  const ImageUploader({Key? key}) : super(key: key);
+
+  @override
+  _ImageUploaderState createState() => _ImageUploaderState();
+}
+
+class _ImageUploaderState extends State<ImageUploader> {
+  List<File> _imageList = [];
+
+  final picker = ImagePicker();
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await picker.pickImage(source: source);
+    setState(() {
+      if (pickedFile != null) {
+        _imageList.add(File(pickedFile.path));
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Widget _optionDialog() {
+    return AlertDialog(
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          FloatingActionButton(
+              child: Icon(Icons.add_a_photo),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _pickImage(ImageSource.camera);
+              }),
+          FloatingActionButton(
+              child: Icon(Icons.wallpaper),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _pickImage(ImageSource.gallery);
+              }),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black),
+          ),
+          child: InkWell(
+            child : Icon(Icons.camera_alt),
+            onTap: () =>
+                showDialog(context: context, builder: (_) => _optionDialog()),
+          ),
+          //child: Icon(Icons.camera_alt),
+        ),
+        /*ElevatedButton(
+          onPressed: _pickImage(),
+          child: Text('Add Image'),
+        ),*/
+        GridView.count(
+          shrinkWrap: true,
+          crossAxisCount: 3,
+          children: List.generate(_imageList.length, (index) {
+            return Image.file(
+              _imageList[index],
+              fit: BoxFit.cover,
+            );
+          }),
+        ),
+      ],
+    );
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rolling_together/ui/screens/location_screen.dart';
+import 'package:rolling_together/ui/screens/profile_screen.dart';
 import 'ui/screens/init_map_screen.dart';
 
 
