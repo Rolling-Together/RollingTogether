@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'firebase_options.dart';
 import 'ui/screens/init_map_screen.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -13,3 +14,4 @@ void main() async {
     home: InitMapScreen(),
   ));
 }
+
