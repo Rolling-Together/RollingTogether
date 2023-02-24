@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:rolling_together/data/remote/dangerous_zone/controllers/dangerous_zone_controller.dart';
+import 'package:rolling_together/data/remote/dangerous_zone/service/dangerous_zone_service.dart';
 
 class MyMapScreen extends StatefulWidget {
   const MyMapScreen({super.key});
@@ -48,6 +52,7 @@ class _MyMapScreenState extends State<MyMapScreen>
   Widget build(BuildContext context) {
     super.build(context);
     initMarkers();
+    final controller = Get.put(DangerousZoneController());
 
     return PageStorage(
       bucket: PageStorageBucket(),
@@ -60,6 +65,17 @@ class _MyMapScreenState extends State<MyMapScreen>
               zoom: 12,
             ),
           ),
+          Obx(
+            () => Text(
+              "${controller.dangerousZoneList.isEmpty}",
+              style: Theme.of(context).textTheme.headline4,
+            ),
+          ),
+          ElevatedButton(
+              child: const Text('test'),
+              onPressed: () {
+                controller.getDangerousZoneList(35.1342, 129.1015);
+              })
         ],
       ), // Unique bucket for this page
     );

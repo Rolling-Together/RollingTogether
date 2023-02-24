@@ -25,6 +25,7 @@ class FacilityReviewDto {
 
   FacilityReviewDto.fromSnapshot(DocumentSnapshot snapshot) {
     var map = snapshot.data() as Map<String, dynamic>;
+    id = snapshot.reference.id;
     userId = map['userId'];
     userName = map['userName'];
     dateTime = map['dateTime'];
@@ -33,7 +34,8 @@ class FacilityReviewDto {
     reference = snapshot.reference;
   }
 
-  FacilityReviewDto.fromMap(Map<String, dynamic>? map) {
+  FacilityReviewDto.fromMap(String _id, Map<String, dynamic>? map) {
+    id = _id;
     userId = map?['userId'];
     userName = map?['userName'];
     dateTime = map?['dateTime'];

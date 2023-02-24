@@ -34,7 +34,7 @@ class UserDto {
   UserDto.fromSnapshot(DocumentSnapshot snapshot) {
     var map = snapshot.data() as Map<String, dynamic>;
 
-    id = map['id'];
+    id = snapshot.reference.id;
     name = map['name'];
     email = map['email'];
     dangerousZoneReportList = map['dangerousZoneReportList'];
@@ -46,8 +46,8 @@ class UserDto {
     reference = snapshot.reference;
   }
 
-  UserDto.fromMap(Map<String, dynamic>? map) {
-    id = map?['id'];
+  UserDto.fromMap(String _id, Map<String, dynamic>? map) {
+    id = _id;
     name = map?['name'];
     email = map?['email'];
     dangerousZoneReportList = map?['dangerousZoneReportList'];

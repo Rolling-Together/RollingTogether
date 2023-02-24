@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rolling_together/data/remote/facility/models/checklist.dart';
 
 class FacilityDto {
   late String placeId;
@@ -12,6 +11,8 @@ class FacilityDto {
   late String addressName;
   late String roadAddressName;
   late String placeUrl;
+  late Map<String, bool> checkListMap;
+  late Timestamp checkListLastUpdate;
   late DocumentReference reference;
 
   FacilityDto(
@@ -24,7 +25,10 @@ class FacilityDto {
       required this.categoryGroupName,
       required this.addressName,
       required this.roadAddressName,
-      required this.placeUrl});
+      required this.placeUrl,
+      required this.checkListMap,
+      Timestamp? checkListLastUpdate})
+      : checkListLastUpdate = checkListLastUpdate ?? Timestamp(0, 0);
 
   Map<String, dynamic> toMap() => {
         'placeId': placeId,
@@ -36,6 +40,8 @@ class FacilityDto {
         'categoryGroupCode': categoryGroupCode,
         'addressName': addressName,
         'roadAddressName': roadAddressName,
+        'checkListMap': checkListMap,
+        'checkListLastUpdate': checkListLastUpdate,
         'placeUrl': placeUrl
       };
 
@@ -51,6 +57,8 @@ class FacilityDto {
     addressName = map['addressName'];
     roadAddressName = map['roadAddressName'];
     placeUrl = map['placeUrl'];
+    checkListMap = map['checkListMap'];
+    checkListLastUpdate = map['checkListLastUpdate'];
 
     reference = snapshot.reference;
   }
@@ -66,5 +74,7 @@ class FacilityDto {
     addressName = map?['addressName'];
     roadAddressName = map?['roadAddressName'];
     placeUrl = map?['placeUrl'];
+    checkListMap = map?['checkListMap'];
+    checkListLastUpdate = map?['checkListLastUpdate'];
   }
 }
