@@ -16,6 +16,7 @@ class _TransScreenState extends State<TransScreen> {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,6 +32,7 @@ class _TransScreenState extends State<TransScreen> {
                 width: MediaQuery.of(context).size.width * 0.9,
                 decoration: BoxDecoration(),
                 child: CategoryButton()),
+            ///버스 목록
             BusContainer(
               busName: '1234',
             ),
