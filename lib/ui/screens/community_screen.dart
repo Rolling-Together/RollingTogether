@@ -1,11 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:rolling_together/commons/widgets/custom_appbar.dart';
 
 class CommunityScreen extends StatefulWidget {
   _CommunityScreenState createState() => _CommunityScreenState();
 }
 
-class _CommunityScreenState extends State<CommunityScreen> {
+class _CommunityScreenState extends State<CommunityScreen>  {
+
   String selectedCategory = "전체";
 
   void selectCategory(String category) {
@@ -15,11 +17,10 @@ class _CommunityScreenState extends State<CommunityScreen> {
   }
 
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("커뮤니티"),
-      ),
+      appBar: CustomAppBar(),
       body: Column(
         children: [
           // 카테고리 버튼들
