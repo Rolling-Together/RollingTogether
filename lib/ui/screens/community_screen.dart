@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:rolling_together/commons/class/location_tile.dart';
 import 'package:rolling_together/commons/widgets/custom_appbar.dart';
 
 class CommunityScreen extends StatefulWidget {
@@ -66,8 +67,7 @@ class _CommunityScreenState extends State<CommunityScreen>  {
                       title: Text("전체 리스트 $index"),
                     );
                   } else if (selectedCategory == "위험 장소") {
-                    return ListTile(
-                      title: Text("위험 장소 리스트 $index"),
+                    return LocationTile(
                     );
                   } else if (selectedCategory == "음식점/카페") {
                     return ListTile(
