@@ -10,13 +10,10 @@ class BusDto {
   late DocumentReference reference;
 
   // 지역 코드 : 21(부산광역시)
-  late String areaCode;
+  late String cityCode;
 
   // 노선 id : BSB5200083100(83-1번 버스)
   late String routeId;
-
-  // 노선 번호 : 83-1
-  late String routeNo;
 
   BusDto(
       {required this.vehicleNo, required this.lift, required this.liftStatus});
@@ -24,8 +21,8 @@ class BusDto {
   Map<String, dynamic> toMap() =>
       {'lift': lift, 'liftStatus': liftStatus, 'vehicleNo': vehicleNo};
 
-  BusDto.fromSnapshot(DocumentSnapshot snapshot, String _areaCode,
-      String _routeId, String _routeNo) {
+  BusDto.fromSnapshot(
+      DocumentSnapshot snapshot, String _cityCode, String _routeId) {
     var map = snapshot.data() as Map<String, dynamic>;
 
     id = snapshot.reference.id;
@@ -35,20 +32,18 @@ class BusDto {
 
     reference = snapshot.reference;
 
-    areaCode = _areaCode;
+    cityCode = _cityCode;
     routeId = _routeId;
-    routeNo = _routeNo;
   }
 
-  BusDto.fromMap(String docId, String _areaCode, String _routeId,
-      String _routeNo, Map<String, dynamic>? map) {
+  BusDto.fromMap(String docId, String _cityCode, String _routeId,
+      Map<String, dynamic>? map) {
     id = docId;
     lift = map?['lift'];
     liftStatus = map?['liftStatus'];
     vehicleNo = map?['vehicleNo'];
 
-    areaCode = _areaCode;
+    cityCode = _cityCode;
     routeId = _routeId;
-    routeNo = _routeNo;
   }
 }
