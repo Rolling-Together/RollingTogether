@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:rolling_together/commons/class/facility_tile.dart';
 import 'package:rolling_together/commons/class/location_tile.dart';
 import 'package:rolling_together/commons/class/popular_post_tile.dart';
 import 'package:rolling_together/commons/widgets/custom_appbar.dart';
@@ -80,9 +81,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   } else if (selectedCategory == "위험장소") {
                     return LocationTile();
                   } else if (selectedCategory == "음식점/카페") {
-                    return ListTile(
-                      title: Text("음식점/카페 리스트 $index"),
-                    );
+                    return FacilityTile();
                   }
                   return Container();
                 }),

@@ -1,7 +1,23 @@
+/// 위험 장소 타일
+
 import 'package:flutter/material.dart';
 
 class LocationTile extends StatelessWidget {
-  const LocationTile({Key? key}) : super(key: key);
+  // LocationTile({
+  //   required this.time
+  //   });
+
+  final Widget representativePicture = ClipRRect(
+    borderRadius: BorderRadius.circular(0.0),
+    child: Image.network(
+      'https://avatars.githubusercontent.com/u/113813770?s=400&u=c4addb4d0b81eabc9faef9f13adc3dea18ddf83a&v=4',
+      fit: BoxFit.cover,
+    ),
+  ); //대표사진(썸네일)
+  final String comment = '대연놀이터 앞에 턱 때문에 다침ㅠ'; // 제목
+  final String type = '턱이 있음'; // ex. 턱이있음 등
+  final String address = 'oo로 oo길'; // 주소
+  final String time = '디스이즈타임'; // 업로드 시간
 
   @override
   Widget build(BuildContext context) {
@@ -12,24 +28,10 @@ class LocationTile extends StatelessWidget {
           style: TextStyle(fontSize: 18),
         ),
         trailing:
-        SizedBox(
-          width: 50.0,
-          height: 50.0,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(0.0),
-            child: Image.network(
-              'https://avatars.githubusercontent.com/u/113813770?s=400&u=c4addb4d0b81eabc9faef9f13adc3dea18ddf83a&v=4',
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
+            SizedBox(width: 50.0, height: 50.0, child: representativePicture),
         subtitle: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('턱이 있음'),
-            Text('oo로 oo번길'),
-            Text('02/26 oo시 oo분')
-          ],
+          children: [Text(type), Text(address), Text(time)],
         ),
       ),
     );
