@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rolling_together/data/remote/dangerous_zone/models/dangerous_zone_comment.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/models/dangerouszone.dart';
 
 class DangerousZoneService {
@@ -26,6 +27,18 @@ class DangerousZoneService {
         list.add(DangerousZoneDto.fromSnapshot(snapshot));
       }
       yield list;
+    }
+  }
+
+  /// 단일 위험 장소 데이터 로드
+  Stream<DangerousZoneDto> getDangerousZone(String dangerousZoneDocId) async* {
+    var result = await firestore
+        .collection('DangerousZone')
+        .doc(dangerousZoneDocId)
+        .get();
+
+    if (result.exists) {
+      yield DangerousZoneDto.fromSnapshot(result);
     }
   }
 
@@ -79,6 +92,39 @@ class DangerousZoneService {
           .update({'like.$userId': FieldValue.delete()});
     } catch (e) {
       rethrow;
+    }
+  }
+
+  /// 댓글 추가
+  Future<void> addComment(
+      DangerousZoneCommentDto commentDto, String dangerousZoneDocId) async {
+    try {
+      await firestore
+          .collection('DangerousZone')
+          .doc(dangerousZoneDocId)
+          .collection('Comments')
+          .doc()
+          .set(commentDto.toMap());
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// 모든 댓글 내용 로드
+  Stream<List<DangerousZoneCommentDto>> getAllComments(
+      String dangerousZoneDocId) async* {
+    var result = await firestore
+        .collection('DangerousZone')
+        .doc(dangerousZoneDocId)
+        .collection('Comments')
+        .get();
+
+    if (result.docs.isNotEmpty) {
+      List<DangerousZoneCommentDto> list = [];
+      for (var snapshot in result.docs) {
+        list.add(DangerousZoneCommentDto.fromSnapshot(snapshot));
+      }
+      yield list;
     }
   }
 }

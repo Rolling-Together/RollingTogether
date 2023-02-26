@@ -19,7 +19,7 @@ class FacilityReviewDto {
   Map<String, dynamic> toMap() => {
         'userId': userId,
         'userName': userName,
-        'dateTime': dateTime,
+        'dateTime': FieldValue.serverTimestamp(),
         'content': content
       };
 

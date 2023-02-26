@@ -11,7 +11,7 @@ class FacilityDto {
   late String addressName;
   late String roadAddressName;
   late String placeUrl;
-  late Map<String, bool> checkListMap;
+  late Map<String, Map<String, dynamic>> checkListMap;
   late Timestamp checkListLastUpdate;
   late DocumentReference reference;
 
@@ -41,12 +41,13 @@ class FacilityDto {
         'addressName': addressName,
         'roadAddressName': roadAddressName,
         'checkListMap': checkListMap,
-        'checkListLastUpdate': checkListLastUpdate,
+        'checkListLastUpdate': FieldValue.serverTimestamp(),
         'placeUrl': placeUrl
       };
 
   FacilityDto.fromSnapshot(DocumentSnapshot snapshot) {
     var map = snapshot.data() as Map<String, dynamic>;
+
     placeId = map['placeId'];
     name = map['name'];
     latitude = map['latitude'];
