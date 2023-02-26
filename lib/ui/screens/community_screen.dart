@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rolling_together/commons/class/location_tile.dart';
+import 'package:rolling_together/commons/class/popular_post_tile.dart';
 import 'package:rolling_together/commons/widgets/custom_appbar.dart';
 import '../../commons/utils/button.dart';
 
@@ -8,8 +9,7 @@ class CommunityScreen extends StatefulWidget {
   _CommunityScreenState createState() => _CommunityScreenState();
 }
 
-class _CommunityScreenState extends State<CommunityScreen>  {
-
+class _CommunityScreenState extends State<CommunityScreen> {
   String selectedCategory = "전체";
 
   void selectCategory(String category) {
@@ -19,33 +19,47 @@ class _CommunityScreenState extends State<CommunityScreen>  {
   }
 
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
       body: Column(
         children: [
-          SizedBox(height: 25,),
-          // 카테고리 버튼들
+          SizedBox(
+            height: 25,
+          ),
+
+          /// 카테고리 버튼들
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              RoundedButton(text: "전체",
-                  color: selectedCategory == "전체" ? Colors.blue : Colors.grey,
-              onPressed: () => selectCategory("전체"),),
-
-              RoundedButton(text: "위험장소",
+              RoundedButton(
+                text: "전체",
+                color: selectedCategory == "전체" ? Colors.blue : Colors.grey,
+                onPressed: () => selectCategory("전체"),
+              ),
+              RoundedButton(
+                text: "위험장소",
                 color: selectedCategory == "위험장소" ? Colors.blue : Colors.grey,
-                onPressed: () => selectCategory("위험장소"),),
-
-              RoundedButton(text: "음식점/카페",
+                onPressed: () => selectCategory("위험장소"),
+              ),
+              RoundedButton(
+                text: "음식점/카페",
                 color: selectedCategory == "음식점/카페" ? Colors.blue : Colors.grey,
-                onPressed: () => selectCategory("음식점/카페"),),
+                onPressed: () => selectCategory("음식점/카페"),
+              ),
             ],
           ),
-          // 선택된 카테고리에 따라 다른 리스트 보여주기
+
+          Container(
+             child: selectedCategory == "음식점/카페" ?
+                  PopularPostTile()
+             : SizedBox(height: 0,)
+          ),
+
+          /// 선택된 카테고리에 따라 다른 리스트 보여주기
           Expanded(
             child: ListView.builder(
+                shrinkWrap: true,
                 itemCount: 10, // 리스트 개수는 임의로 설정
                 itemBuilder: (context, index) {
                   if (selectedCategory == "전체") {
@@ -60,12 +74,10 @@ class _CommunityScreenState extends State<CommunityScreen>  {
                     );
                   }
                   return Container();
-                }
-            ),
+                }),
           ),
         ],
       ),
     );
   }
 }
-
