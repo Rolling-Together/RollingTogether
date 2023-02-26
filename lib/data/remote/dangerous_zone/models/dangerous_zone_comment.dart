@@ -20,12 +20,13 @@ class DangerousZoneCommentDto {
         'content': content,
         'commenterId': commenterId,
         'commenterName': commenterName,
-        'dateTime': dateTime
+        'dateTime': FieldValue.serverTimestamp(),
       };
 
   DangerousZoneCommentDto.fromSnapshot(DocumentSnapshot snapshot) {
-    var map = snapshot.data() as Map<String, dynamic>;
+    final map = snapshot.data() as Map<String, dynamic>;
     id = snapshot.reference.id;
+
     content = map['content'];
     commenterId = map['commenterId'];
     commenterName = map['commenterName'];
@@ -34,8 +35,8 @@ class DangerousZoneCommentDto {
     reference = snapshot.reference;
   }
 
-  DangerousZoneCommentDto.fromMap(String _id, Map<String, dynamic>? map) {
-    id = _id;
+  DangerousZoneCommentDto.fromMap(String docId, Map<String, dynamic>? map) {
+    id = docId;
     content = map?['content'];
     commenterId = map?['commenterId'];
     commenterName = map?['commenterName'];

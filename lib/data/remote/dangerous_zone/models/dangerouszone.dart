@@ -21,7 +21,8 @@ class DangerousZoneDto {
       required this.tipOffPhotos,
       required this.like,
       required this.informerName,
-      Timestamp? dateTime}) : dateTime = dateTime??Timestamp(0, 0);
+      Timestamp? dateTime})
+      : dateTime = dateTime ?? Timestamp(0, 0);
 
   Map<String, dynamic> toMap() => {
         'categoryId': categoryId,
@@ -30,7 +31,7 @@ class DangerousZoneDto {
         'informerId': informerId,
         'informerName': informerName,
         'tipOffPhotos': tipOffPhotos,
-        'dateTime': dateTime,
+        'dateTime': FieldValue.serverTimestamp(),
         'like': like,
       };
 
