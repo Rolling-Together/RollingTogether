@@ -10,6 +10,7 @@ class CommunityScreen extends StatefulWidget {
 }
 
 class _CommunityScreenState extends State<CommunityScreen> {
+
   String selectedCategory = "전체";
 
   void selectCategory(String category) {
@@ -50,11 +51,21 @@ class _CommunityScreenState extends State<CommunityScreen> {
             ],
           ),
 
-          Container(
-             child: selectedCategory == "음식점/카페" ?
-                  PopularPostTile()
-             : SizedBox(height: 0,)
-          ),
+          selectedCategory == "음식점/카페"
+              ? Container(
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      PopularPostTile(),
+                      PopularPostTile(),
+                      PopularPostTile(),
+                    ],
+                  ))
+              : SizedBox(
+                  height: 0,
+                ),
 
           /// 선택된 카테고리에 따라 다른 리스트 보여주기
           Expanded(
