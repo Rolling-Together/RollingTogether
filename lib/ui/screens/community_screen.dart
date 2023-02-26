@@ -1,3 +1,5 @@
+import 'dart:math';
+import 'package:intl/intl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rolling_together/commons/class/facility_tile.dart';
@@ -74,15 +76,27 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 shrinkWrap: true,
                 itemCount: 10, // 리스트 개수는 임의로 설정
                 itemBuilder: (context, index) {
+
                   if (selectedCategory == "전체") {
                     return ListTile(
                       title: Text("전체 리스트 $index"),
                     );
+
                   } else if (selectedCategory == "위험장소") {
-                    return LocationTile();
+
+                    DateTime time = DateTime.now().subtract(
+                        Duration(
+                          days: Random().nextInt(30),// 현재 시간에서 최근 30일 간의 랜덤 시간 생성
+                          hours: Random().hashCode,
+                          minutes: Random().hashCode,
+                        )); // 최근 30일 간의 랜덤한 일 수를 생성
+                    String formattedtime = DateFormat('MM/dd  HH:mm').format(time);
+                    return LocationTile(time: formattedtime.toString());
+
                   } else if (selectedCategory == "음식점/카페") {
                     return FacilityTile();
                   }
+
                   return Container();
                 }),
           ),

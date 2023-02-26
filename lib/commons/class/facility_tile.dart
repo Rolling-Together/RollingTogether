@@ -20,7 +20,7 @@ class _FacilityTileState extends State<FacilityTile>{
     return Card(
       child: ListTile(
         title: Text(
-          "존맛탱ㅠ",
+          "존맛탱!!!!",
           style: TextStyle(fontSize: 18),
         ),
         trailing:

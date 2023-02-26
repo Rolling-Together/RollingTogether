@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 
 class LocationTile extends StatelessWidget {
-  // LocationTile({
-  //   required this.time
-  //   });
+  LocationTile({
+    required this.time
+    });
 
   final Widget representativePicture = ClipRRect(
     borderRadius: BorderRadius.circular(0.0),
@@ -17,7 +17,7 @@ class LocationTile extends StatelessWidget {
   final String comment = '대연놀이터 앞에 턱 때문에 다침ㅠ'; // 제목
   final String type = '턱이 있음'; // ex. 턱이있음 등
   final String address = 'oo로 oo길'; // 주소
-  final String time = '디스이즈타임'; // 업로드 시간
+  final String time ; // 업로드 시간
 
   @override
   Widget build(BuildContext context) {
