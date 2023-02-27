@@ -18,15 +18,11 @@ class _CommunityScreenState extends State<CommunityScreen> {
   List<LocationTile> locationTiles = [];  // LocationTile을 저장하는 List를 만듭니다.
 
 
-
-
   void selectCategory(String category) {
     setState(() {
       selectedCategory = category;
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +56,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
             ],
           ),
 
-          selectedCategory == "음식점/카페"
+          selectedCategory == "위험장소"
               ? Container(
                   margin: EdgeInsets.all(10),
                   padding: EdgeInsets.all(10),

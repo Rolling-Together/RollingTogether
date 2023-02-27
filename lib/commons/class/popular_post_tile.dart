@@ -73,3 +73,23 @@ class _PopularPostTileState extends State<PopularPostTile> {
     );
   }
 }
+
+/*
+class PopularPostTileList extends StatefulWidget {
+  const PopularPostTileList({Key? key}) : super(key: key);
+
+  _PopularPostTileListState createState() => _PopularPostTileListState();
+}
+
+
+class _PopularPostTileListState extends State<PopularPostTileList> {
+
+  List<PopularPostTile> popularPostTiles = [];
+
+  @override
+  Widget build(BuildContext context){
+    return Container();
+  }
+}
+
+ */
