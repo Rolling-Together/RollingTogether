@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rolling_together/ui/screens/my_map_screen.dart';
 
-import '../../ui/screens/community_screen.dart';
+import '../../ui/screens/9_community_screen.dart';
 import '../../ui/screens/guide_screen.dart';
 import '../../ui/screens/profile_screen.dart';
 
