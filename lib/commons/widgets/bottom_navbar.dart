@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rolling_together/ui/screens/my_map_screen.dart';
+import 'package:rolling_together/ui/screens/5_my_map_screen.dart';
 
 import '../../ui/screens/community_screen.dart';
 import '../../ui/screens/guide_screen.dart';
