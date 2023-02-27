@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:rolling_together/data/remote/dangerous_zone/controllers/dangerous_zone_controller.dart';
-import 'package:rolling_together/data/remote/dangerous_zone/service/dangerous_zone_service.dart';
+import 'package:location/location.dart';
+import '../../commons/widgets/custom_chip.dart';
+import 'new_page.dart';
+import 'option_page.dart';
 
 class MyMapScreen extends StatefulWidget {
   const MyMapScreen({super.key});
@@ -15,6 +15,17 @@ class MyMapScreen extends StatefulWidget {
 class _MyMapScreenState extends State<MyMapScreen>
     with AutomaticKeepAliveClientMixin<MyMapScreen> {
   final TextEditingController _textController = TextEditingController();
+  late GoogleMapController _controller;
+  Location _location = Location();
+  bool _showAdditionalChips = false;
+
+  Future<LocationData?> getCurrentLocation() async {
+    try {
+      return await _location.getLocation();
+    } catch (e) {
+      return null;
+    }
+  }
 
   // initialize markers
   Set<Marker> _markers = {};
@@ -52,52 +63,151 @@ class _MyMapScreenState extends State<MyMapScreen>
   Widget build(BuildContext context) {
     super.build(context);
     initMarkers();
-    final controller = Get.put(DangerousZoneController());
+    //final screenWidth = MediaQuery.of(context).size.width;
 
     return PageStorage(
       bucket: PageStorageBucket(),
       child: Stack(
         children: [
+          Container(),
           GoogleMap(
             markers: _markers,
+            onMapCreated: (GoogleMapController controller) {
+              _controller = controller;
+            },
             initialCameraPosition: CameraPosition(
               target: LatLng(37.422, -122.084),
               zoom: 12,
             ),
           ),
-          Obx(
-            () => Text(
-              "${controller.dangerousZoneList.isEmpty}",
-              style: Theme.of(context).textTheme.headline4,
+          Positioned(
+            top: 50,
+            left: 40,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  //onTap: () => ,
+                    child: CostomChip('위험장소', Icon(Icons.dangerous) ,Colors.redAccent)),
+                SizedBox(width: 10),
+                GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _showAdditionalChips = !_showAdditionalChips;
+                      });
+                    },
+                    child: CostomChip('편의시설', Icon(Icons.place) ,Colors.yellow)
+                ),
+                SizedBox(width: 10),
+                CostomChip('대중교통', Icon(Icons.bus_alert_rounded) ,Colors.cyan)
+              ],
             ),
           ),
-          ElevatedButton(
-              child: const Text('test'),
+          Positioned(
+            top: 80,
+            child: Visibility(
+              visible: _showAdditionalChips,
+              child: Container(
+                margin: EdgeInsets.only(top: 10),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => NewPage()),
+                        );
+                      },
+                      child: CostomChip('식당', Icon(Icons.fastfood), Colors.yellow),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => NewPage()),
+                        );
+                      },
+                      child: CostomChip('카페', Icon(Icons.emoji_food_beverage), Colors.yellow),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            right: 5,
+            bottom: 100,
+            child: FloatingActionButton(
+              elevation: 10,
               onPressed: () {
-                controller.getDangerousZoneList(35.1342, 129.1015);
-              })
+                showOptions(context);
+              },
+              child: Text('글쓰기'),
+            ),
+          ),
+          Positioned(
+            right: 5,
+            bottom: 150,
+            child: FloatingActionButton(
+              onPressed: () async {
+                LocationData? locationData = await getCurrentLocation();
+                if (locationData != null) {
+                  _controller.animateCamera(CameraUpdate.newLatLng(
+                    LatLng(11.11, 22.22),
+                  ));
+                }
+              },
+              child: Icon(Icons.my_location),
+            ),
+
+          ),
         ],
       ), // Unique bucket for this page
     );
   }
+
 
   _showBlueMarkerBottomSheet() {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
         return Container(
-          height: MediaQuery.of(context).size.height / 2,
-          child: Column(
+          height: MediaQuery.of(context).size.height / 4,
+          child: Row(
             children: [
               Expanded(
-                child: Image.network("assets/images/~~"),
+                child: Image.network(
+                  'https://th.bing.com/th/id/OIP.kEyTyMJU1dubq8WTztPsCgHaFj?w=262&h=197&c=7&r=0&o=5&dpr=1.3&pid=1.7',
+                  fit: BoxFit.cover,
+                ),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: _textController,
-                  decoration: InputDecoration(
-                    hintText: "텍스트입력하세요",
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Title 1',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text('Description 1'),
+                      Text(
+                        'Title 2',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text('Description 2'),
+                      Text(
+                        'Title 3',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text('Description 3'),
+                      Text(
+                        'Title 4',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text('Description 4'),
+                    ],
                   ),
                 ),
               ),
@@ -113,13 +223,97 @@ class _MyMapScreenState extends State<MyMapScreen>
       context: context,
       builder: (BuildContext context) {
         return Container(
-          height: MediaQuery.of(context).size.height / 4,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          height: MediaQuery.of(context).size.height / 3,
+          child: Column(
             children: [
-              Icon(Icons.favorite),
-              Icon(Icons.share),
-              Icon(Icons.delete),
+              Container(
+                height: MediaQuery.of(context).size.height / 6,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 50.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Title 1',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('Description 1'),
+                            Text(
+                              'Title 2',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text('Description 2'),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Image.network(
+                        'https://th.bing.com/th/id/OIP.CWxD3nGIp_XU34nZ8G-p9AHaFj?w=263&h=197&c=7&r=0&o=5&dpr=1.3&pid=1.7',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Title 1',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text('Description 1'),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Title 2',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text('Description 2'),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Title 3',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text('Description 3'),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Title 4',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text('Description 4'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         );
@@ -132,7 +326,7 @@ class _MyMapScreenState extends State<MyMapScreen>
       context: context,
       builder: (BuildContext context) {
         return Container(
-          height: MediaQuery.of(context).size.height / 4,
+          height: MediaQuery.of(context).size.height / 2,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -149,5 +343,53 @@ class _MyMapScreenState extends State<MyMapScreen>
   void dispose() {
     _textController.dispose();
     super.dispose();
+  }
+
+  void showOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 200,
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                title: Text('위험장소'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => Option1Screen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                title: Text('편의시설'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => Option2Screen(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                title: Text('대중교통'),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => Option3Screen(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
