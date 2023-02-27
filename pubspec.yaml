@@ -23,6 +23,9 @@ dependencies:
   google_maps_flutter: ^2.2.3
 
   image_picker: ^0.8.6+1
+
+  firebase_storage: ^11.0.14
+
   location: ^4.4.0
 
 

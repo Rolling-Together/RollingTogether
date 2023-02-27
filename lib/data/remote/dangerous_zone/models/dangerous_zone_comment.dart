@@ -8,25 +8,25 @@ class DangerousZoneCommentDto {
   late Timestamp dateTime;
   late DocumentReference reference;
 
-  DangerousZoneCommentDto({this.id,
-    required this.content,
-    required this.commenterId,
-    required this.commenterName,
-    Timestamp? dateTime})
+  DangerousZoneCommentDto(
+      {this.id,
+      required this.content,
+      required this.commenterId,
+      required this.commenterName,
+      Timestamp? dateTime})
       : dateTime = dateTime ?? Timestamp(0, 0);
 
-  Map<String, dynamic> toMap() =>
-      {
+  Map<String, dynamic> toMap() => {
         'content': content,
         'commenterId': commenterId,
         'commenterName': commenterName,
-        'dateTime': dateTime
+        'dateTime': FieldValue.serverTimestamp(),
       };
 
-
   DangerousZoneCommentDto.fromSnapshot(DocumentSnapshot snapshot) {
-    var map = snapshot.data() as Map<String, dynamic>;
-    id = map['id'];
+    final map = snapshot.data() as Map<String, dynamic>;
+    id = snapshot.reference.id;
+
     content = map['content'];
     commenterId = map['commenterId'];
     commenterName = map['commenterName'];
@@ -35,8 +35,8 @@ class DangerousZoneCommentDto {
     reference = snapshot.reference;
   }
 
-  DangerousZoneCommentDto.fromMap(Map<String, dynamic>? map) {
-    id = map?['id'];
+  DangerousZoneCommentDto.fromMap(String docId, Map<String, dynamic>? map) {
+    id = docId;
     content = map?['content'];
     commenterId = map?['commenterId'];
     commenterName = map?['commenterName'];
