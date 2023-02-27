@@ -3,10 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class FacilityScreen extends StatelessWidget {
-  const FacilityScreen({Key? key}) : super(key: key);
+class LocationScreen extends StatefulWidget {
+  const LocationScreen({Key? key}) : super(key: key);
 
-  Widget RegisterDialog(){
+  @override
+  State<LocationScreen> createState() => _LocationScreenState();
+}
+
+class _LocationScreenState extends State<LocationScreen> {
+  Widget RegisterDialog() {
     return AlertDialog(
       title: Container(
         alignment: Alignment.center,
@@ -14,10 +19,12 @@ class FacilityScreen extends StatelessWidget {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+        ///textfield가 늘어남에 따라 스크롤 가능하게
         child: Container(
           child: Column(
             children: [
@@ -27,10 +34,10 @@ class FacilityScreen extends StatelessWidget {
                     top: MediaQuery.of(context).size.width * 0.1,
                     left: MediaQuery.of(context).size.width * 0.05),
                 alignment: Alignment.centerLeft,
-                child: Text('편의시설', style: TextStyle(fontSize: 16)),
+                child: Text('위험 장소', style: TextStyle(fontSize: 16)),
               ),
               Container(
-                  ///카테고리
+                ///카테고리
                   padding: EdgeInsets.only(
                       top: MediaQuery.of(context).size.height * 0.01,
                       bottom: MediaQuery.of(context).size.height * 0.03),
@@ -38,15 +45,17 @@ class FacilityScreen extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.9,
                   decoration: BoxDecoration(),
                   child: CategoryButton()),
-              Container(
-                padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.05),
-                alignment: Alignment.centerLeft,
-                child: Text("주소 검색 창 위치"),
-              ),
+              /*Row(children: [
+                Column(
+                  children: List.generate(imageUploaders.length, (index) {
+                    return imageUploaders[index];
+                  }),
+                ),*/
+              ImageUploader(),
+              //]),
               Container(
                 padding:
-                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.2),
+                EdgeInsets.all(MediaQuery.of(context).size.width * 0.2),
                 child: Text('지도 API'),
               ),
               Container(
@@ -64,20 +73,11 @@ class FacilityScreen extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Text('부산광역시 남구 용소로 45, 부경대학교 대연캠퍼스'),
               ),
-              Column(
-                //padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
-                children: [
-                  FacilityInfo(text: '휠체어 접근 가능성', icon: Icons.accessible),
-                  FacilityInfo(text: '장애인 엘리베이터', icon: Icons.elevator),
-                  FacilityInfo(text: '엘리베이터 있음', icon: Icons.elevator),
-                  FacilityInfo(text: '전동 휠체어 충전소', icon: Icons.ev_station),
-                ],
-              ),
               Container(
                 margin:
-                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+                EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
                 decoration:
-                    BoxDecoration(border: Border.all(color: Colors.black)),
+                BoxDecoration(border: Border.all(color: Colors.black)),
                 child: TextField(
                   decoration: InputDecoration(focusedBorder: InputBorder.none),
                   keyboardType: TextInputType.multiline,
@@ -106,8 +106,8 @@ class FacilityScreen extends StatelessWidget {
   }
 }
 
-///category_option 버튼
-const List<String> list = <String>['음식점', '카페', '공공시설', '문화시설'];
+///category_option버튼
+const List<String> list = <String>['턱이 있음', '경사로가 높음', '사고 위험 있음'];
 
 class CategoryButton extends StatefulWidget {
   const CategoryButton({Key? key}) : super(key: key);
@@ -122,13 +122,13 @@ class _CategoryButtonState extends State<CategoryButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      ///나중에 category 디자인 필요할 때 쓰려고 Container에 담아두고 decoration 부여
-      /*decoration: BoxDecoration(
+      ///나중에 category디자인 필요할 때 쓰려고 Container에 담아두고 decoration부여
+/*decoration: BoxDecoration(
         color: Colors.blueGrey,
       ),*/
       child: DropdownButton<String>(
-        ///underline 안보이게 할 때
-        //underline: SizedBox.shrink(),
+        ///underline안보이게 할 때
+//underline: SizedBox.shrink(),
         isExpanded: true,
         value: dropdownValue,
         icon: const Icon(Icons.arrow_drop_down),
@@ -139,7 +139,7 @@ class _CategoryButtonState extends State<CategoryButton> {
           });
         },
         items: list.map<DropdownMenuItem<String>>(
-          (String value) {
+              (String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
@@ -151,9 +151,10 @@ class _CategoryButtonState extends State<CategoryButton> {
   }
 }
 
-///image_picker 방법2 >> 나중에 합칠 때, util에 image_picker 추가해야함
-class ImageUploader extends StatefulWidget {
+///image_picker방법2
+/*class ImageUploader extends StatefulWidget {
   const ImageUploader({Key? key}) : super(key: key);
+
   @override
   State<ImageUploader> createState() => _ImageUploaderState();
 }
@@ -198,11 +199,11 @@ class _ImageUploaderState extends State<ImageUploader> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 30,
-      height: 30,
-      /*decoration: BoxDecoration(
+      width: 100,
+      height: 100,
+      decoration: BoxDecoration(
         border: Border.all(color: Colors.black),
-      ),*/
+      ),
       child: _image == null
           ? InkWell(
               onTap: () =>
@@ -212,74 +213,102 @@ class _ImageUploaderState extends State<ImageUploader> {
           : Image.file(_image!),
     );
   }
-}
 
-///장소정보 >> 여기서 오류난당~~
-const List<String> option_list = <String>['선택', '예', '아니오'];
+/*Widget showImage() {
+    return Container(
+      width: 100,
+      height: 100,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
+      ),
+      child: _image == null
+          ? InkWell(
+              onTap: () => _pickImage(ImageSource.camera),
+              child: Icon(Icons.camera_alt),
+            )
+          : Image.file(_image!),
+    );
+  }*/
 
-class FacilityInfo extends StatefulWidget {
-  final String text;
-  final IconData icon;
-  const FacilityInfo({Key? key, required this.text, required this.icon})
-      : super(key: key);
+}*/
+
+class ImageUploader extends StatefulWidget {
+  const ImageUploader({Key? key}) : super(key: key);
 
   @override
-  State<FacilityInfo> createState() => _FacilityInfoState();
+  _ImageUploaderState createState() => _ImageUploaderState();
 }
 
-class _FacilityInfoState extends State<FacilityInfo> {
-  String dropdownValues = option_list.first;
+class _ImageUploaderState extends State<ImageUploader> {
+  List<File> _imageList = [];
+
+  final picker = ImagePicker();
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await picker.pickImage(source: source);
+    setState(() {
+      if (pickedFile != null) {
+        _imageList.add(File(pickedFile.path));
+      } else {
+        print('No image selected.');
+      }
+    });
+  }
+
+  Widget _optionDialog() {
+    return AlertDialog(
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          FloatingActionButton(
+              child: Icon(Icons.add_a_photo),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _pickImage(ImageSource.camera);
+              }),
+          FloatingActionButton(
+              child: Icon(Icons.wallpaper),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _pickImage(ImageSource.gallery);
+              }),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
-      alignment: Alignment.centerLeft,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            margin: EdgeInsets.only(
-                right: MediaQuery.of(context).size.width * 0.05),
-            child: Icon(this.widget.icon),
+    return Column(
+      children: [
+        Container(
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black),
           ),
-          Container(
-            width: 120,
-            margin:
-                EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.2),
-            child: Text(this.widget.text),
+          child: InkWell(
+            child: Icon(Icons.camera_alt),
+            onTap: () =>
+                showDialog(context: context, builder: (_) => _optionDialog()),
           ),
-          Container(
-            ///dropdownButton 정렬하려고.. > 해결해야함
-            //alignment: Alignment.centerRight,
-            child: DropdownButton<String>(
-              isDense: true,
-              //isExpanded: true,
-              value: dropdownValues,
-              icon: const Icon(Icons.arrow_drop_down),
-              elevation: 16,
-              onChanged: (String? value) {
-                setState(() {
-                  dropdownValues = value!;
-                });
-              },
-              items: option_list.map<DropdownMenuItem<String>>(
-                (String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                },
-              ).toList(),
-            ),
-          ),
-          Container(
-            margin:
-                EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
-            child: ImageUploader(),
-          ),
-        ],
-      ),
+          //child: Icon(Icons.camera_alt),
+        ),
+        /*ElevatedButton(
+          onPressed: _pickImage(),
+          child: Text('Add Image'),
+        ),*/
+        GridView.count(
+          shrinkWrap: true,
+          crossAxisCount: 3,
+          children: List.generate(_imageList.length, (index) {
+            return Image.file(
+              _imageList[index],
+              fit: BoxFit.cover,
+            );
+          }),
+        ),
+      ],
     );
   }
 }
