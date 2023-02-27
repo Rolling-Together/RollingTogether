@@ -23,6 +23,7 @@ dependencies:
   google_maps_flutter: ^2.2.3
 
   image_picker: ^0.8.6+1
+  location: ^4.4.0
 
 
 dev_dependencies:
@@ -35,6 +36,7 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+
 
   assets:
     - assets/images/
