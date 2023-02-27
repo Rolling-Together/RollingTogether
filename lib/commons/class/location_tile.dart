@@ -7,13 +7,13 @@ class LocationTile extends StatelessWidget {
     required this.time
     });
 
-  final Widget representativePicture = ClipRRect(
+  final Widget representativePicture = ClipRRect( //대표사진(썸네일)
     borderRadius: BorderRadius.circular(0.0),
     child: Image.network(
       'https://avatars.githubusercontent.com/u/113813770?s=400&u=c4addb4d0b81eabc9faef9f13adc3dea18ddf83a&v=4',
       fit: BoxFit.cover,
     ),
-  ); //대표사진(썸네일)
+  );
   final String comment = '대연놀이터 앞에 턱 때문에 다침ㅠ'; // 제목
   final String type = '턱이 있음'; // ex. 턱이있음 등
   final String address = 'oo로 oo길'; // 주소
