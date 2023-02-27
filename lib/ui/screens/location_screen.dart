@@ -37,6 +37,7 @@ class _LocationScreenState extends State<LocationScreen> {
                 child: Text('위험 장소', style: TextStyle(fontSize: 16)),
               ),
               Container(
+
                   ///카테고리
                   padding: EdgeInsets.only(
                       top: MediaQuery.of(context).size.height * 0.01,
