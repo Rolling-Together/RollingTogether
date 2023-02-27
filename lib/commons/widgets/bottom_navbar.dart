@@ -3,7 +3,7 @@ import 'package:rolling_together/ui/screens/my_map_screen.dart';
 
 import '../../ui/screens/community_screen.dart';
 import '../../ui/screens/guide_screen.dart';
-import '../../ui/screens/profile_screen.dart';
+import '../../ui/screens/12_profile_screen.dart';
 
 class BottomNavbar extends StatefulWidget {
   const BottomNavbar({super.key});
