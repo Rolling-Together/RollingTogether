@@ -137,13 +137,13 @@ class _MyMapScreenState extends State<MyMapScreen>
           Positioned(
             right: 5,
             bottom: 100,
-            child: FloatingActionButton(
-              elevation: 10,
-              onPressed: () {
-                showOptions(context);
-              },
-              child: Text('글쓰기'),
-            ),
+              child: FloatingActionButton(
+                elevation: 10,
+                onPressed: () {
+                  showOptions(context);
+                },
+                child: Text('글쓰기'),
+              ),
           ),
           Positioned(
             right: 5,
@@ -393,3 +393,4 @@ class _MyMapScreenState extends State<MyMapScreen>
     );
   }
 }
+

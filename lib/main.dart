@@ -11,6 +11,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const GetMaterialApp(
+    debugShowCheckedModeBanner: false,
     home: InitMapScreen(),
   ));
 }
