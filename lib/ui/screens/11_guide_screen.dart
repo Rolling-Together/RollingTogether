@@ -7,6 +7,7 @@ class GuideScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.cyanAccent,
+      Map(),
     );
   }
 }
