@@ -1,0 +1,60 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rolling_together/data/remote/dangerous_zone/likes/models/likes_dangerous_zone.dart';
+
+class LikesDangerousZoneService {
+  final firestore = FirebaseFirestore.instance;
+
+  /// 위험 장소 공감 클릭 시 로직
+  /// 매개변수 : userId - 유저UID(이메일X)
+  Future<void> likeDangerousZone(
+      String dangerousZoneDocId, String userId, String userName) async {
+    try {
+      await firestore
+          .collection('LikesDangerousZone')
+          .doc(dangerousZoneDocId)
+          .update({'likes.$userId': userName});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// 위험 장소 공감 클릭 해제 시 로직
+  /// 매개변수 : userId - 유저UID(이메일X)
+  Future<void> unlikeDangerousZone(
+      String dangerousZoneDocId, String userId) async {
+    try {
+      await firestore
+          .collection('LikesDangerousZone')
+          .doc(dangerousZoneDocId)
+          .update({'likes.$userId': FieldValue.delete()});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  /// 위험 장소 공감 순 top3 정렬 후 반환
+  Stream<List<LikesDangerousZoneDto>> getMostLikesDangerousZoneList(
+      double latitude, double longitude) async* {
+    const rangeKM = 0.01;
+    final minLat = (latitude) - rangeKM;
+    final maxLat = (latitude) + rangeKM;
+    final minLon = (longitude) - rangeKM;
+    final maxLon = (longitude) + rangeKM;
+
+    final query = firestore.collection('LikesDangerousZone');
+
+    var result = await query
+        .where('latlng', isGreaterThanOrEqualTo: [minLat, minLon])
+        .where('latlng', isLessThanOrEqualTo: [maxLat, maxLon])
+        .orderBy('likes', descending: true)
+        .get();
+
+    if (result.docs.isNotEmpty) {
+      List<LikesDangerousZoneDto> list = [];
+      for (var snapshot in result.docs) {
+        list.add(LikesDangerousZoneDto.fromSnapshot(snapshot));
+      }
+      yield list;
+    }
+  }
+}

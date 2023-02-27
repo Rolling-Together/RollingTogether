@@ -67,33 +67,7 @@ class DangerousZoneService {
     }
   }
 
-  /// 위험 장소 공감 클릭 시 로직
-  /// 매개변수 : userId - 유저UID(이메일X)
-  Future<void> likeDangerousZone(
-      String dangerousZoneDocId, String userId, String userName) async {
-    try {
-      await firestore
-          .collection('DangerousZone')
-          .doc(dangerousZoneDocId)
-          .update({'like.$userId': userName});
-    } catch (e) {
-      rethrow;
-    }
-  }
 
-  /// 위험 장소 공감 클릭 해제 시 로직
-  /// 매개변수 : userId - 유저UID(이메일X)
-  Future<void> unlikeDangerousZone(
-      String dangerousZoneDocId, String userId) async {
-    try {
-      await firestore
-          .collection('DangerousZone')
-          .doc(dangerousZoneDocId)
-          .update({'like.$userId': FieldValue.delete()});
-    } catch (e) {
-      rethrow;
-    }
-  }
 
   /// 댓글 추가
   Future<void> addComment(

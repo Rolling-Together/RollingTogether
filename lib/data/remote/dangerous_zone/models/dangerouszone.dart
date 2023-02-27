@@ -8,7 +8,7 @@ class DangerousZoneDto {
   late String informerId;
   late String informerName;
   late List<String> tipOffPhotos;
-  late Map<String, String> like;
+
   late Timestamp dateTime;
   late DocumentReference? reference;
 
@@ -19,7 +19,7 @@ class DangerousZoneDto {
       required this.latlng,
       required this.informerId,
       required this.tipOffPhotos,
-      required this.like,
+
       required this.informerName,
       Timestamp? dateTime})
       : dateTime = dateTime ?? Timestamp(0, 0);
@@ -32,7 +32,6 @@ class DangerousZoneDto {
         'informerName': informerName,
         'tipOffPhotos': tipOffPhotos,
         'dateTime': FieldValue.serverTimestamp(),
-        'like': like,
       };
 
   DangerousZoneDto.fromSnapshot(DocumentSnapshot snapshot) {
@@ -46,7 +45,6 @@ class DangerousZoneDto {
     informerName = map['informerName'];
     tipOffPhotos = map['tipOffPhotos'];
     dateTime = map['dateTime'];
-    like = map['like'];
 
     reference = snapshot.reference;
   }
@@ -60,6 +58,5 @@ class DangerousZoneDto {
     informerName = map?['informerName'];
     tipOffPhotos = map?['tipOffPhotos'];
     dateTime = map?['dateTime'];
-    like = map?['like'];
   }
 }
