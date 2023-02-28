@@ -22,10 +22,10 @@ class ImgUploadService {
         final url = await ref.getDownloadURL();
         imageUrls.add(url);
       } else {
-        throw ('Error uploading image ${i + 1}');
+        return Future.value(List.empty());
       }
     }
 
-    return imageUrls;
+    return Future.value(imageUrls);
   }
 }

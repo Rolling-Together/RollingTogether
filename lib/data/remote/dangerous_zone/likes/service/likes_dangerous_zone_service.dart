@@ -9,12 +9,12 @@ class LikesDangerousZoneService {
   Future<void> likeDangerousZone(
       String dangerousZoneDocId, String userId, String userName) async {
     try {
-      await firestore
+      return await Future.value(firestore
           .collection('LikesDangerousZone')
           .doc(dangerousZoneDocId)
-          .update({'likes.$userId': userName});
+          .update({'likes.$userId': userName}));
     } catch (e) {
-      rethrow;
+      return Future.error('failed');
     }
   }
 
@@ -23,18 +23,18 @@ class LikesDangerousZoneService {
   Future<void> unlikeDangerousZone(
       String dangerousZoneDocId, String userId) async {
     try {
-      await firestore
+      return await Future.value(firestore
           .collection('LikesDangerousZone')
           .doc(dangerousZoneDocId)
-          .update({'likes.$userId': FieldValue.delete()});
+          .update({'likes.$userId': FieldValue.delete()}));
     } catch (e) {
-      rethrow;
+      return Future.error('failed');
     }
   }
 
   /// 위험 장소 공감 순 top3 정렬 후 반환
-  Stream<List<LikesDangerousZoneDto>> getMostLikesDangerousZoneList(
-      double latitude, double longitude) async* {
+  Future<List<LikesDangerousZoneDto>> getMostLikesDangerousZoneList(
+      double latitude, double longitude) async {
     const rangeKM = 0.01;
     final minLat = (latitude) - rangeKM;
     final maxLat = (latitude) + rangeKM;
@@ -54,7 +54,9 @@ class LikesDangerousZoneService {
       for (var snapshot in result.docs) {
         list.add(LikesDangerousZoneDto.fromSnapshot(snapshot));
       }
-      yield list;
+      return Future.value(list);
+    } else {
+      return Future.error(List.empty());
     }
   }
 }

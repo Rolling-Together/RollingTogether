@@ -8,11 +8,11 @@ class LikeListService {
   Future<void> likeDangerousZone(
       String dangerousZoneDocId, String userId) async {
     try {
-      await firestore.collection('Users').doc(userId).update({
+      return await Future.value( firestore.collection('Users').doc(userId).update({
         'dangerousZoneLikeList': FieldValue.arrayUnion([dangerousZoneDocId])
-      });
+      }));
     } catch (e) {
-      rethrow;
+      return Future.error('failed');
     }
   }
 
@@ -21,11 +21,11 @@ class LikeListService {
   Future<void> unlikeDangerousZone(
       String dangerousZoneDocId, String userId) async {
     try {
-      await firestore.collection('Users').doc(userId).update({
+      return await Future.value( firestore.collection('Users').doc(userId).update({
         'dangerousZoneLikeList': FieldValue.arrayRemove([dangerousZoneDocId])
-      });
+      }));
     } catch (e) {
-      rethrow;
+      return Future.error('failed');
     }
   }
 

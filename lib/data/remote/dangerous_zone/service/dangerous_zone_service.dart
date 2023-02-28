@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/models/dangerous_zone_comment.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/models/dangerouszone.dart';
@@ -6,8 +8,8 @@ class DangerousZoneService {
   final firestore = FirebaseFirestore.instance;
 
   /// 해당 위/경도 근처에 있는 위험 장소 목록 로드
-  Stream<List<DangerousZoneDto>> getDangerousZoneList(
-      double latitude, double longitude) async* {
+  Future<List<DangerousZoneDto>> getDangerousZoneList(
+      double latitude, double longitude) async {
     const rangeKM = 0.005;
     final minLat = (latitude) - rangeKM;
     final maxLat = (latitude) + rangeKM;
@@ -16,7 +18,7 @@ class DangerousZoneService {
 
     final query = firestore.collection('DangerousZone');
 
-    var result = await query.where('latlng', isGreaterThanOrEqualTo: [
+    final result = await query.where('latlng', isGreaterThanOrEqualTo: [
       minLat,
       minLon
     ]).where('latlng', isLessThanOrEqualTo: [maxLat, maxLon]).get();
@@ -26,31 +28,35 @@ class DangerousZoneService {
       for (var snapshot in result.docs) {
         list.add(DangerousZoneDto.fromSnapshot(snapshot));
       }
-      yield list;
+      return Future.value(list);
+    } else {
+      return Future.value(List.empty());
     }
   }
 
   /// 단일 위험 장소 데이터 로드
-  Stream<DangerousZoneDto> getDangerousZone(String dangerousZoneDocId) async* {
+  Future<DangerousZoneDto> getDangerousZone(String dangerousZoneDocId) async {
     var result = await firestore
         .collection('DangerousZone')
         .doc(dangerousZoneDocId)
         .get();
 
     if (result.exists) {
-      yield DangerousZoneDto.fromSnapshot(result);
+      return Future.value(DangerousZoneDto.fromSnapshot(result));
+    } else {
+      return Future.error('failed');
     }
   }
 
   /// 새로운 위험 장소 추가
   Future<void> addDangerousZone(DangerousZoneDto newDangerousZone) async {
     try {
-      await firestore
+      return await Future.value(firestore
           .collection('DangerousZone')
           .doc()
-          .set(newDangerousZone.toMap());
+          .set(newDangerousZone.toMap()));
     } catch (e) {
-      rethrow;
+      return Future.error('failed');
     }
   }
 
@@ -58,35 +64,33 @@ class DangerousZoneService {
   Future<void> addDangerousZoneImgUrls(
       String dangerousZoneDocId, List<String> urls) async {
     try {
-      await firestore
+      return await Future.value(firestore
           .collection('DangerousZone')
           .doc(dangerousZoneDocId)
-          .update({'tipoffphotos': FieldValue.arrayUnion(urls)});
+          .update({'tipoffphotos': FieldValue.arrayUnion(urls)}));
     } catch (e) {
-      rethrow;
+      return Future.error('failed');
     }
   }
-
-
 
   /// 댓글 추가
   Future<void> addComment(
       DangerousZoneCommentDto commentDto, String dangerousZoneDocId) async {
     try {
-      await firestore
+      return await Future.value(firestore
           .collection('DangerousZone')
           .doc(dangerousZoneDocId)
           .collection('Comments')
           .doc()
-          .set(commentDto.toMap());
+          .set(commentDto.toMap()));
     } catch (e) {
-      rethrow;
+      return Future.error('failed');
     }
   }
 
   /// 모든 댓글 내용 로드
-  Stream<List<DangerousZoneCommentDto>> getAllComments(
-      String dangerousZoneDocId) async* {
+  Future<List<DangerousZoneCommentDto>> getAllComments(
+      String dangerousZoneDocId) async {
     var result = await firestore
         .collection('DangerousZone')
         .doc(dangerousZoneDocId)
@@ -98,7 +102,9 @@ class DangerousZoneService {
       for (var snapshot in result.docs) {
         list.add(DangerousZoneCommentDto.fromSnapshot(snapshot));
       }
-      yield list;
+      return Future.value(list);
+    } else {
+      return Future.error(List.empty());
     }
   }
 }

@@ -1,5 +1,6 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:rolling_together/data/remote/facility/models/facility.dart';
 import 'package:rolling_together/data/remote/facility/models/review.dart';
 
@@ -9,8 +10,8 @@ class FacilityService {
   final firestore = FirebaseFirestore.instance;
 
   /// 해당 위/경도 근처에 있는 장소(편의 시설) 목록 로드
-  Stream<List<FacilityDto>> getFacilityList(
-      double latitude, double longitude) async* {
+  Future<List<FacilityDto>> getFacilityList(
+      double latitude, double longitude) async {
     const rangeKM = 0.005;
     final minLat = (latitude) - rangeKM;
     final maxLat = (latitude) + rangeKM;
@@ -29,29 +30,33 @@ class FacilityService {
       for (var snapshot in result.docs) {
         list.add(FacilityDto.fromSnapshot(snapshot));
       }
-      yield list;
+      return Future.value(list);
+    } else {
+      return Future.value(List.empty());
     }
   }
 
   /// 단일 장소(편의시설) 데이터 로드
-  Stream<FacilityDto> getFacility(String facilityPlaceId) async* {
+  Future<FacilityDto> getFacility(String facilityPlaceId) async {
     var result =
         await firestore.collection('Facilities').doc(facilityPlaceId).get();
 
     if (result.exists) {
-      yield FacilityDto.fromSnapshot(result);
+      return Future.value(FacilityDto.fromSnapshot(result));
+    } else {
+      return Future.error('failed');
     }
   }
 
   /// 새로운 편의 시설 추가
   Future<void> addFacility(FacilityDto facilityDto) async {
     try {
-      await firestore
+      return await Future.value(firestore
           .collection('Facilities')
           .doc(facilityDto.placeId)
-          .set(facilityDto.toMap());
+          .set(facilityDto.toMap()));
     } catch (e) {
-      rethrow;
+      return Future.error('failed');
     }
   }
 
@@ -67,34 +72,32 @@ class FacilityService {
         };
       }
 
-      await firestore
+      return await Future.value(firestore
           .collection('Facilities')
           .doc(facilityPlaceId)
-          .update(updateMap);
+          .update(updateMap));
     } catch (e) {
-      rethrow;
+      return Future.error('failed');
     }
   }
-
-
 
   /// 리뷰 추가
   Future<void> addReview(
       FacilityReviewDto reviewDto, String facilityPlaceId) async {
     try {
-      await firestore
+      return await Future.value(firestore
           .collection('Facilities')
           .doc(facilityPlaceId)
           .collection('Reviews')
           .doc()
-          .set(reviewDto.toMap());
+          .set(reviewDto.toMap()));
     } catch (e) {
-      rethrow;
+      return Future.error('failed');
     }
   }
 
   ///  모든 리뷰 로드
-  Stream<List<FacilityReviewDto>> getAllReviews(String facilityPlaceId) async* {
+  Future<List<FacilityReviewDto>> getAllReviews(String facilityPlaceId) async {
     var result = await firestore
         .collection('Facilities')
         .doc(facilityPlaceId)
@@ -106,7 +109,9 @@ class FacilityService {
       for (var snapshot in result.docs) {
         list.add(FacilityReviewDto.fromSnapshot(snapshot));
       }
-      yield list;
+      return Future.value(list);
+    } else {
+      return Future.value(List.empty());
     }
   }
 }
