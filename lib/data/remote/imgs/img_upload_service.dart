@@ -6,7 +6,7 @@ class ImgUploadService {
   final storageRef = FirebaseStorage.instance;
 
   /// 매개변수 : folderName - 스토리지 폴더 명, images - image picker로 가져온 사진 파일 목록
-  Future<List<String>> uploadImgs(String folderName, List<File> images) async {
+  Future<bool> uploadImgs(String folderName, List<File> images) async {
     // 이미지 업로드
     final List<String> imageUrls = [];
 
@@ -22,10 +22,10 @@ class ImgUploadService {
         final url = await ref.getDownloadURL();
         imageUrls.add(url);
       } else {
-        return Future.value(List.empty());
+        return Future.error('failed');
       }
     }
 
-    return Future.value(imageUrls);
+    return Future.value(true);
   }
 }

@@ -19,7 +19,6 @@ class DangerousZoneDto {
       required this.latlng,
       required this.informerId,
       required this.tipOffPhotos,
-
       required this.informerName,
       Timestamp? dateTime})
       : dateTime = dateTime ?? Timestamp(0, 0);

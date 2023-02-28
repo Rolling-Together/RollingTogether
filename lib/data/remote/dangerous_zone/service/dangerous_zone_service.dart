@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/models/dangerous_zone_comment.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/models/dangerouszone.dart';
@@ -49,12 +47,14 @@ class DangerousZoneService {
   }
 
   /// 새로운 위험 장소 추가
-  Future<void> addDangerousZone(DangerousZoneDto newDangerousZone) async {
+  /// 추가 생공 시 문서 id 반환
+  Future<String> addDangerousZone(DangerousZoneDto newDangerousZone) async {
     try {
-      return await Future.value(firestore
+      final newDoc = await firestore
           .collection('DangerousZone')
-          .doc()
-          .set(newDangerousZone.toMap()));
+          .add(newDangerousZone.toMap());
+
+      return Future.value(newDoc.id);
     } catch (e) {
       return Future.error('failed');
     }
