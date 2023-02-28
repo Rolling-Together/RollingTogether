@@ -14,6 +14,23 @@ class FacilityController extends GetxController {
   // 편의 시설 목록
   final RxList<FacilityDto> facilityList = <FacilityDto>[].obs;
 
+  // 편의 시설
+  final Rx<FacilityDto?> facility = FacilityDto(
+      placeId: '',
+      name: '',
+      latitude: '',
+      longitude: '',
+      categoryName: '',
+      categoryGroupCode: '',
+      categoryGroupName: '',
+      addressName: '',
+      roadAddressName: '',
+      placeUrl: '',
+      checkListMap: {}).obs;
+
+  // 편의 시설 추가
+  final RxBool addFacilityResult = false.obs;
+
   /// 해당 위/경도 근처에 있는 장소(편의 시설) 목록 로드
   getFacilityList(
       List<FacilityType> facilityTypes, double latitude, double longitude) {
@@ -23,6 +40,24 @@ class FacilityController extends GetxController {
       facilityList.value = value;
     }, onError: (obj) {
       facilityList.value = obj;
+    });
+  }
+
+  /// 단일 장소(편의시설) 데이터 로드
+  getFacility(String facilityPlaceId) {
+    facilityService.getFacility(facilityPlaceId).then((value) {
+      facility.value = value;
+    }, onError: (obj) {
+      facility.value = null;
+    });
+  }
+
+  /// 새로운 편의 시설 추가
+  addFacility(FacilityDto facilityDto) {
+    facilityService.addFacility(facilityDto).then((value) {
+      addFacilityResult.value = true;
+    }, onError: (obj) {
+      addFacilityResult.value = false;
     });
   }
 }
