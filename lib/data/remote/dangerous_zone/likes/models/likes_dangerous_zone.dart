@@ -35,6 +35,6 @@ class LikesDangerousZoneDto {
     id = docId;
     dangerousZoneDocId = map?['dangerousZoneDocId'];
     likes = map?['likes'];
-    latlng = map['latlng'];
+    latlng = map?['latlng'];
   }
 }
