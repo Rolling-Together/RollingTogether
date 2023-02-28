@@ -4,14 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rolling_together/data/remote/facility/models/facility.dart';
 import 'package:rolling_together/data/remote/facility/models/review.dart';
 
+import '../../../../commons/enum/facility_types.dart';
 import '../../dangerous_zone/models/enum/facility_checklist_types.dart';
 
 class FacilityService {
   final firestore = FirebaseFirestore.instance;
 
   /// 해당 위/경도 근처에 있는 장소(편의 시설) 목록 로드
+  /// 매개변수 : 카테고리 목록
   Future<List<FacilityDto>> getFacilityList(
-      double latitude, double longitude) async {
+      List<String> facilityTypes, double latitude, double longitude) async {
     const rangeKM = 0.005;
     final minLat = (latitude) - rangeKM;
     final maxLat = (latitude) + rangeKM;
@@ -20,10 +22,11 @@ class FacilityService {
 
     final query = firestore.collection('Facilities');
 
-    var result = await query.where('latlng', isGreaterThanOrEqualTo: [
-      minLat,
-      minLon
-    ]).where('latlng', isLessThanOrEqualTo: [maxLat, maxLon]).get();
+    var result = await query
+        .where('latlng', isGreaterThanOrEqualTo: [minLat, minLon])
+        .where('latlng', isLessThanOrEqualTo: [maxLat, maxLon])
+        .where('categoryId', whereIn: facilityTypes)
+        .get();
 
     if (result.docs.isNotEmpty) {
       List<FacilityDto> list = [];
