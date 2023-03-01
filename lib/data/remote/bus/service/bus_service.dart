@@ -26,7 +26,7 @@ class BusService {
 
     final response = await http.get(Uri.parse(
         'http://apis.data.go.kr/1613000/ArvlInfoInqireService/getSttnAcctoArvlPrearngeInfoList?'
-        'serviceKey=$tagoRestApiKey'
+        'serviceKey=$dataGoKrRestApiKey'
         '&cityCode=$cityCode&nodeId=$nodeId&numOfRows=100&pageNo=1&_type'
         '=json'));
 
@@ -45,7 +45,7 @@ class BusService {
       double latitude, double longitude) async {
     final response = await http.get(Uri.parse(
         'http://apis.data.go.kr/1613000/BusSttnInfoInqireService/getCrdntPrxmtSttnList?'
-        'serviceKey=$tagoRestApiKey&gpsLati=$latitude&gpsLong=$longitude&'
+        'serviceKey=$dataGoKrRestApiKey&gpsLati=$latitude&gpsLong=$longitude&'
         'numOfRows=100&pageNo=1&_type=json'));
 
     if (response.statusCode == 200) {
