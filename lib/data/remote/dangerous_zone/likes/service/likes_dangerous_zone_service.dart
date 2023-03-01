@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/likes/models/likes_dangerous_zone.dart';
 

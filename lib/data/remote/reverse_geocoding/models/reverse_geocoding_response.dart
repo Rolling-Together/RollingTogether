@@ -101,9 +101,9 @@ class Address {
 
 class Document {
   RoadAddress? roadAddress;
-  late Address address;
+  Address? address;
 
-  Document({this.roadAddress, required this.address});
+  Document({this.roadAddress,  this.address});
 
   factory Document.fromJson(Map<String, dynamic> json) {
     return Document(
