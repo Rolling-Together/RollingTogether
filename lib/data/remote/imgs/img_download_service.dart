@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
-import 'package:rolling_together/data/remote/imgs/models/img.dart';
+import 'package:rolling_together/data/remote/imgs/models/downloaded_img.dart';
 
 class ImgDownloadService {
   final storage = FirebaseStorage.instance;

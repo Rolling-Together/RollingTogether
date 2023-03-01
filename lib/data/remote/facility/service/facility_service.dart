@@ -63,6 +63,19 @@ class FacilityService {
     }
   }
 
+  /// 편의 시설 체크 리스트 업데 이트
+  Future<void> updateCheckList(FacilityDto facilityDto) async {
+    try {
+      return await Future.value(
+          firestore.collection('Facilities').doc(facilityDto.placeId).update({
+        'checkListMap': facilityDto.checkListMap,
+        'checkListLastUpdate': FieldValue.serverTimestamp()
+      }));
+    } catch (e) {
+      return Future.error('failed');
+    }
+  }
+
   /// 편의 시설 체크 리스트 항목 별 사진 추가
   Future<void> addCheckListImgs(String facilityPlaceId,
       Map<FacilityCheckListType, List<String>> urlsMap) async {
@@ -71,7 +84,7 @@ class FacilityService {
 
       for (var entry in urlsMap.entries) {
         updateMap['checkListMap.${entry.key.firestoreFieldName}'] = {
-          'imgUrls': FieldValue.arrayUnion(entry.value)
+          'fileName': FieldValue.arrayUnion(entry.value)
         };
       }
 
