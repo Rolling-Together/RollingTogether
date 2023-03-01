@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/likes/models/likes_dangerous_zone.dart';
 
@@ -29,6 +31,28 @@ class LikesDangerousZoneService {
           .update({'likes.$userId': FieldValue.delete()}));
     } catch (e) {
       return Future.error('failed');
+    }
+  }
+
+  /// 위험 장소 공감 데이터 로드
+  Future<Map<String, LikesDangerousZoneDto>> getLikesDangerousZoneList(
+      List<String> dangerousZoneDocIds) async {
+    final query = firestore.collection('LikesDangerousZone');
+
+    var result = await query
+        .where('dangerousZoneDocId', whereIn: dangerousZoneDocIds)
+        .get();
+
+    if (result.docs.isNotEmpty) {
+      final Map<String, LikesDangerousZoneDto> map = {};
+      for (var snapshot in result.docs) {
+        final dto = LikesDangerousZoneDto.fromSnapshot(snapshot);
+        map[dto.dangerousZoneDocId] = dto;
+      }
+
+      return Future.value(map);
+    } else {
+      return Future.error({});
     }
   }
 

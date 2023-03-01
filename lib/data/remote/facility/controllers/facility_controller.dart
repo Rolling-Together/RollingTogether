@@ -1,11 +1,9 @@
 import 'dart:io';
-import 'dart:js_util';
 
 import 'package:get/get.dart';
 import 'package:rolling_together/commons/utils/img_file_utils.dart';
 import 'package:rolling_together/data/remote/facility/service/facility_service.dart';
 import 'package:rolling_together/data/remote/imgs/models/upload_img.dart';
-import 'package:rolling_together/data/remote/user/service/like_list_service.dart';
 
 import '../../../../commons/enum/facility_types.dart';
 import '../../dangerous_zone/models/enum/facility_checklist_types.dart';
@@ -14,7 +12,6 @@ import '../models/facility.dart';
 import '../models/review.dart';
 
 class FacilityController extends GetxController {
-  final LikeListService likeListService = LikeListService();
   final ImgUploadService imgUploadService = ImgUploadService();
   final FacilityService facilityService = FacilityService();
 

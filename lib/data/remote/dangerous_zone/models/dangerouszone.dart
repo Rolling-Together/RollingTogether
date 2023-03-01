@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../likes/models/likes_dangerous_zone.dart';
+
 class DangerousZoneDto {
   late String? id;
   late String categoryId;
@@ -11,6 +13,8 @@ class DangerousZoneDto {
 
   late Timestamp dateTime;
   late DocumentReference? reference;
+
+  LikesDangerousZoneDto? likes;
 
   DangerousZoneDto(
       {this.id,
