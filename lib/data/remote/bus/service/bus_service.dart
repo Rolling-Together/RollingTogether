@@ -1,4 +1,4 @@
-import 'dart:html';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rolling_together/data/remote/bus/models/bus.dart';
@@ -21,7 +21,7 @@ class BusService {
     request ex)
      http://apis.data.go.kr/1613000/ArvlInfoInqireService/
      getSttnAcctoArvlPrearngeInfoList?serviceKey=인증키(URL Encode)&
-     cityCode=25&nodeId=DJB8001793&numOfRows=10&pageNo=1&_type=xml
+     cityCode=25&nodeId=DJB8001793&numOfRows=10&pageNo=1&_type=json
      */
 
     final response = await http.get(Uri.parse(
@@ -79,7 +79,7 @@ class BusService {
   }
 
   /// 리프트 유무/작동 여부 업데이트
-  Future<void> likeDangerousZone(BusDto updateDto) async {
+  Future<void> updateCarStatus(BusDto updateDto) async {
     try {
       return await Future.value(firestore
           .collection('Buses')
