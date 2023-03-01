@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:rolling_together/commons/utils/img_file_utils.dart';
 import 'package:rolling_together/data/remote/facility/service/facility_service.dart';
 import 'package:rolling_together/data/remote/imgs/models/upload_img.dart';
+import 'package:rolling_together/data/remote/user/service/report_list_service.dart';
 
 import '../../../../commons/enum/facility_types.dart';
 import '../../dangerous_zone/models/enum/facility_checklist_types.dart';
@@ -12,8 +13,9 @@ import '../models/facility.dart';
 import '../models/review.dart';
 
 class FacilityController extends GetxController {
-  final ImgUploadService imgUploadService = ImgUploadService();
-  final FacilityService facilityService = FacilityService();
+  final imgUploadService = ImgUploadService();
+  final facilityService = FacilityService();
+  final reportService = ReportListService();
 
   // 편의 시설 목록
   final RxList<FacilityDto> facilityList = <FacilityDto>[].obs;
@@ -28,6 +30,7 @@ class FacilityController extends GetxController {
       categoryGroupCode: '',
       categoryGroupName: '',
       addressName: '',
+      informerId: '',
       roadAddressName: '',
       placeUrl: '',
       checkListMap: {}).obs;
@@ -45,13 +48,13 @@ class FacilityController extends GetxController {
   final RxList<FacilityReviewDto> reviewList = <FacilityReviewDto>[].obs;
 
   /// 해당 위/경도 근처에 있는 장소(편의 시설) 목록 로드
-  getFacilityList(
-      List<FacilityType> facilityTypes, double latitude, double longitude) {
+  getFacilityList(List<FacilityType> facilityTypes, double latitude,
+      double longitude) {
     final categoryIds = facilityTypes.map((e) => e.id).toList();
     facilityService.getFacilityList(categoryIds, latitude, longitude).then(
-        (value) {
-      facilityList.value = value;
-    }, onError: (obj) {
+            (value) {
+          facilityList.value = value;
+        }, onError: (obj) {
       facilityList.value = obj;
     });
   }
@@ -66,10 +69,10 @@ class FacilityController extends GetxController {
   }
 
   /// 새로운 편의 시설 추가
-  addFacility(
-      FacilityDto facilityDto, Map<FacilityCheckListType, List<File>> map) {
+  addFacility(FacilityDto facilityDto,
+      Map<FacilityCheckListType, List<File>> map) {
     final Map<String, List<UploadImgDto>> imagesMap =
-        createCheckListImgMap(map);
+    createCheckListImgMap(map);
 
     // 모든 이미지 파일
     final allImages = <UploadImgDto>[];
@@ -78,7 +81,9 @@ class FacilityController extends GetxController {
     }
 
     facilityService.addFacility(facilityDto, imagesMap).then((value) {
-      // 편의시설 추가 완료 -> 이미지 업로드
+      // 편의시설 추가 완료 -> 이미지 업로드, 내 제보 목록에 추가
+      reportService.addFacility(facilityDto.placeId, facilityDto.informerId);
+
       imgUploadService.uploadImgs('facilitychecklist', allImages).then((value) {
         addFacilityResult.value = true;
       }, onError: (obj) {
@@ -91,10 +96,10 @@ class FacilityController extends GetxController {
 
   /// 편의 시설 체크 리스트만 업데이트
   /// 이미지도 추가
-  updateCheckList(
-      FacilityDto facilityDto, Map<FacilityCheckListType, List<File>> map) {
+  updateCheckList(FacilityDto facilityDto,
+      Map<FacilityCheckListType, List<File>> map) {
     final Map<String, List<UploadImgDto>> imagesMap =
-        createCheckListImgMap(map);
+    createCheckListImgMap(map);
 
     // 모든 이미지 파일
     final allImages = <UploadImgDto>[];

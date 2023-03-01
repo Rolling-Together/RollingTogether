@@ -88,7 +88,7 @@ class BusService {
           .doc(updateDto.routeId)
           .collection('Cars')
           .doc(updateDto.id)
-          .update(updateDto.toMap()));
+          .set(updateDto.toMap()));
     } catch (e) {
       return Future.error('failed');
     }

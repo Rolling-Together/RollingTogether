@@ -11,6 +11,7 @@ class FacilityDto {
   late String addressName;
   late String roadAddressName;
   late String placeUrl;
+  late String informerId;
   late Map<String, Map<String, dynamic>> checkListMap;
   late Timestamp checkListLastUpdate;
   late DocumentReference reference;
@@ -26,6 +27,7 @@ class FacilityDto {
       required this.addressName,
       required this.roadAddressName,
       required this.placeUrl,
+      required this.informerId,
       required this.checkListMap,
       Timestamp? checkListLastUpdate})
       : checkListLastUpdate = checkListLastUpdate ?? Timestamp(0, 0);
@@ -39,6 +41,7 @@ class FacilityDto {
         'categoryGroupName': categoryGroupName,
         'categoryGroupCode': categoryGroupCode,
         'addressName': addressName,
+        'informerId': informerId,
         'roadAddressName': roadAddressName,
         'checkListMap': checkListMap,
         'checkListLastUpdate': FieldValue.serverTimestamp(),
@@ -58,6 +61,7 @@ class FacilityDto {
     addressName = map['addressName'];
     roadAddressName = map['roadAddressName'];
     placeUrl = map['placeUrl'];
+    informerId = map['informerId'];
     checkListMap = map['checkListMap'];
     checkListLastUpdate = map['checkListLastUpdate'];
 
@@ -75,6 +79,7 @@ class FacilityDto {
     addressName = map?['addressName'];
     roadAddressName = map?['roadAddressName'];
     placeUrl = map?['placeUrl'];
+    informerId = map?['informerId'];
     checkListMap = map?['checkListMap'];
     checkListLastUpdate = map?['checkListLastUpdate'];
   }

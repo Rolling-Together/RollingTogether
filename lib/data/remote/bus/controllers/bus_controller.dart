@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:rolling_together/data/remote/bus/models/bus.dart';
 import 'package:rolling_together/data/remote/bus/service/bus_service.dart';
+import 'package:rolling_together/data/remote/user/service/report_list_service.dart';
 
 import '../models/jsonresponse/get_sttnacctoarvlprearngeinfolist_response'
     '.dart' as BusList;
@@ -10,6 +11,7 @@ import '../models/jsonresponse/get_crdntprxmtsttnlist_response.dart'
 
 class BusController extends GetxController {
   final busService = BusService();
+  final reportService = ReportListService();
 
   // 파이어스토어에 저장된 버스 노선 별 차량 목록
   final RxList<BusDto> busList = <BusDto>[].obs;
@@ -57,7 +59,11 @@ class BusController extends GetxController {
   /// 리프트 유무/작동 여부 업데이트
   updateCarStatus(BusDto updateDto) {
     busService.updateCarStatus(updateDto).then((value) {
-      updateResult.value = true;
+      reportService.updateBusInfo(updateDto).then((value) {
+        updateResult.value = true;
+      }, onError: (obj) {
+        updateResult.value = false;
+      });
     }, onError: (obj) {
       updateResult.value = false;
     });
