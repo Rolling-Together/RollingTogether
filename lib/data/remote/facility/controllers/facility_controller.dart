@@ -2,7 +2,9 @@ import 'dart:io';
 import 'dart:js_util';
 
 import 'package:get/get.dart';
+import 'package:rolling_together/commons/utils/img_file_utils.dart';
 import 'package:rolling_together/data/remote/facility/service/facility_service.dart';
+import 'package:rolling_together/data/remote/imgs/models/upload_img.dart';
 import 'package:rolling_together/data/remote/user/service/like_list_service.dart';
 
 import '../../../../commons/enum/facility_types.dart';
@@ -57,7 +59,7 @@ class FacilityController extends GetxController {
     });
   }
 
-  /// 단일 장소(편의시설) 데이터 로드
+  /// 단일 장소(편의 시설) 데이터 로드
   getFacility(String facilityPlaceId) {
     facilityService.getFacility(facilityPlaceId).then((value) {
       facility.value = value;
@@ -67,10 +69,20 @@ class FacilityController extends GetxController {
   }
 
   /// 새로운 편의 시설 추가
-  addFacility(FacilityDto facilityDto, List<File> images) {
-    facilityService.addFacility(facilityDto).then((value) {
-      // 편의시설 추가 완료 -> 이미지 추가
-      imgUploadService.uploadImgs('facilitychecklist', images).then((value) {
+  addFacility(
+      FacilityDto facilityDto, Map<FacilityCheckListType, List<File>> map) {
+    final Map<String, List<UploadImgDto>> imagesMap =
+        createCheckListImgMap(map);
+
+    // 모든 이미지 파일
+    final allImages = <UploadImgDto>[];
+    for (final value in imagesMap.values) {
+      allImages.addAll(value);
+    }
+
+    facilityService.addFacility(facilityDto, imagesMap).then((value) {
+      // 편의시설 추가 완료 -> 이미지 업로드
+      imgUploadService.uploadImgs('facilitychecklist', allImages).then((value) {
         addFacilityResult.value = true;
       }, onError: (obj) {
         addFacilityResult.value = true;
@@ -82,10 +94,19 @@ class FacilityController extends GetxController {
 
   /// 편의 시설 체크 리스트만 업데이트
   /// 이미지도 추가
-  updateCheckList(FacilityDto facilityDto, List<File> images) {
-    facilityService.updateCheckList(facilityDto).then((value) {
-      // 업데이트 완료 -> 이미지 추가
-      imgUploadService.uploadImgs('facilitychecklist', images).then((value) {
+  updateCheckList(
+      FacilityDto facilityDto, Map<FacilityCheckListType, List<File>> map) {
+    final Map<String, List<UploadImgDto>> imagesMap =
+        createCheckListImgMap(map);
+
+    // 모든 이미지 파일
+    final allImages = <UploadImgDto>[];
+    for (final value in imagesMap.values) {
+      allImages.addAll(value);
+    }
+    facilityService.updateCheckList(facilityDto, imagesMap).then((value) {
+      // 업데이트 완료 -> 이미지 업로드
+      imgUploadService.uploadImgs('facilitychecklist', allImages).then((value) {
         updateCheckListResult.value = true;
       }, onError: (obj) {
         updateCheckListResult.value = true;
@@ -111,5 +132,22 @@ class FacilityController extends GetxController {
     }, onError: (obj) {
       reviewList.value = obj;
     });
+  }
+
+  /// 체크 리스트 항목 별로 이미지 파일 목록 맵을 받음
+  /// 항목 별로 이미지 파일 데이터(파일, 파일명)을 가진 맵을 반환
+  createCheckListImgMap(Map<FacilityCheckListType, List<File>> map) {
+    Map<String, List<UploadImgDto>> imageFileNamesMap = {};
+
+    for (var entry in map.entries) {
+      imageFileNamesMap[entry.key.firestoreFieldName] = [];
+
+      for (var value in entry.value) {
+        imageFileNamesMap[entry.key.firestoreFieldName]?.add(UploadImgDto(
+            file: value, fileName: ImgFileUtils.convertFileName(value)));
+      }
+    }
+
+    return imageFileNamesMap;
   }
 }
