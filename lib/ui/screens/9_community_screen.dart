@@ -80,10 +80,13 @@ class _CommunityScreenState extends State<CommunityScreen> {
                 itemBuilder: (context, index) {
 
                   if (selectedCategory == "전체") {
-                    return ListTile(
-                      title: Text("전체 리스트 $index"),
-                    );
 
+    if (index < dangerousZoneTiles.length) {
+    return dangerousZoneTiles[index];
+    } else if (index < dangerousZoneTiles.length + facilityTiles.length) {
+    return facilityTiles[index - dangerousZoneTiles.length];
+    } else {
+    return Container();}
                   } else if (selectedCategory == "위험장소") {
 
                     DateTime now = DateTime.now();
