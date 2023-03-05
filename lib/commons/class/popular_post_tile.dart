@@ -8,9 +8,10 @@ class PopularPostTile extends StatefulWidget {
 
 class _PopularPostTileState extends State<PopularPostTile> {
   late Image representativePicture;
-  late String comment;
-  late String address;
-  late String time;
+  late String description;  // 신고내용
+  late String type;  // 위험 분류 (ex.턱이있음)
+  late String address;  // 주소
+  late String time;  // 신고 시간
 
   @override
   void initState() {
@@ -21,14 +22,15 @@ class _PopularPostTileState extends State<PopularPostTile> {
   void setInformation() {
     // comment, address, time, representativePicture 세팅하기
     setState(() {
-      // 서버에서 인기글 정보 가져오기
+      /// 서버에서 인기글 정보 가져오기
       representativePicture = Image.network(
         'https://avatars.githubusercontent.com/u/113813770?s=400&u=c4addb4d0b81eabc9faef9f13adc3dea18ddf83a&v=4',
         fit: BoxFit.cover,
       );
-      comment = "인기글 1위 코멘트";
-      address = "1위 주소";
-      time = "1위 업로드 시간";
+      description = "신고내용";
+      type = '턱이 있음';
+      address = "인기글 주소";
+      time = "인기글 업로드시간";
     });
   }
 
@@ -53,10 +55,13 @@ class _PopularPostTileState extends State<PopularPostTile> {
                 children: [
                   Container(
                     child: Text(
-                      comment,
+                      description,
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
+                  ),
+                  Container(
+                    child: Text(type),
                   ),
                   Container(
                     child: Text(address),
@@ -73,3 +78,23 @@ class _PopularPostTileState extends State<PopularPostTile> {
     );
   }
 }
+
+/*
+class PopularPostTileList extends StatefulWidget {
+  const PopularPostTileList({Key? key}) : super(key: key);
+
+  _PopularPostTileListState createState() => _PopularPostTileListState();
+}
+
+
+class _PopularPostTileListState extends State<PopularPostTileList> {
+
+  List<PopularPostTile> popularPostTiles = [];
+
+  @override
+  Widget build(BuildContext context){
+    return Container();
+  }
+}
+
+ */

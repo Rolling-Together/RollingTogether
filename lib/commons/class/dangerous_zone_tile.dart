@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-class LocationTile extends StatelessWidget {
-  LocationTile({
+class DangerousZoneTile extends StatelessWidget {
+  DangerousZoneTile({
     required this.time
     });
 
