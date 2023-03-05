@@ -5,100 +5,45 @@ FacilityInfo(text: '엘리베이터 있음', icon: Icons.elevator),
 FacilityInfo(text: '전동 휠체어 충전소', icon: Icons.ev_station)
  */
 
+
 import 'package:flutter/material.dart';
 
 class FacilityTile extends StatefulWidget {
-  final String time; // 신고 시간
-  FacilityTile({required this.time});
+  const FacilityTile({Key? key}) : super(key: key);
 
   _FacilityTileState createState() => _FacilityTileState();
 }
 
-class _FacilityTileState extends State<FacilityTile> {
-  late Image facilityPhoto; // 사진
-  late String facilityName; // 시설 이름
-  late String address; // 주소
-
-  @override
-  void initState() {
-    super.initState();
-    getInformation();
-  }
-
-  void getInformation() {
-    // comment, address, time, representativePicture 세팅하기
-    setState(() {
-      facilityPhoto = Image.network(
-        'https://avatars.githubusercontent.com/u/113813770?s=400&u=c4addb4d0b81eabc9faef9f13adc3dea18ddf83a&v=4',
-        fit: BoxFit.cover,
-      );
-      facilityName = "마마도마";
-      address = "ㅇㅇ로 ㅇㅇ번길";
-    });
-  }
-
+class _FacilityTileState extends State<FacilityTile>{
   @override
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-          horizontalTitleGap : 10, // trailing과 (title, subtitle) 간격 조절
-          title: Text(
-            facilityName,
-            style: TextStyle(fontSize: 23),
+        title: Text(
+          "존맛탱!!!!",
+          style: TextStyle(fontSize: 18),
+        ),
+        trailing:
+        SizedBox(
+          width: 50.0,
+          height: 50.0,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(0.0),
+            child: Image.network(
+              'https://avatars.githubusercontent.com/u/113813770?s=400&u=c4addb4d0b81eabc9faef9f13adc3dea18ddf83a&v=4',
+              fit: BoxFit.cover,
+            ),
           ),
-           trailing: SizedBox(
-               width: 80,
-               height: 80,
-               child: facilityPhoto
-           ),
-          subtitle:Container(
-            width: MediaQuery.of(context).size.width * 0.7,
-            child: Column(
-            children: [
-              Row(children: [
-                Container(
-                  height: 40,
-                  width: 40,
-                  margin: EdgeInsets.all(10),
-                  padding: EdgeInsets.all(10),
-                  color: Colors.grey,
-                  child: Center(
-                      child: Text('Icon\n1', style: TextStyle(fontSize: 10))),
-                ),
-                Container(
-                  height: 40,
-                  width: 40,
-                  margin: EdgeInsets.all(10),
-                  padding: EdgeInsets.all(10),
-                  color: Colors.grey,
-                  child: Center(
-                      child: Text('Icon\n2', style: TextStyle(fontSize: 10))),
-                ),
-                Container(
-                  height: 40,
-                  width: 40,
-                  margin: EdgeInsets.all(10),
-                  padding: EdgeInsets.all(10),
-                  color: Colors.grey,
-                  child: Center(
-                      child: Text('Icon\n3', style: TextStyle(fontSize: 10))),
-                ),
-                Container(
-                  height: 40,
-                  width: 40,
-                  margin: EdgeInsets.all(10),
-                  padding: EdgeInsets.all(10),
-                  color: Colors.grey,
-                  child: Center(
-                      child: Text('Icon\n4', style: TextStyle(fontSize: 10))),
-                ),
-              ]),
-              Row(
-                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text(address), Text(widget.time)],
-              ),
-            ],
-          ),),),
+        ),
+        subtitle: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('턱이 있음'),
+            Text('oo로 oo번길'),
+            Text('02/26 oo시 oo분')
+          ],
+        ),
+      ),
     );
   }
 }
