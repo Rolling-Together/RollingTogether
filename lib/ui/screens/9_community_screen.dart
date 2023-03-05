@@ -58,19 +58,19 @@ class _CommunityScreenState extends State<CommunityScreen> {
 
           selectedCategory == "위험장소"
               ? Container(
-                  margin: EdgeInsets.all(10),
-                  padding: EdgeInsets.all(10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      PopularPostTile(),
-                      PopularPostTile(),
-                      PopularPostTile(),
-                    ],
-                  ))
+              margin: EdgeInsets.all(10),
+              padding: EdgeInsets.all(10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  PopularPostTile(),
+                  PopularPostTile(),
+                  PopularPostTile(),
+                ],
+              ))
               : SizedBox(
-                  height: 0,
-                ),
+            height: 0,
+          ),
 
           /// 선택된 카테고리에 따라 다른 리스트 보여주기
           Expanded(
@@ -81,12 +81,12 @@ class _CommunityScreenState extends State<CommunityScreen> {
 
                   if (selectedCategory == "전체") {
 
-    if (index < dangerousZoneTiles.length) {
-    return dangerousZoneTiles[index];
-    } else if (index < dangerousZoneTiles.length + facilityTiles.length) {
-    return facilityTiles[index - dangerousZoneTiles.length];
-    } else {
-    return Container();}
+                    if (index < dangerousZoneTiles.length) {
+                      return dangerousZoneTiles[index];
+                    } else if (index < dangerousZoneTiles.length + facilityTiles.length) {
+                      return facilityTiles[index - dangerousZoneTiles.length];
+                    } else {
+                      return Container();}
                   } else if (selectedCategory == "위험장소") {
 
                     DateTime now = DateTime.now();
