@@ -8,6 +8,9 @@ class TransScreen extends StatefulWidget {
 }
 
 class _TransScreenState extends State<TransScreen> {
+  ///busName = 버스 번호 리스트
+  List<String> busName = ['1234', '5678', '9876', '5432', '6485'];
+
   Widget UpdatedDialog() {
     return AlertDialog(
       title: Container(
@@ -56,9 +59,10 @@ class _TransScreenState extends State<TransScreen> {
                 border: Border.all(color: Colors.black)
               ),
               child: ListView.builder(
-                  itemCount: 10,
+                ///busName의 길이만큼 itemCount
+                  itemCount: busName.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return BusContainer(busName: '${index}');
+                    return BusContainer(busName: busName[index]);
                   }),
             ),
 
