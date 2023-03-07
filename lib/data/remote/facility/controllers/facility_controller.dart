@@ -8,7 +8,7 @@ import 'package:rolling_together/data/remote/user/service/report_list_service.da
 
 import '../../../../commons/enum/facility_types.dart';
 import '../../dangerous_zone/models/enum/facility_checklist_types.dart';
-import '../../imgs/img_upload_service.dart';
+import '../../imgs/service/img_upload_service.dart';
 import '../models/facility.dart';
 import '../models/review.dart';
 

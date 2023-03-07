@@ -5,10 +5,10 @@ import 'package:rolling_together/commons/utils/img_file_utils.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/likes/service/likes_dangerous_zone_service.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/models/dangerouszone.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/service/dangerous_zone_service.dart';
-import 'package:rolling_together/data/remote/imgs/img_upload_service.dart';
 import 'package:rolling_together/data/remote/imgs/models/upload_img.dart';
 import 'package:rolling_together/data/remote/user/service/report_list_service.dart';
 
+import '../../imgs/service/img_upload_service.dart';
 import '../models/dangerous_zone_comment.dart';
 
 class DangerousZoneController extends GetxController {
