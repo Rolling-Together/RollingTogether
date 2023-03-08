@@ -8,7 +8,10 @@ class TransScreen extends StatefulWidget {
 }
 
 class _TransScreenState extends State<TransScreen> {
-  Widget UpdatedDialog(){
+  ///busName = 버스 번호 리스트
+  List<String> busName = ['1234', '5678', '9876', '5432', '6485'];
+
+  Widget UpdatedDialog() {
     return AlertDialog(
       title: Container(
         alignment: Alignment.center,
@@ -32,8 +35,9 @@ class _TransScreenState extends State<TransScreen> {
                 width: MediaQuery.of(context).size.width * 0.9,
                 decoration: BoxDecoration(),
                 child: CategoryButton()),
+
             ///버스 목록
-            BusContainer(
+            /* BusContainer(
               busName: '1234',
             ),
             BusContainer(
@@ -43,15 +47,29 @@ class _TransScreenState extends State<TransScreen> {
               busName: '1010',
             ),
             BusContainer(
-              busName: '1111',
+              busName: '111B1',
             ),
             BusContainer(
               busName: '1212',
+            ),*/
+            Container(
+              height: MediaQuery.of(context).size.height * 0.65,
+              margin: EdgeInsets.all(MediaQuery.of(context).size.width*0.05),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black)
+              ),
+              child: ListView.builder(
+                ///busName의 길이만큼 itemCount
+                  itemCount: busName.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return BusContainer(busName: busName[index]);
+                  }),
             ),
+
             ///업데이트 버튼
             Container(
               margin: EdgeInsets.only(
-                top : MediaQuery.of(context).size.height * 0.03,
+                  top: MediaQuery.of(context).size.height * 0.03,
                   bottom: MediaQuery.of(context).size.height * 0.03),
               child: OutlinedButton(
                 onPressed: () => showDialog(
@@ -142,7 +160,7 @@ class _BusContainerState extends State<BusContainer> {
       padding: EdgeInsets.only(
           right: MediaQuery.of(context).size.width * 0.05,
           left: MediaQuery.of(context).size.width * 0.05,
-      top: MediaQuery.of(context).size.height*0.01),
+          top: MediaQuery.of(context).size.height * 0.01),
       child: Column(
         children: [
           Row(children: [
