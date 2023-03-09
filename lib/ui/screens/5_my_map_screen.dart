@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:rolling_together/ui/screens/6_dangerous_zone_screen.dart';
 import '../../commons/widgets/custom_chip.dart';
 import 'new_page.dart';
 import 'option_page.dart';
@@ -359,7 +360,7 @@ class _MyMapScreenState extends State<MyMapScreen>
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (BuildContext context) => Option1Screen(),
+                      builder: (BuildContext context) => LocationScreen(),
                     ),
                   );
                 },

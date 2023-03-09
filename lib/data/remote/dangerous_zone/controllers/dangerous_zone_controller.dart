@@ -12,6 +12,8 @@ import '../../imgs/service/img_upload_service.dart';
 import '../models/dangerous_zone_comment.dart';
 
 class DangerousZoneController extends GetxController {
+  static const tag = 'DangerousZoneController';
+
   final DangerousZoneService dangerousZoneService = DangerousZoneService();
   final LikesDangerousZoneService likeListService = LikesDangerousZoneService();
   final ImgUploadService imgUploadService = ImgUploadService();
@@ -40,6 +42,13 @@ class DangerousZoneController extends GetxController {
   // 댓글 목록
   final RxList<DangerousZoneCommentDto> commentList =
       <DangerousZoneCommentDto>[].obs;
+
+  final List<File> imageList = [];
+
+  late List<double> latlng = [];
+  late String myUIdInFirebase;
+  late String myUserName;
+  late DangerousZoneDto newDangerousZoneDto;
 
   /// 해당 위/경도 근처에 있는 위험 장소 목록 로드
   /// 공감 데이터 로드
@@ -91,8 +100,7 @@ class DangerousZoneController extends GetxController {
     });
   }
 
-  /// 새로운 위험 장소 추가
-  /// 사진도 추가함
+  /// 새로운 위험 장소 추가, 사진도 추가함
   addDangerousZone(DangerousZoneDto newDangerousZone, List<File> imgs) {
     final result = dangerousZoneService.addDangerousZone(newDangerousZone);
 

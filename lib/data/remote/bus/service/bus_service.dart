@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:rolling_together/data/remote/bus/models/bus.dart';
 import 'dart:convert';
@@ -59,7 +57,7 @@ class BusService {
 
   /// 해당 노선 버스 차량 목록 로드
   Future<List<BusDto>> getCarList(String cityCode, String routeId) async {
-    var result = await firestore
+    final result = await firestore
         .collection('Buses')
         .doc(cityCode)
         .collection('RouteIds')

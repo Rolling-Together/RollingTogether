@@ -1,7 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rolling_together/data/remote/auth/controller/firebase_auth_controller.dart';
+import 'package:rolling_together/data/remote/dangerous_zone/models/dangerouszone.dart';
+
+import '../../data/remote/dangerous_zone/controllers/dangerous_zone_controller.dart';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({Key? key}) : super(key: key);
@@ -11,98 +16,139 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
+  final DangerousZoneController addDangerousZoneController =
+      Get.put(DangerousZoneController(), tag: DangerousZoneController.tag);
+
+  final TextEditingController descriptionController = TextEditingController();
+
+  final AuthController authController = Get.find(tag: AuthController.tag);
+
   Widget RegisterDialog() {
     return AlertDialog(
       title: Container(
         alignment: Alignment.center,
         child: Text('등록되었습니다'),
       ),
+      actions: [
+        TextButton(
+          child: Text('확인'),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        ///textfield가 늘어남에 따라 스크롤 가능하게
-        child: Container(
-          child: Column(
-            children: [
-              Container(
-                ///대분류
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.width * 0.1,
-                    left: MediaQuery.of(context).size.width * 0.05),
-                alignment: Alignment.centerLeft,
-                child: Text('위험 장소', style: TextStyle(fontSize: 16)),
-              ),
-              Container(
-                ///카테고리
+    final user = authController.firebaseUser.value;
+
+    if (user != null) {
+      addDangerousZoneController.myUIdInFirebase = user.uid;
+      addDangerousZoneController.myUserName = '박준성';
+    }
+
+    return Scaffold(body: Obx(() {
+      if (addDangerousZoneController.addNewDangerousZoneResult.isTrue) {
+        return RegisterDialog();
+      } else {
+        return SingleChildScrollView(
+          ///textfield가 늘어남에 따라 스크롤 가능하게
+          child: Container(
+            child: Column(
+              children: [
+                Container(
+                  ///대분류
                   padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.01,
-                      bottom: MediaQuery.of(context).size.height * 0.03),
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  decoration: BoxDecoration(),
-                  child: CategoryButton()),
-              /*Row(children: [
+                      top: MediaQuery.of(context).size.width * 0.1,
+                      left: MediaQuery.of(context).size.width * 0.05),
+                  alignment: Alignment.centerLeft,
+                  child: Text('위험 장소', style: TextStyle(fontSize: 16)),
+                ),
+                Container(
+
+                    ///카테고리
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.01,
+                        bottom: MediaQuery.of(context).size.height * 0.03),
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    decoration: BoxDecoration(),
+                    child: CategoryButton()),
+                /*Row(children: [
                 Column(
                   children: List.generate(imageUploaders.length, (index) {
                     return imageUploaders[index];
                   }),
                 ),*/
-              ImageUploader(),
-              //]),
-              Container(
-                padding:
-                EdgeInsets.all(MediaQuery.of(context).size.width * 0.2),
-                child: Text('지도 API'),
-              ),
-              Container(
-                ///주소
-                padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.05),
-                alignment: Alignment.centerLeft,
-                child: Text('주소'),
-              ),
-              Container(
-                ///주소 불러오는 값 임의로 지정해놨음
-                padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.05,
-                    top: MediaQuery.of(context).size.height * 0.01),
-                alignment: Alignment.centerLeft,
-                child: Text('부산광역시 남구 용소로 45, 부경대학교 대연캠퍼스'),
-              ),
-              Container(
-                margin:
-                EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
-                decoration:
-                BoxDecoration(border: Border.all(color: Colors.black)),
-                child: TextField(
-                  decoration: InputDecoration(focusedBorder: InputBorder.none),
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
+                ImageUploader(),
+                //]),
+                Container(
+                  padding:
+                      EdgeInsets.all(MediaQuery.of(context).size.width * 0.2),
+                  child: Text('지도 API'),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).size.height * 0.03),
-                child: OutlinedButton(
-                  onPressed: () => showDialog(
-                    context: context,
-                    builder: (_) => RegisterDialog(),
-                  ),
-                  child: Text(
-                    '등록',
-                    style: TextStyle(color: Colors.black),
+                Container(
+                  ///주소
+                  padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width * 0.05),
+                  alignment: Alignment.centerLeft,
+                  child: Text('주소'),
+                ),
+                Container(
+                  ///주소 불러오는 값 임의로 지정해놨음
+                  padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width * 0.05,
+                      top: MediaQuery.of(context).size.height * 0.01),
+                  alignment: Alignment.centerLeft,
+                  child: Text('부산광역시 남구 용소로 45, 부경대학교 대연캠퍼스'),
+                ),
+                Container(
+                  margin:
+                      EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+                  decoration:
+                      BoxDecoration(border: Border.all(color: Colors.black)),
+                  child: TextField(
+                    decoration:
+                        InputDecoration(focusedBorder: InputBorder.none),
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    controller: descriptionController,
                   ),
                 ),
-              ),
-            ],
+                Container(
+                  margin: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.height * 0.03),
+                  child: OutlinedButton(
+                    onPressed: () {
+                      addDangerousZoneController.newDangerousZoneDto =
+                          DangerousZoneDto(
+                              categoryId: '0',
+                              description: descriptionController.text,
+                              latlng: addDangerousZoneController.latlng,
+                              informerId:
+                                  addDangerousZoneController.myUIdInFirebase,
+                              tipOffPhotos: [],
+                              informerName:
+                                  addDangerousZoneController.myUserName);
+
+                      addDangerousZoneController.addDangerousZone(
+                          addDangerousZoneController.newDangerousZoneDto,
+                          addDangerousZoneController.imageList);
+                    },
+                    child: Text(
+                      '등록',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
-    );
+        );
+      }
+    }));
   }
 }
 
@@ -139,7 +185,7 @@ class _CategoryButtonState extends State<CategoryButton> {
           });
         },
         items: list.map<DropdownMenuItem<String>>(
-              (String value) {
+          (String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
@@ -240,7 +286,8 @@ class ImageUploader extends StatefulWidget {
 }
 
 class _ImageUploaderState extends State<ImageUploader> {
-  List<File> _imageList = [];
+  final DangerousZoneController dangerousZoneController =
+      Get.find(tag: DangerousZoneController.tag);
 
   final picker = ImagePicker();
 
@@ -248,7 +295,7 @@ class _ImageUploaderState extends State<ImageUploader> {
     final pickedFile = await picker.pickImage(source: source);
     setState(() {
       if (pickedFile != null) {
-        _imageList.add(File(pickedFile.path));
+        dangerousZoneController.imageList.add(File(pickedFile.path));
       } else {
         print('No image selected.');
       }
@@ -301,9 +348,10 @@ class _ImageUploaderState extends State<ImageUploader> {
         GridView.count(
           shrinkWrap: true,
           crossAxisCount: 3,
-          children: List.generate(_imageList.length, (index) {
+          children:
+              List.generate(dangerousZoneController.imageList.length, (index) {
             return Image.file(
-              _imageList[index],
+              dangerousZoneController.imageList[index],
               fit: BoxFit.cover,
             );
           }),
