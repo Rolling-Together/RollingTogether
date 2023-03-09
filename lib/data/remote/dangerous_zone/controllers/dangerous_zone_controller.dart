@@ -102,16 +102,18 @@ class DangerousZoneController extends GetxController {
 
   /// 새로운 위험 장소 추가, 사진도 추가함
   addDangerousZone(DangerousZoneDto newDangerousZone, List<File> imgs) {
+    final imageDtos = imgs
+        .map((e) =>
+            UploadImgDto(file: e, fileName: ImgFileUtils.convertFileName(e)))
+        .toList();
+    newDangerousZoneDto.tipOffPhotos =
+        imageDtos.map((e) => e.fileName).toList();
     final result = dangerousZoneService.addDangerousZone(newDangerousZone);
 
     result.then((newDocId) {
       // 문서 id받음 -> 사진 추가, 유저 문서 내 위험 장소 제보 목록에 추가
-      final uploadResult = imgUploadService.uploadImgs(
-          'dangerouszones',
-          imgs
-              .map((e) => UploadImgDto(
-                  file: e, fileName: ImgFileUtils.convertFileName(e)))
-              .toList());
+      final uploadResult =
+          imgUploadService.uploadImgs('dangerouszones', imageDtos);
 
       uploadResult.then((value) {
         reportListService
