@@ -68,9 +68,9 @@ class FacilityScreen extends StatelessWidget {
                 //padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
                 children: [
                   FacilityInfo(text: '휠체어 접근 가능성', icon: Icons.accessible),
-                  FacilityInfo(text: '장애인 엘리베이터', icon: Icons.elevator),
-                  FacilityInfo(text: '엘리베이터 있음', icon: Icons.elevator),
-                  FacilityInfo(text: '전동 휠체어 충전소', icon: Icons.ev_station),
+                  FacilityInfo(text: '1층에 위치함', icon: Icons.looks_one),
+                  FacilityInfo(text: '장애인 화장실', icon: Icons.wc),
+                  FacilityInfo(text: '엘리베이터', icon: Icons.elevator),
                 ],
               ),
               Container(

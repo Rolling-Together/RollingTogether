@@ -78,7 +78,7 @@ class PostRow extends StatelessWidget {
   const PostRow({Key? key, required this.Name}) : super(key: key);
 
   ///게시글 1개당 폼
-  Widget Post(context) {
+  Widget Post(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
           right: MediaQuery.of(context).size.width * 0.025,
@@ -125,6 +125,7 @@ class PostRow extends StatelessWidget {
         left: MediaQuery.of(context).size.width * 0.05,
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
               margin: EdgeInsets.only(
@@ -134,7 +135,28 @@ class PostRow extends StatelessWidget {
                 this.Name,
                 style: TextStyle(fontSize: 15),
               )),
-          SingleChildScrollView(
+
+          /// 방법 1 : container에 높이값을 지정하고 받는 방식 >> 되긴 됨
+          Container(
+            height: MediaQuery.of(context).size.height*0.3,
+            child : ListView.builder(
+              scrollDirection: Axis.horizontal,
+                itemCount: 10,
+                itemBuilder: (BuildContext context, int index){
+                  return Post(context);
+                })
+          ),
+          ///방법 2 : Expanded로 묶어서 자식에게 할당된 만큼 높이값을 가지기
+          /*Expanded(
+            child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return Post(context);
+                }),
+          ),*/
+          /*SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
@@ -144,7 +166,7 @@ class PostRow extends StatelessWidget {
                 Post(context),
               ],
             ),
-          ),
+          ),*/
           Divider(
             color: Colors.black38,
           )
