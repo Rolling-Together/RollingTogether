@@ -23,8 +23,11 @@ dependencies:
   google_maps_flutter: ^2.2.3
 
   image_picker: ^0.8.6+1
-  location: ^4.4.0
 
+  firebase_storage: ^11.0.14
+
+  location: ^4.4.0
+  flutter_exif_rotation: ^0.5.1
 
 dev_dependencies:
   flutter_test:
@@ -39,5 +42,6 @@ flutter:
 
 
   assets:
-    - assets/images/
+    - assets/images/*
+    - assets/data/*
 

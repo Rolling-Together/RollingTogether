@@ -86,7 +86,7 @@ class PostRow extends StatelessWidget {
           top: MediaQuery.of(context).size.height * 0.02),
       child: InkWell(
 
-          ///게시글 하나 클릭했을 때 ... InkWell
+        ///게시글 하나 클릭했을 때 ... InkWell
           onTap: () {},
           child: Column(
             children: [

@@ -28,7 +28,7 @@ class _TransScreenState extends State<TransScreen> {
           children: [
             Container(
 
-                ///카테고리
+              ///카테고리
                 padding: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.05),
                 alignment: Alignment.center,
@@ -89,7 +89,7 @@ class _TransScreenState extends State<TransScreen> {
   }
 }
 
-///category_option 버튼
+///category_option버튼
 const List<String> list = <String>['부산 155번', '부산 126번', '부산 111번'];
 
 class CategoryButton extends StatefulWidget {
@@ -105,13 +105,13 @@ class _CategoryButtonState extends State<CategoryButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      ///나중에 category 디자인 필요할 때 쓰려고 Container에 담아두고 decoration 부여
-      /*decoration: BoxDecoration(
+      ///나중에 category디자인 필요할 때 쓰려고 Container에 담아두고 decoration부여
+/*decoration: BoxDecoration(
         color: Colors.blueGrey,
       ),*/
       child: DropdownButton<String>(
-        ///underline 안보이게 할 때
-        //underline: SizedBox.shrink(),
+        ///underline안보이게 할 때
+//underline: SizedBox.shrink(),
         isExpanded: true,
         value: dropdownValue,
         icon: const Icon(Icons.arrow_drop_down),
@@ -122,7 +122,7 @@ class _CategoryButtonState extends State<CategoryButton> {
           });
         },
         items: list.map<DropdownMenuItem<String>>(
-          (String value) {
+              (String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
@@ -134,7 +134,7 @@ class _CategoryButtonState extends State<CategoryButton> {
   }
 }
 
-///버스 1개 컨테이너 (번호, 리프트 여부, 리프트작동, 업데이트)
+///버스 1개 컨테이너 (번호,리프트 여부,리프트작동,업데이트)
 class BusContainer extends StatefulWidget {
   final String busName;
   const BusContainer({Key? key, required this.busName}) : super(key: key);
@@ -143,7 +143,7 @@ class BusContainer extends StatefulWidget {
   State<BusContainer> createState() => _BusContainerState();
 }
 
-///일단 리프트 여부 enum, 작동 여부 enum따로 선언
+///일단 리프트 여부 enum,작동 여부 enum따로 선언
 enum Lift { TRUE, FALSE }
 
 enum Work { TRUE, FALSE }
