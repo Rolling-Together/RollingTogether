@@ -42,7 +42,9 @@ class Body {
 
   factory Body.fromJson(Map<String, dynamic> json) {
     return Body(
-      items: Items.fromJson(json['items']),
+      items: json['items'].runtimeType == String
+          ? Items(item: List.empty())
+          : Items.fromJson(json['items']),
       numOfRows: json['numOfRows'],
       pageNo: json['pageNo'],
       totalCount: json['totalCount'],
@@ -56,13 +58,29 @@ class Items {
   Items({required this.item});
 
   factory Items.fromJson(Map<String, dynamic> json) {
-    var itemList = json['item'] as List;
-    List<Item> items =
-        itemList.map((itemJson) => Item.fromJson(itemJson)).toList();
+    if (json['item'].runtimeType == String) {
+      return Items(
+        item: List.empty(),
+      );
+    } else {
+      final itemList = json['item'] as List;
+      final routeIdSet = <String>{};
 
-    return Items(
-      item: items,
-    );
+      return Items(
+        item: itemList
+            .where((element) {
+              final routeId = element['routeid'].toString();
+              if (routeIdSet.contains(routeId)) {
+                return false;
+              } else {
+                routeIdSet.add(routeId);
+                return true;
+              }
+            })
+            .map((itemJson) => Item.fromJson(itemJson))
+            .toList(),
+      );
+    }
   }
 }
 
@@ -102,13 +120,13 @@ class Item {
       required this.arrTime});
 
   Item.fromJson(Map<String, dynamic> json) {
-    nodeId = json['nodeid'];
-    nodeNm = json['nodenm'];
-    routeId = json['routeid'];
-    routeNo = json['routeno'];
-    routeTp = json['routetp'];
-    arrprevstationcnt = json['arrprevstationcnt'];
-    vehicleTp = json['vehicletp'];
-    arrTime = json['arrtime'];
+    nodeId = json['nodeid'].toString();
+    nodeNm = json['nodenm'].toString();
+    routeId = json['routeid'].toString();
+    routeNo = json['routeno'].toString();
+    routeTp = json['routetp'].toString();
+    arrprevstationcnt = json['arrprevstationcnt'].toString();
+    vehicleTp = json['vehicletp'].toString();
+    arrTime = json['arrtime'].toString();
   }
 }

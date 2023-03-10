@@ -58,17 +58,25 @@ class ReportListService {
     }
   }
 
+  /*
   /// 버스 정보 추가 시 로직
   /// 매개변수 : userId - 유저UID(이메일X)
-  Future<void> updateBusInfo(BusDto busDto) async {
+  Future<void> updateBusInfo(List<String> list, String cityCode, String,
+      routeId, String informerId) async {
     try {
-      return await Future.value(
-          firestore.collection('Users').doc(busDto.informerId).set({
-        'busReportListMap.${busDto.id}': {
-          'cityCode': busDto.cityCode,
-          'routeId': busDto.routeId
-        }
-      }));
+      final batch = firestore.batch();
+      final doc =  firestore.collection('Users').doc(informerId);
+
+      for (final bus in list) {
+        batch.set(doc, {
+          'busReportListMap.$bus': {
+            'cityCode': cityCode,
+            'routeId': routeId
+          }
+        });
+      }
+
+      return await Future.value(batch.commit());
     } catch (e) {
       return Future.error('failed');
     }
@@ -86,4 +94,6 @@ class ReportListService {
       return Future.error('failed');
     }
   }
+
+   */
 }

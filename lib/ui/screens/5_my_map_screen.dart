@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:rolling_together/ui/screens/6_dangerous_zone_screen.dart';
+import 'package:rolling_together/ui/screens/8_trans_screen.dart';
 import '../../commons/widgets/custom_chip.dart';
 import 'package:get/get.dart';
 import 'new_page.dart';
@@ -85,7 +86,7 @@ class _MyMapScreenState extends State<MyMapScreen>
             },
             onCameraMove: onCameraMoved,
             initialCameraPosition: CameraPosition(
-              target: LatLng(37.422, -122.084),
+              target: LatLng(35.1348,129.1009),
               zoom: 12,
             ),
           ),
@@ -383,12 +384,7 @@ class _MyMapScreenState extends State<MyMapScreen>
               ListTile(
                 title: Text('대중교통'),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => Option3Screen(),
-                    ),
-                  );
+                  Get.to(TransScreen(), arguments: {'latlng': centerCoords});
                 },
               ),
             ],
