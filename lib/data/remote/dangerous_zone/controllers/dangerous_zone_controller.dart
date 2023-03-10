@@ -33,22 +33,12 @@ class DangerousZoneController extends GetxController {
           informerName: '')
       .obs;
 
-  // 새로운 위험 장소 추가 결과
-  final RxBool addNewDangerousZoneResult = false.obs;
-
   // 댓글 등록 결과
   final RxBool addCommentResult = false.obs;
 
   // 댓글 목록
   final RxList<DangerousZoneCommentDto> commentList =
       <DangerousZoneCommentDto>[].obs;
-
-  final List<File> imageList = [];
-
-  late List<double> latlng = [];
-  late String myUIdInFirebase;
-  late String myUserName;
-  late DangerousZoneDto newDangerousZoneDto;
 
   /// 해당 위/경도 근처에 있는 위험 장소 목록 로드
   /// 공감 데이터 로드
@@ -100,40 +90,7 @@ class DangerousZoneController extends GetxController {
     });
   }
 
-  /// 새로운 위험 장소 추가, 사진도 추가함
-  addDangerousZone(DangerousZoneDto newDangerousZone, List<File> imgs) {
-    final imageDtos = imgs
-        .map((e) =>
-            UploadImgDto(file: e, fileName: ImgFileUtils.convertFileName(e)))
-        .toList();
-    newDangerousZoneDto.tipOffPhotos =
-        imageDtos.map((e) => e.fileName).toList();
-    final result = dangerousZoneService.addDangerousZone(newDangerousZone);
 
-    result.then((newDocId) {
-      // 문서 id받음 -> 사진 추가, 유저 문서 내 위험 장소 제보 목록에 추가
-      final uploadResult =
-          imgUploadService.uploadImgs('dangerouszones', imageDtos);
-
-      uploadResult.then((value) {
-        reportListService
-            .addDangerousZone(newDocId, newDangerousZone.informerId)
-            .then((value) {
-          // 문서 추가, 사진 추가, 내 제보 목록에 추가 모두 성공
-          addNewDangerousZoneResult.value = true;
-        }, onError: (obj) {
-          // 내 목록에 추가 실패
-          addNewDangerousZoneResult.value = false;
-        });
-      }, onError: (obj) {
-        // 사진 추가 실패
-        addNewDangerousZoneResult.value = false;
-      });
-    }, onError: (obj) {
-      // 문서 추가 실패
-      addNewDangerousZoneResult.value = false;
-    });
-  }
 
   /// 댓글 추가
   addComment(DangerousZoneCommentDto commentDto, String dangerousZoneDocId) {

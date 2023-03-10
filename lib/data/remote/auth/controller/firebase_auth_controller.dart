@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthController extends GetxController {
   static const tag = 'AuthController';
+  static AuthController get to => Get.find<AuthController>();
   final Rxn<User> firebaseUser = Rxn<User>();
 
   User? get user => firebaseUser.value;

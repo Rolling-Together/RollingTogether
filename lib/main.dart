@@ -10,7 +10,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  Get.put(AuthController(), tag: AuthController.tag);
+
+  final authController = Get.put(AuthController(), permanent: true);
 
   runApp(const GetMaterialApp(
     debugShowCheckedModeBanner: false,

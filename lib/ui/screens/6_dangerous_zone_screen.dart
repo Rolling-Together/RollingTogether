@@ -2,26 +2,34 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rolling_together/data/remote/auth/controller/firebase_auth_controller.dart';
+import 'package:rolling_together/data/remote/dangerous_zone/controllers/add_dangerous_zone_controller.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/models/dangerouszone.dart';
-
-import '../../data/remote/dangerous_zone/controllers/dangerous_zone_controller.dart';
+import 'package:rolling_together/data/remote/reverse_geocoding/controllers/reverse_geocoding_controller.dart';
 
 class LocationScreen extends StatefulWidget {
-  const LocationScreen({Key? key}) : super(key: key);
-
   @override
-  State<LocationScreen> createState() => _LocationScreenState();
+  State<StatefulWidget> createState() => _LocationScreenState();
 }
 
 class _LocationScreenState extends State<LocationScreen> {
-  final DangerousZoneController addDangerousZoneController =
-      Get.put(DangerousZoneController(), tag: DangerousZoneController.tag);
+  final AddDangerousZoneController addDangerousZoneController = Get.put(
+      AddDangerousZoneController(),
+      tag: AddDangerousZoneController.tag);
+
+  final ReverseGeocodingController reverseGeocodingController =
+      Get.put(ReverseGeocodingController());
 
   final TextEditingController descriptionController = TextEditingController();
 
-  final AuthController authController = Get.find(tag: AuthController.tag);
+  @override
+  void dispose() {
+    addDangerousZoneController.dispose();
+    reverseGeocodingController.dispose();
+    super.dispose();
+  }
 
   Widget RegisterDialog() {
     return AlertDialog(
@@ -42,11 +50,17 @@ class _LocationScreenState extends State<LocationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = authController.firebaseUser.value;
+    final user = AuthController.to.firebaseUser.value;
 
-    if (user != null) {
-      addDangerousZoneController.myUIdInFirebase = user.uid;
-      addDangerousZoneController.myUserName = '박준성';
+    if (user != null && addDangerousZoneController.latlng.isEmpty) {
+      final arguments = Get.arguments;
+      final LatLng latlng = arguments['latlng'];
+
+      addDangerousZoneController
+          .initData([latlng.latitude, latlng.longitude], user.uid, '박준성');
+
+      reverseGeocodingController.coordToAddress(
+          latlng.latitude, latlng.longitude);
     }
 
     return Scaffold(body: Obx(() {
@@ -90,19 +104,29 @@ class _LocationScreenState extends State<LocationScreen> {
                   child: Text('지도 API'),
                 ),
                 Container(
-                  ///주소
-                  padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width * 0.05),
-                  alignment: Alignment.centerLeft,
-                  child: Text('주소'),
-                ),
+
+                    ///주소
+                    padding: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width * 0.05),
+                    alignment: Alignment.centerLeft,
+                    child: Text('주소')),
                 Container(
                   ///주소 불러오는 값 임의로 지정해놨음
                   padding: EdgeInsets.only(
                       left: MediaQuery.of(context).size.width * 0.05,
                       top: MediaQuery.of(context).size.height * 0.01),
                   alignment: Alignment.centerLeft,
-                  child: Text('부산광역시 남구 용소로 45, 부경대학교 대연캠퍼스'),
+                  child: Obx(() {
+                    if (reverseGeocodingController.addressResult.value ==
+                        null) {
+                      return const Text('주소 로드 실패');
+                    } else {
+                      final document =
+                          reverseGeocodingController.addressResult.value!;
+                      String addressName = document.address.addressName;
+                      return Text(addressName);
+                    }
+                  }),
                 ),
                 Container(
                   margin:
@@ -122,7 +146,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       bottom: MediaQuery.of(context).size.height * 0.03),
                   child: OutlinedButton(
                     onPressed: () {
-                      addDangerousZoneController.newDangerousZoneDto =
+                      addDangerousZoneController.addDangerousZone(
                           DangerousZoneDto(
                               categoryId: '0',
                               description: descriptionController.text,
@@ -131,10 +155,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                   addDangerousZoneController.myUIdInFirebase,
                               tipOffPhotos: [],
                               informerName:
-                                  addDangerousZoneController.myUserName);
-
-                      addDangerousZoneController.addDangerousZone(
-                          addDangerousZoneController.newDangerousZoneDto,
+                                  addDangerousZoneController.myUserName),
                           addDangerousZoneController.imageList);
                     },
                     child: Text(
@@ -286,8 +307,8 @@ class ImageUploader extends StatefulWidget {
 }
 
 class _ImageUploaderState extends State<ImageUploader> {
-  final DangerousZoneController dangerousZoneController =
-      Get.find(tag: DangerousZoneController.tag);
+  final AddDangerousZoneController dangerousZoneController =
+      Get.find(tag: AddDangerousZoneController.tag);
 
   final picker = ImagePicker();
 
