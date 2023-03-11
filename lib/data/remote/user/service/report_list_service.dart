@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rolling_together/data/remote/bus/models/bus.dart';
 
 class ReportListService {
   final firestore = FirebaseFirestore.instance;
@@ -58,7 +57,7 @@ class ReportListService {
     }
   }
 
-  /*
+/*
   /// 버스 정보 추가 시 로직
   /// 매개변수 : userId - 유저UID(이메일X)
   Future<void> updateBusInfo(List<String> list, String cityCode, String,

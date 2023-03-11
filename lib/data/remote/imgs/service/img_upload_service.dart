@@ -7,6 +7,10 @@ class ImgUploadService {
 
   /// 매개변수 : folderName - 스토리지 폴더 명, images - 사진 파일 목록
   Future<bool> uploadImgs(String folderName, List<UploadImgDto> images) async {
+    if (images.isEmpty) {
+      return Future.value(true);
+    }
+
     // 이미지 업로드
     for (int i = 0; i < images.length; i++) {
       final file = images[i].file;
