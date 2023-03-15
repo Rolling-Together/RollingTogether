@@ -263,7 +263,7 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                       )
                     ],
                   )),
-              commentChild(filedata),
+              commentChild(filedata ),
               Container(
                   child: ListTile(
                     tileColor: Color(0xffF2F2F2),
