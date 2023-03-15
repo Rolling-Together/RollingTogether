@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,8 @@ import 'package:rolling_together/commons/class/facility_tile.dart';
 import 'package:rolling_together/commons/class/dangerous_zone_tile.dart';
 import 'package:rolling_together/commons/class/popular_post_tile.dart';
 import 'package:rolling_together/commons/widgets/custom_appbar.dart';
+import 'package:rolling_together/ui/screens/14_dangerous_zone_post_screen.dart';
+import 'package:rolling_together/ui/screens/7_facility_post_screen.dart';
 import '../../commons/utils/button.dart';
 
 class CommunityScreen extends StatefulWidget {

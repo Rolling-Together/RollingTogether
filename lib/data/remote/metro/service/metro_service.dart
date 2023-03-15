@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:rolling_together/data/remote/metro/models/busan_metro_station_convenience.dart'
-    as BusanMetroResponse;
+import 'package:rolling_together/data/remote/metro/models'
+    '/busan_metro_station_convenience.dart' as busan_metro_response;
 import 'package:rolling_together/data/remote/metro/models/metro_station.dart';
 
 import 'package:http/http.dart' as http;
@@ -27,8 +27,7 @@ class MetroService {
   }
 
   /// 부산 도시 철도 장애인 편의 시설 정보 로드
-  /// scode : 역 코드
-  Future<BusanMetroResponse.Item> getConvenienceInfoBusanMetro(
+  Future<busan_metro_response.Item> getConvenienceInfoBusanMetro(
       String sCode) async {
     /// http://data.humetro.busan.kr/voc/api/open_api_convenience.tnn?
     /// act=json&scode=101&serviceKey=
@@ -38,7 +37,7 @@ class MetroService {
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
-      final responseDto = BusanMetroResponse.Response.fromJson(jsonResponse);
+      final responseDto = busan_metro_response.Response.fromJson(jsonResponse);
       return Future.value(responseDto.body.item.first);
     } else {
       return Future.error('failed');

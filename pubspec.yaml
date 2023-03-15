@@ -23,10 +23,11 @@ dependencies:
   google_maps_flutter: ^2.2.3
 
   image_picker: ^0.8.6+1
+  location: ^4.4.0
+  comment_box: ^0.0.17
 
   firebase_storage: ^11.0.14
 
-  location: ^4.4.0
   flutter_exif_rotation: ^0.5.1
 
 dev_dependencies:
@@ -39,9 +40,3 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
-
-
-  assets:
-    - assets/images/*
-    - assets/data/*
-

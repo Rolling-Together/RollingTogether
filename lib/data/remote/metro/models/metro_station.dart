@@ -1,8 +1,8 @@
 class MetroStationDto {
-  // 역사명
+  /// 역사명
   final String name;
 
-  // 노선번호
+  /// 노선번호
   final String routeNumber;
   final double latitude;
   final double longitude;
@@ -16,8 +16,8 @@ class MetroStationDto {
 
   factory MetroStationDto.fromJson(Map<String, dynamic> json) {
     return MetroStationDto(
-      name: json['역사명'],
-      routeNumber: json['노선번호'],
+      name: json['역사명'].toString(),
+      routeNumber: json['노선번호'].toString(),
       latitude: json['역위도'],
       longitude: json['역경도'],
     );

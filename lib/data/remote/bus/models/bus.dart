@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BusDto {
-  late String? id;
+  String? id;
 
   // 차량 번호(번호판) : 70자1042
   late String vehicleNo;
   late bool lift;
   late bool liftStatus;
   late String informerId;
-  late Timestamp updated;
+  late Timestamp? updated;
   late DocumentReference reference;
 
   // 지역 코드 : 21(부산광역시)
@@ -22,8 +22,10 @@ class BusDto {
       required this.lift,
       required this.liftStatus,
       required this.informerId,
+      required this.cityCode,
+      required this.routeId,
       Timestamp? timestamp})
-      : updated = timestamp ?? Timestamp(0, 0);
+      : updated = timestamp;
 
   Map<String, dynamic> toMap() => {
         'lift': lift,
