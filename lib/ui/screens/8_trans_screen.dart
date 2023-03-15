@@ -1,96 +1,131 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:rolling_together/data/remote/bus/controllers/bus_controller.dart';
+import 'package:get/get.dart';
+import 'package:rolling_together/data/remote/bus/models/bus.dart';
+import 'package:rolling_together/data/remote/bus/models/jsonresponse'
+    '/get_car_list_tago.dart' as car_list_of_route;
+
+import 'package:rolling_together/data/remote/bus/models/jsonresponse/get_bus_list_at_bus_stop_response.dart'
+    as bus_list_at_bus_stop_response;
+
+import 'package:rolling_together/data/remote/bus/models/jsonresponse/get_bus_stop_list_around_latlng_response.dart'
+    as bus_stop_list_response;
+import '../../data/remote/auth/controller/firebase_auth_controller.dart';
 
 class TransScreen extends StatefulWidget {
-  const TransScreen({Key? key}) : super(key: key);
-
   @override
   State<TransScreen> createState() => _TransScreenState();
 }
 
 class _TransScreenState extends State<TransScreen> {
-  ///busName = 버스 번호 리스트
-  List<String> busName = ['1234', '5678', '9876', '5432', '6485'];
+  final BusController busController = Get.put(BusController());
 
   Widget UpdatedDialog() {
     return AlertDialog(
       title: Container(
         alignment: Alignment.center,
-        child: Text('등록되었습니다'),
+        child: Text('변경 되었습니다'),
       ),
+      actions: [
+        TextButton(
+          child: Text('확인'),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+      ],
     );
   }
 
   @override
+  void dispose() {
+    busController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
+    final user = AuthController.to.firebaseUser.value;
 
-              ///카테고리
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height * 0.05),
-                alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width * 0.9,
-                decoration: BoxDecoration(),
-                child: CategoryButton()),
+    if (user != null && busController.latlng.isEmpty) {
+      final arguments = Get.arguments;
+      final LatLng latlng = arguments['latlng'];
 
-            ///버스 목록
-            /* BusContainer(
-              busName: '1234',
-            ),
-            BusContainer(
-              busName: '5678',
-            ),
-            BusContainer(
-              busName: '1010',
-            ),
-            BusContainer(
-              busName: '111B1',
-            ),
-            BusContainer(
-              busName: '1212',
-            ),*/
-            Container(
-              height: MediaQuery.of(context).size.height * 0.65,
-              margin: EdgeInsets.all(MediaQuery.of(context).size.width*0.05),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black)
-              ),
-              child: ListView.builder(
-                ///busName의 길이만큼 itemCount
-                  itemCount: busName.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return BusContainer(busName: busName[index]);
-                  }),
-            ),
+      busController.latlng = [latlng.latitude, latlng.longitude];
+      busController.myUIdInFirebase = user.uid;
+      busController.myUserName = '박준성';
 
-            ///업데이트 버튼
-            Container(
-              margin: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height * 0.03,
-                  bottom: MediaQuery.of(context).size.height * 0.03),
-              child: OutlinedButton(
-                onPressed: () => showDialog(
-                  context: context,
-                  builder: (_) => UpdatedDialog(),
+      busController.getBusStopList(latlng.latitude, latlng.longitude);
+    }
+
+    return Scaffold(body: Obx(() {
+      if (busController.updateResult.isTrue) {
+        return UpdatedDialog();
+      } else {
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+
+                  ///버스 정류장 목록
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.05),
+                  alignment: Alignment.center,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  decoration: BoxDecoration(),
+                  child: CategoryButton()),
+              Container(
+
+                  ///버스 노선 목록
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.05),
+                  alignment: Alignment.center,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  decoration: BoxDecoration(),
+                  child: BusRouteListButton()),
+              Container(
+                  height: MediaQuery.of(context).size.height * 0.65,
+                  margin:
+                      EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+                  decoration:
+                      BoxDecoration(border: Border.all(color: Colors.black)),
+                  child: Obx(() {
+                    final list = busController.busCarListMap.values.toList();
+                    return ListView.builder(
+
+                        ///busName의 길이만큼 itemCount
+                        itemCount: busController.busCarListMap.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return BusContainer(
+                            item: list[index],
+                          );
+                        });
+                  })),
+
+              ///업데이트 버튼
+              Container(
+                margin: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.03,
+                    bottom: MediaQuery.of(context).size.height * 0.03),
+                child: OutlinedButton(
+                  onPressed: () {
+                    busController.updateCarStatus(
+                        busController.editedCarMaps.values.toList());
+                  },
+                  child: Text(
+                    '업데이트',
+                    style: TextStyle(color: Colors.black),
+                  ),
                 ),
-                child: Text(
-                  '업데이트',
-                  style: TextStyle(color: Colors.black),
-                ),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+            ],
+          ),
+        );
+      }
+    }));
   }
 }
-
-///category_option버튼
-const List<String> list = <String>['부산 155번', '부산 126번', '부산 111번'];
 
 class CategoryButton extends StatefulWidget {
   const CategoryButton({Key? key}) : super(key: key);
@@ -100,44 +135,102 @@ class CategoryButton extends StatefulWidget {
 }
 
 class _CategoryButtonState extends State<CategoryButton> {
-  String dropdownValue = list.first;
+  final BusController busController = Get.find<BusController>();
+  bus_stop_list_response.Item? selectedItem;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      ///나중에 category디자인 필요할 때 쓰려고 Container에 담아두고 decoration부여
+
+        ///나중에 category디자인 필요할 때 쓰려고 Container에 담아두고 decoration부여
 /*decoration: BoxDecoration(
         color: Colors.blueGrey,
       ),*/
-      child: DropdownButton<String>(
-        ///underline안보이게 할 때
+        child: Obx(() {
+      if (busController.busStopList.isNotEmpty) {
+        busController.cityCode = busController.busStopList.first.citycode;
+        return DropdownButton<bus_stop_list_response.Item>(
+          ///underline안보이게 할 때
 //underline: SizedBox.shrink(),
-        isExpanded: true,
-        value: dropdownValue,
-        icon: const Icon(Icons.arrow_drop_down),
-        elevation: 16,
-        onChanged: (String? value) {
-          setState(() {
-            dropdownValue = value!;
-          });
-        },
-        items: list.map<DropdownMenuItem<String>>(
-              (String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
+          items: busController.busStopList
+              .map((item) => DropdownMenuItem(
+                    value: item,
+                    child: Text(item.nodenm),
+                  ))
+              .toList(),
+          isExpanded: true,
+          value: selectedItem,
+          icon: const Icon(Icons.arrow_drop_down),
+          elevation: 16,
+          onChanged: (value) {
+            setState(() {
+              selectedItem = value;
+              busController.getBusListAtBusStop(
+                  busController.cityCode, value!.nodeid);
+            });
           },
-        ).toList(),
-      ),
-    );
+        );
+      } else {
+        return Text('정류장 목록');
+      }
+    }));
+  }
+}
+
+///  버스 노선 목록 DropdownMenu
+class BusRouteListButton extends StatefulWidget {
+  @override
+  State<BusRouteListButton> createState() => BusRouteListState();
+}
+
+class BusRouteListState extends State<BusRouteListButton> {
+  // 선택한 노선id
+  final BusController busController = Get.find<BusController>();
+  bus_list_at_bus_stop_response.Item? selectedItem;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+
+        ///나중에 category디자인 필요할 때 쓰려고 Container에 담아두고 decoration부여
+/*decoration: BoxDecoration(
+        color: Colors.blueGrey,
+      ),*/
+        child: Obx(() {
+      if (busController.busStopInfo.isNotEmpty) {
+        return DropdownButton<bus_list_at_bus_stop_response.Item>(
+          ///underline안보이게 할 때
+//underline: SizedBox.shrink(),
+          isExpanded: true,
+          value: selectedItem,
+          icon: const Icon(Icons.arrow_drop_down),
+          elevation: 16,
+          onChanged: (value) {
+            setState(() {
+              selectedItem = value;
+              busController.getCarListFromTago(
+                  busController.cityCode, value!.routeId);
+            });
+          },
+          items: busController.busStopInfo
+              .map((item) => DropdownMenuItem(
+                    value: item,
+                    child: Text(item.routeNo),
+                  ))
+              .toList(),
+        );
+      } else {
+        return const Text('노선 목록 불러오는 중...');
+      }
+    }));
   }
 }
 
 ///버스 1개 컨테이너 (번호,리프트 여부,리프트작동,업데이트)
 class BusContainer extends StatefulWidget {
-  final String busName;
-  const BusContainer({Key? key, required this.busName}) : super(key: key);
+  final BusDto item;
+
+  const BusContainer({Key? key, required this.item}) : super(key: key);
 
   @override
   State<BusContainer> createState() => _BusContainerState();
@@ -153,9 +246,18 @@ class _BusContainerState extends State<BusContainer> {
   Lift _lift = Lift.FALSE;
   Work _work = Work.FALSE;
 
+  final BusController busController = Get.find<BusController>();
+
+  onEditedData() {
+    busController.editedCarMaps[widget.item.vehicleNo] = widget.item;
+  }
+
   ///라디오 버튼 선택 초기화
   @override
   Widget build(BuildContext context) {
+    _lift = widget.item.lift ? Lift.TRUE : Lift.FALSE;
+    _work = widget.item.liftStatus ? Work.TRUE : Work.FALSE;
+
     return Container(
       padding: EdgeInsets.only(
           right: MediaQuery.of(context).size.width * 0.05,
@@ -166,11 +268,16 @@ class _BusContainerState extends State<BusContainer> {
           Row(children: [
             Expanded(
               child: Text(
-                this.widget.busName,
+                widget.item.vehicleNo,
                 style: TextStyle(fontSize: 25, color: Colors.indigo),
               ),
             ),
-            Expanded(child: Text('2023-02-24', textAlign: TextAlign.right))
+            Expanded(
+                child: Text(
+                    widget.item.updated != null
+                        ? widget.item.updated!.toDate().toIso8601String()
+                        : '데이터 없음',
+                    textAlign: TextAlign.right))
           ]),
           Row(
             children: [
@@ -182,6 +289,8 @@ class _BusContainerState extends State<BusContainer> {
                 onChanged: (Lift? value) {
                   setState(() {
                     _lift = value!;
+                    widget.item.lift = value == Lift.TRUE ? true : false;
+                    onEditedData();
                   });
                 },
                 //dense,contentPadding으로 radio줄임
@@ -196,6 +305,8 @@ class _BusContainerState extends State<BusContainer> {
                 onChanged: (Lift? value) {
                   setState(() {
                     _lift = value!;
+                    widget.item.lift = value == Lift.TRUE ? true : false;
+                    onEditedData();
                   });
                 },
                 //dense: true,
@@ -214,6 +325,8 @@ class _BusContainerState extends State<BusContainer> {
                 onChanged: (Work? value) {
                   setState(() {
                     _work = value!;
+                    widget.item.liftStatus = value == Work.TRUE ? true : false;
+                    onEditedData();
                   });
                 },
                 //dense,contentPadding으로 radio줄임
@@ -228,6 +341,8 @@ class _BusContainerState extends State<BusContainer> {
                 onChanged: (Work? value) {
                   setState(() {
                     _work = value!;
+                    widget.item.liftStatus = value == Work.TRUE ? true : false;
+                    onEditedData();
                   });
                 },
                 //dense: true,

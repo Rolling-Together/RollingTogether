@@ -1,17 +1,17 @@
-import 'dart:io';
-
-import 'package:get/get.dart';
-import 'package:rolling_together/commons/utils/img_file_utils.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:rolling_together/commons/utils/coords_dist_util.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/likes/service/likes_dangerous_zone_service.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/models/dangerouszone.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/service/dangerous_zone_service.dart';
-import 'package:rolling_together/data/remote/imgs/models/upload_img.dart';
 import 'package:rolling_together/data/remote/user/service/report_list_service.dart';
 
 import '../../imgs/service/img_upload_service.dart';
 import '../models/dangerous_zone_comment.dart';
 
 class DangerousZoneController extends GetxController {
+  static const tag = 'DangerousZoneController';
+
   final DangerousZoneService dangerousZoneService = DangerousZoneService();
   final LikesDangerousZoneService likeListService = LikesDangerousZoneService();
   final ImgUploadService imgUploadService = ImgUploadService();
@@ -31,9 +31,6 @@ class DangerousZoneController extends GetxController {
           informerName: '')
       .obs;
 
-  // 새로운 위험 장소 추가 결과
-  final RxBool addNewDangerousZoneResult = false.obs;
-
   // 댓글 등록 결과
   final RxBool addCommentResult = false.obs;
 
@@ -41,13 +38,28 @@ class DangerousZoneController extends GetxController {
   final RxList<DangerousZoneCommentDto> commentList =
       <DangerousZoneCommentDto>[].obs;
 
+  /// 지도 중심부 마지막 위경도
+  Rx<List<double>> lastLatLng = Rx([35.4348, 129.1009]);
+
   /// 해당 위/경도 근처에 있는 위험 장소 목록 로드
   /// 공감 데이터 로드
-  getDangerousZoneList(double latitude, double longitude) {
+  getDangerousZoneList(double latitude, double longitude, bool force) {
+    // 마지막 지도 중심 좌표 값과의 거리가 1km 내외면 업데이트 안함
+    if (!force) {
+      final dist = haversineDistance(
+          lastLatLng.value[0], lastLatLng.value[1], latitude, longitude);
+      if (dist < 1000.0) {
+        return;
+      }
+    }
+
+    lastLatLng.value = [latitude, longitude];
+
     dangerousZoneService.getDangerousZoneList(latitude, longitude).then(
         (dangerousZones) {
       // 위험 장소 목록 로드 성공
       // 위험 장소 id 목록
+
       final ids = dangerousZones.map((e) => e.id!).toList();
 
       // 공감 데이터 로드
@@ -88,40 +100,6 @@ class DangerousZoneController extends GetxController {
       dangerousZone.value = dangerousZoneResult;
     }, onError: (obj) {
       dangerousZone.value = null;
-    });
-  }
-
-  /// 새로운 위험 장소 추가
-  /// 사진도 추가함
-  addDangerousZone(DangerousZoneDto newDangerousZone, List<File> imgs) {
-    final result = dangerousZoneService.addDangerousZone(newDangerousZone);
-
-    result.then((newDocId) {
-      // 문서 id받음 -> 사진 추가, 유저 문서 내 위험 장소 제보 목록에 추가
-      final uploadResult = imgUploadService.uploadImgs(
-          'dangerouszones',
-          imgs
-              .map((e) => UploadImgDto(
-                  file: e, fileName: ImgFileUtils.convertFileName(e)))
-              .toList());
-
-      uploadResult.then((value) {
-        reportListService
-            .addDangerousZone(newDocId, newDangerousZone.informerId)
-            .then((value) {
-          // 문서 추가, 사진 추가, 내 제보 목록에 추가 모두 성공
-          addNewDangerousZoneResult.value = true;
-        }, onError: (obj) {
-          // 내 목록에 추가 실패
-          addNewDangerousZoneResult.value = false;
-        });
-      }, onError: (obj) {
-        // 사진 추가 실패
-        addNewDangerousZoneResult.value = false;
-      });
-    }, onError: (obj) {
-      // 문서 추가 실패
-      addNewDangerousZoneResult.value = false;
     });
   }
 

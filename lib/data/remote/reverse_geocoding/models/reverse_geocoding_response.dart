@@ -100,15 +100,11 @@ class Address {
 }
 
 class Document {
-  RoadAddress? roadAddress;
-  Address? address;
+  Address address;
 
-  Document({this.roadAddress,  this.address});
+  Document({required this.address});
 
   factory Document.fromJson(Map<String, dynamic> json) {
-    return Document(
-      roadAddress: RoadAddress.fromJson(json['road_address']),
-      address: Address.fromJson(json['address']),
-    );
+    return Document(address: Address.fromJson(json['address']));
   }
 }
