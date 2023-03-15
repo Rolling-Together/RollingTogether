@@ -21,12 +21,12 @@ class _DangerousZonePostScreenState extends State<DangerousZonePostScreen> {
     {
       'name': '이홍주',
       'pic': 'https://picsum.photos/300/30',
-      'message': '책 추천합니다!'
+      'message': '여기 정말 위험해보이네요...'
     },
     {
       'name': '임은서',
       'pic': 'https://picsum.photos/300/30',
-      'message': '구성은 좋은데 오래된 책이라 지금 그대로 따라쓰면 오류 뜨는 코드들이 많네요.'
+      'message': '사람들한테 알리고 지자체에 신고를 해서 해결됐으면 좋겠습니다.'
     },
   ];
 

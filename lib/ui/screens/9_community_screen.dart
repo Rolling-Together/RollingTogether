@@ -1,4 +1,6 @@
 import 'dart:math';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,8 @@ import 'package:rolling_together/commons/class/facility_tile.dart';
 import 'package:rolling_together/commons/class/dangerous_zone_tile.dart';
 import 'package:rolling_together/commons/class/popular_post_tile.dart';
 import 'package:rolling_together/commons/widgets/custom_appbar.dart';
+import 'package:rolling_together/ui/screens/14_dangerous_zone_post_screen.dart';
+import 'package:rolling_together/ui/screens/7_facility_post_screen.dart';
 import '../../commons/utils/button.dart';
 
 class CommunityScreen extends StatefulWidget {
@@ -55,6 +59,12 @@ class _CommunityScreenState extends State<CommunityScreen> {
               ),
             ],
           ),
+
+          OutlinedButton(onPressed: () { Get.to(DangerousZonePostScreen(context));},
+              child: Text('임시 위험장소 게시글 버튼')),
+
+          OutlinedButton(onPressed: () { Get.to(FacilityPostScreen(context));},
+              child: Text('임시 편의시설 게시글 버튼')),
 
           selectedCategory == "위험장소"
               ? Container(
