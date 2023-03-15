@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:rolling_together/ui/screens/my_map_screen.dart';
+import 'package:rolling_together/ui/screens/5_my_map_screen.dart';
 
-import '../../ui/screens/community_screen.dart';
-import '../../ui/screens/guide_screen.dart';
-import '../../ui/screens/profile_screen.dart';
+
+import '../../ui/screens/9_community_screen.dart';
+import '../../ui/screens/11_guide_screen.dart';
+import '../../ui/screens/12_profile_screen.dart';
+
+
 
 class BottomNavbar extends StatefulWidget {
   const BottomNavbar({super.key});
@@ -19,7 +22,7 @@ class _BottomNavbarState extends State<BottomNavbar>
   final _pages = [
     PageStorage(
       bucket: PageStorageBucket(),
-      child: MyMapScreen(),
+      child: MapSample(),
     ),
     PageStorage(
       bucket: PageStorageBucket(),
