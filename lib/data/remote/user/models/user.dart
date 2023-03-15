@@ -5,7 +5,6 @@ class UserDto {
   late String name;
   late String email;
   late List<String> dangerousZoneReportList;
-  late List<String> busReportList;
   late List<String> facilityReportList;
   late List<String> dangerousZoneLikeList;
   late List<String> facilityReviewList;
@@ -16,7 +15,6 @@ class UserDto {
       required this.name,
       required this.email,
       required this.dangerousZoneReportList,
-      required this.busReportList,
       required this.facilityReportList,
       required this.dangerousZoneLikeList,
       required this.facilityReviewList});
@@ -25,7 +23,6 @@ class UserDto {
         'name': name,
         'email': email,
         'dangerousZoneReportList': dangerousZoneReportList,
-        'busReportList': busReportList,
         'facilityReportList': facilityReportList,
         'dangerousZoneLikeList': dangerousZoneLikeList,
         'facilityReviewList': facilityReviewList,
@@ -34,11 +31,10 @@ class UserDto {
   UserDto.fromSnapshot(DocumentSnapshot snapshot) {
     var map = snapshot.data() as Map<String, dynamic>;
 
-    id = map['id'];
+    id = snapshot.reference.id;
     name = map['name'];
     email = map['email'];
     dangerousZoneReportList = map['dangerousZoneReportList'];
-    busReportList = map['busReportList'];
     facilityReportList = map['facilityReportList'];
     dangerousZoneLikeList = map['dangerousZoneLikeList'];
     facilityReviewList = map['facilityReviewList'];
@@ -46,12 +42,11 @@ class UserDto {
     reference = snapshot.reference;
   }
 
-  UserDto.fromMap(Map<String, dynamic>? map) {
-    id = map?['id'];
+  UserDto.fromMap(String _id, Map<String, dynamic>? map) {
+    id = _id;
     name = map?['name'];
     email = map?['email'];
     dangerousZoneReportList = map?['dangerousZoneReportList'];
-    busReportList = map?['busReportList'];
     facilityReportList = map?['facilityReportList'];
     dangerousZoneLikeList = map?['dangerousZoneLikeList'];
     facilityReviewList = map?['facilityReviewList'];
