@@ -132,107 +132,107 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                     ],
                   )),
               Container(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  color: Color(0xffcD9D9D9),
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ClipOval(
-                                child:Container(
-                                  width: 100,
-                                  height:100,
-                                  color: Colors.white,
-                                )
-                            ),
-                            Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                color: Color(0xffcD9D9D9),
+                margin: EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ClipOval(
+                              child:Container(
                                 width: 100,
-                                height: 100,
-                                child: Center(child: Text('사진'))),
-                            Container(
-                                width: 100,
-                                height: 40,
-                                child: Center(child: Text('사진'))),
-                          ],
-                        ),
+                                height:100,
+                                color: Colors.white,
+                              )
+                          ),
+                          Container(
+                              width: 100,
+                              height: 100,
+                              child: Center(child: Text('사진'))),
+                          Container(
+                              width: 100,
+                              height: 40,
+                              child: Center(child: Text('사진'))),
+                        ],
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ClipOval(
-                                child:Container(
-                                  width: 100,
-                                  height:100,
-                                  color: Colors.white,
-                                )
-                            ),
-                            Container(
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ClipOval(
+                              child:Container(
                                 width: 100,
-                                height: 100,
-                                child: Center(child: Text('사진'))),
-                            Container(
-                                width: 100,
-                                height: 40,
-                                child: Center(child: Text('사진'))),
-                          ],
-                        ),
+                                height:100,
+                                color: Colors.white,
+                              )
+                          ),
+                          Container(
+                              width: 100,
+                              height: 100,
+                              child: Center(child: Text('사진'))),
+                          Container(
+                              width: 100,
+                              height: 40,
+                              child: Center(child: Text('사진'))),
+                        ],
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ClipOval(
-                                child:Container(
-                                  width: 100,
-                                  height:100,
-                                  color: Colors.white,
-                                )
-                            ),
-                            Container(
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ClipOval(
+                              child:Container(
                                 width: 100,
-                                height: 100,
-                                child: Center(child: Text('사진'))),
-                            Container(
-                                width: 100,
-                                height: 40,
-                                child: Center(child: Text('사진'))),
-                          ],
-                        ),
+                                height:100,
+                                color: Colors.white,
+                              )
+                          ),
+                          Container(
+                              width: 100,
+                              height: 100,
+                              child: Center(child: Text('사진'))),
+                          Container(
+                              width: 100,
+                              height: 40,
+                              child: Center(child: Text('사진'))),
+                        ],
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ClipOval(
-                                child:Container(
-                                  width: 100,
-                                  height:100,
-                                  color: Colors.white,
-                                )
-                            ),
-                            Container(
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ClipOval(
+                              child:Container(
                                 width: 100,
-                                height: 100,
-                                child: Center(child: Text('사진'))),
-                            Container(
-                                width: 100,
-                                height: 40,
-                                child: Center(child: Text('사진'))),
-                          ],
-                        ),
+                                height:100,
+                                color: Colors.white,
+                              )
+                          ),
+                          Container(
+                              width: 100,
+                              height: 100,
+                              child: Center(child: Text('사진'))),
+                          Container(
+                              width: 100,
+                              height: 40,
+                              child: Center(child: Text('사진'))),
+                        ],
                       ),
+                    ),
                   ],),
-                  ),
+              ),
               Container(
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
@@ -264,57 +264,41 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                     ],
                   )),
               commentChild(filedata),
-                ///주소 불러오는 값 임의로 지정해놨음
-                padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.05,
-                    top: MediaQuery.of(context).size.height * 0.01),
-                alignment: Alignment.centerLeft,
-                child: Text('부산광역시 남구 용소로 45, 부경대학교 대연캠퍼스'),
-              ),
-              Column(
-                //padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
-                children: [
-                  FacilityInfo(text: '휠체어 접근 가능성', icon: Icons.accessible),
-                  FacilityInfo(text: '1층에 위치함', icon: Icons.looks_one),
-                  FacilityInfo(text: '장애인 화장실', icon: Icons.wc),
-                  FacilityInfo(text: '엘리베이터', icon: Icons.elevator),
-                ],
-              ),
               Container(
                   child: ListTile(
-                tileColor: Color(0xffF2F2F2),
-                leading: Container(
-                  height: 40.0,
-                  width: 40.0,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(50))),
-                  child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: NetworkImage(
-                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDJ3-SXqfJljzjSYtNKZ6LN63CjmJYCTJT8g&usqp=CAU')),
-                ),
-                title: Form(
-                  key: formKey,
-                  child: TextFormField(
-                    controller: commentController,
-                    decoration: InputDecoration(
+                    tileColor: Color(0xffF2F2F2),
+                    leading: Container(
+                      height: 40.0,
+                      width: 40.0,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(50))),
+                      child: CircleAvatar(
+                          radius: 50,
+                          backgroundImage: NetworkImage(
+                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDJ3-SXqfJljzjSYtNKZ6LN63CjmJYCTJT8g&usqp=CAU')),
+                    ),
+                    title: Form(
+                      key: formKey,
+                      child: TextFormField(
+                        controller: commentController,
+                        decoration: InputDecoration(
 
-                        ///댓글 창 배경색
-                        filled: true,
-                        fillColor: Color(0xffE3E3E3),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide.none,
-                        )),
-                  ),
-                ),
-                trailing: GestureDetector(
-                  onTap: () {
-                    addComment();
-                  },
-                  child: Icon(Icons.send_sharp, size: 30, color: Colors.black),
-                ),
-              )),
+                          ///댓글 창 배경색
+                            filled: true,
+                            fillColor: Color(0xffE3E3E3),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                              borderSide: BorderSide.none,
+                            )),
+                      ),
+                    ),
+                    trailing: GestureDetector(
+                      onTap: () {
+                        addComment();
+                      },
+                      child: Icon(Icons.send_sharp, size: 30, color: Colors.black),
+                    ),
+                  )),
             ],
           ),
         ),
