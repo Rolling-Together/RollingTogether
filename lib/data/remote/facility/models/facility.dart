@@ -3,8 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class FacilityDto {
   late String placeId;
   late String name;
-  late String latitude;
-  late String longitude;
+  late List<double> latlng;
   late String categoryName;
   late String categoryGroupCode;
   late String categoryGroupName;
@@ -19,8 +18,7 @@ class FacilityDto {
   FacilityDto(
       {required this.placeId,
       required this.name,
-      required this.latitude,
-      required this.longitude,
+      required this.latlng,
       required this.categoryName,
       required this.categoryGroupCode,
       required this.categoryGroupName,
@@ -35,8 +33,7 @@ class FacilityDto {
   Map<String, dynamic> toMap() => {
         'placeId': placeId,
         'name': name,
-        'latitude': latitude,
-        'longitude': longitude,
+        'latlng': latlng,
         'categoryName': categoryName,
         'categoryGroupName': categoryGroupName,
         'categoryGroupCode': categoryGroupCode,
@@ -53,8 +50,7 @@ class FacilityDto {
 
     placeId = map['placeId'];
     name = map['name'];
-    latitude = map['latitude'];
-    longitude = map['longitude'];
+    latlng = map['latlng'];
     categoryName = map['categoryName'];
     categoryGroupName = map['categoryGroupName'];
     categoryGroupCode = map['categoryGroupCode'];
@@ -71,8 +67,7 @@ class FacilityDto {
   FacilityDto.fromMap(Map<String, dynamic>? map) {
     placeId = map?['placeId'];
     name = map?['name'];
-    latitude = map?['latitude'];
-    longitude = map?['longitude'];
+    latlng = map?['latlng'];
     categoryName = map?['categoryName'];
     categoryGroupName = map?['categoryGroupName'];
     categoryGroupCode = map?['categoryGroupCode'];

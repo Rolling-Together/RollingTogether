@@ -1,14 +1,7 @@
-import 'dart:html';
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get.dart';
 import 'package:rolling_together/data/remote/facility/models/facility.dart';
 import 'package:rolling_together/data/remote/facility/models/review.dart';
 import 'package:rolling_together/data/remote/imgs/models/upload_img.dart';
-
-import '../../../../commons/enum/facility_types.dart';
-import '../../dangerous_zone/models/enum/facility_checklist_types.dart';
 
 class FacilityService {
   final firestore = FirebaseFirestore.instance;
@@ -55,44 +48,33 @@ class FacilityService {
   }
 
   /// 새로운 편의 시설 추가
-  Future<void> addFacility(FacilityDto facilityDto,
-      Map<String, List<UploadImgDto>> imageFileNameMap) async {
+  Future<void> updateFacility(FacilityDto facilityDto) async {
     try {
-      putImgFileNamesToNewFacility(facilityDto, imageFileNameMap);
+      final collection = firestore.collection('Facilities');
+      final document = await collection.doc(facilityDto.placeId).get();
+      final map = facilityDto.toMap();
 
-      return await Future.value(firestore
-          .collection('Facilities')
-          .doc(facilityDto.placeId)
-          .set(facilityDto.toMap()));
-    } catch (e) {
-      return Future.error('failed');
-    }
-  }
+      if (document.exists) {
+        // 장소 문서가 존재함
+        final Map<String, Map<String, dynamic>> checkListMap =
+            map['checkListMap'];
 
-  /// 편의 시설 체크 리스트 업데이트
-  Future<void> updateCheckList(FacilityDto facilityDto,
-      Map<String, List<UploadImgDto>> imageFileNameMap) async {
-    try {
-      final updateMap = <String, dynamic>{
-        'checkListLastUpdate': FieldValue.serverTimestamp()
-      };
+        for (final key in checkListMap.keys) {
+          final List<String> images = checkListMap[key]!['fileNames'];
 
-      for (final key in facilityDto.checkListMap.keys) {
-        final values = imageFileNameMap[key];
-
-        if (values != null && values.isNotEmpty) {
-          final list = values.map((e) => e.fileName).toList();
-          updateMap['checkListMap.$key'] = {
-            'fileNames': FieldValue.arrayUnion(list),
-            'status': facilityDto.checkListMap[key]?['status']
-          };
+          if (images.isNotEmpty) {
+            checkListMap['checkListMap.$key'] = {
+              'fileNames': FieldValue.arrayUnion(images),
+            };
+          }
         }
-      }
 
-      return await Future.value(firestore
-          .collection('Facilities')
-          .doc(facilityDto.placeId)
-          .update(updateMap));
+        return await Future.value(
+            collection.doc(facilityDto.placeId).update(map));
+      } else {
+        return await Future.value(
+            collection.doc(facilityDto.placeId).set(map));
+      }
     } catch (e) {
       return Future.error('failed');
     }
@@ -130,22 +112,5 @@ class FacilityService {
     } else {
       return Future.value(List.empty());
     }
-  }
-
-  /// 처음 체크 리스트를 등록할 때
-  putImgFileNamesToNewFacility(FacilityDto facilityDto,
-      Map<String, List<UploadImgDto>> imageFileNameMap) {
-    for (final key in imageFileNameMap.keys) {
-      final list = <String>[];
-      final values = imageFileNameMap[key];
-
-      if (values != null) {
-        list.addAll(values.map((e) => e.fileName).toList());
-      }
-
-      facilityDto.checkListMap[key]?['fileNames'] = list;
-    }
-
-    return facilityDto;
   }
 }

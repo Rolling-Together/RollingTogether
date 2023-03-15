@@ -14,9 +14,11 @@ Widget CostomChip(String label,Icon icon ,Color color) {
         color: Colors.white,
       ),
     ),
-    backgroundColor: color,
+    backgroundColor: Colors.blue.withOpacity(0.5),
     elevation: 6.0,
     shadowColor: Colors.grey[60],
     padding: EdgeInsets.all(8.0),
   );
 }
+
+

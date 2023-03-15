@@ -5,7 +5,7 @@ import 'package:rolling_together/data/remote/reverse_geocoding/service/reverse_g
 class ReverseGeocodingController extends GetxController {
   final reverseGeocodingService = ReverseGeocodingService();
 
-  final Rx<Document?> addressResult = Document().obs;
+  final Rxn<Document> addressResult = Rxn();
 
   /// 위경도 -> 주소
   coordToAddress(double latitude, double longitude) {
