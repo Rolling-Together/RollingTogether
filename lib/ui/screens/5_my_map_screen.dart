@@ -99,10 +99,12 @@ class _MapSampleState extends State<MapSample> {
                             ),
                           ),
                           Expanded(
-                            child: Image.network(
+                            child: Container(
+                              height: 20,//식당 이미지
+                            )/*Image.network(
                               'https://th.bing.com/th/id/OIP.rRw8sYj4rXkmurs2kCtjBQHaE8?w=287&h=191&c=7&r=0&o=5&dpr=1.3&pid=1.7',
                               fit: BoxFit.cover,
-                            ),
+                            ),*/
                           ),
                         ],
                       ),
@@ -204,10 +206,12 @@ class _MapSampleState extends State<MapSample> {
                             ),
                           ),
                           Expanded(
-                            child: Image.network(
+                            child: Container(
+                              height: 20,//식당 이미지
+                            )/*Image.network(
                               'https://th.bing.com/th/id/OIP.CWxD3nGIp_XU34nZ8G-p9AHaFj?w=263&h=197&c=7&r=0&o=5&dpr=1.3&pid=1.7',
                               fit: BoxFit.cover,
-                            ),
+                            ),*/
                           ),
                         ],
                       ),
@@ -308,9 +312,11 @@ class _MapSampleState extends State<MapSample> {
           child: Container(
             width: 50,
             height: 50,
-            child: Image.asset(
+            child: Container(
+              height: 20,//식당 이미지
+            )/*Image.asset(
               'https://th.bing.com/th/id/OIP.CWxD3nGIp_XU34nZ8G-p9AHaFj?w=263&h=197&c=7&r=0&o=5&dpr=1.3&pid=1.7',
-            ),
+            ),*/
           ),
         ),
         Positioned(
