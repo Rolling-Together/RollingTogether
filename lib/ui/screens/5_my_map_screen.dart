@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -9,61 +10,42 @@ import 'package:get/get.dart';
 import 'new_page.dart';
 import 'option_page.dart';
 
-class MyMapScreen extends StatefulWidget {
-  const MyMapScreen({super.key});
+class MapSample extends StatefulWidget {
+  late final String title;
 
   @override
-  _MyMapScreenState createState() => _MyMapScreenState();
+  _MapSampleState createState() => _MapSampleState();
 }
 
-class _MyMapScreenState extends State<MyMapScreen>
-    with AutomaticKeepAliveClientMixin<MyMapScreen> {
-  final TextEditingController _textController = TextEditingController();
+class _MapSampleState extends State<MapSample> {
+  // 애플리케이션에서 지도를 이동하기 위한 컨트롤러
   late GoogleMapController _controller;
-  Location _location = Location();
+
+  //Location _location = Location();
   bool _showAdditionalChips = false;
+
 
   LatLng centerCoords = LatLng(0.0, 0.0);
 
   Future<LocationData?> getCurrentLocation() async {
+
     try {
       return await _location.getLocation();
     } catch (e) {
       return null;
     }
-  }
+  }*/
 
-  // initialize markers
-  Set<Marker> _markers = {};
+  // 이 값은 지도가 시작될 때 첫 번째 위치입니다.
+  final CameraPosition _initialPosition =
+  CameraPosition(
+      target: LatLng(35.1340990, 129.1031460),
+    zoom: 14.4746,
+  );
 
-  @override
-  bool get wantKeepAlive => true;
+  // 지도 클릭 시 표시할 장소에 대한 마커 목록
+  final List<Marker> markers = [];
 
-  initMarkers() {
-    _markers = {
-      Marker(
-        markerId: MarkerId("blue_marker"),
-        position: LatLng(37.422, -122.084),
-        onTap: () {
-          _showBlueMarkerBottomSheet();
-        },
-      ),
-      Marker(
-        markerId: MarkerId("red_marker"),
-        position: LatLng(37.432, -122.094),
-        onTap: () {
-          _showRedMarkerBottomSheet();
-        },
-      ),
-      Marker(
-        markerId: MarkerId("yellow_marker"),
-        position: LatLng(37.442, -122.104),
-        onTap: () {
-          _showYellowMarkerBottomSheet();
-        },
-      ),
-    };
-  }
 
   onCameraMoved(CameraPosition position) {
     centerCoords = position.target;
@@ -114,15 +96,16 @@ class _MyMapScreenState extends State<MyMapScreen>
                 CostomChip('대중교통', Icon(Icons.bus_alert_rounded), Colors.cyan)
               ],
             ),
+
           ),
-          Positioned(
-            top: 80,
-            child: Visibility(
-              visible: _showAdditionalChips,
+        );*/
+            Padding(
+              padding: const EdgeInsets.all(20.0),
               child: Container(
-                margin: EdgeInsets.only(top: 10),
-                child: Row(
+                height: MediaQuery.of(context).size.height / 3,
+                child: Column(
                   children: [
+
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -252,110 +235,205 @@ class _MyMapScreenState extends State<MyMapScreen>
                             Text(
                               'Title 1',
                               style: TextStyle(fontWeight: FontWeight.bold),
+
                             ),
-                            Text('Description 1'),
-                            Text(
-                              'Title 2',
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Expanded(
+                            child: Image.network(
+                              'https://th.bing.com/th/id/OIP.rRw8sYj4rXkmurs2kCtjBQHaE8?w=287&h=191&c=7&r=0&o=5&dpr=1.3&pid=1.7',
+                              fit: BoxFit.cover,
                             ),
-                            Text('Description 2'),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Image.network(
-                        'https://th.bing.com/th/id/OIP.CWxD3nGIp_XU34nZ8G-p9AHaFj?w=263&h=197&c=7&r=0&o=5&dpr=1.3&pid=1.7',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Title 1',
-                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          Text('Description 1'),
                         ],
                       ),
                     ),
                     Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      child: Row(
                         children: [
-                          Text(
-                            'Title 2',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          Expanded(
+                            child: Icon(Icons.wheelchair_pickup),
                           ),
-                          Text('Description 2'),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Title 3',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Title 2',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text('Description 2'),
+                              ],
+                            ),
                           ),
-                          Text('Description 3'),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'Title 4',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Title 3',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text('Description 3'),
+                              ],
+                            ),
                           ),
-                          Text('Description 4'),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Title 4',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text('Description 4'),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
-            ],
+            );
+        },
+      );
+    } else{
+      // showModalBottomSheet로 마커 정보를 표시하는 Bottom Sheet를 보여줌
+      showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return /*Csontainer(
+          height: 200,
+          child: Center(
+            child: Text('Marker tapped: ${tappedMarker.markerId.value}'),
           ),
-        );
-      },
-    );
+        );*/
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Container(
+                height: MediaQuery.of(context).size.height / 3,
+                child: Column(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height / 6,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Title 1',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text('Description 1'),
+                                Text(
+                                  'Title 2',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text('Description 2'),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Image.network(
+                              'https://th.bing.com/th/id/OIP.CWxD3nGIp_XU34nZ8G-p9AHaFj?w=263&h=197&c=7&r=0&o=5&dpr=1.3&pid=1.7',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Icon(Icons.wheelchair_pickup),
+                          ),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Title 2',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text('Description 2'),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Title 3',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text('Description 3'),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Title 4',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Text('Description 4'),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+        },
+      );
+    }
+
+
   }
 
-  _showYellowMarkerBottomSheet() {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).size.height / 2,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Icon(Icons.edit),
-              Icon(Icons.done),
-            ],
-          ),
-        );
-      },
-    );
+  addMarker(cordinate) {
+    int id = Random().nextInt(5);
+
+    setState(() {
+      markers.add(
+        Marker(
+          position: cordinate,
+          markerId: MarkerId(id.toString()),
+          onTap: () => onMarkerTapped(MarkerId(id.toString())),
+
+        ),
+      );
+    });
   }
 
   @override
-  void dispose() {
-    _textController.dispose();
-    super.dispose();
-  }
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Stack(
+          children: [
+            GoogleMap(
+              initialCameraPosition: _initialPosition,
+              myLocationEnabled: true,
+              myLocationButtonEnabled: true,
+              mapType: MapType.normal,
+              onMapCreated: (controller) {
+                setState(() {
+                  _controller = controller;
+                });
+              },
+              markers: markers.toSet(),
+
 
   void showOptions(BuildContext context) {
     showModalBottomSheet(
@@ -375,18 +453,32 @@ class _MyMapScreenState extends State<MyMapScreen>
                 title: Text('편의시설'),
                 onTap: () {
                   Get.to(FacilityScreen(),  arguments: {'latlng': centerCoords});
+
                 },
+                child: Text('글쓰기'),
               ),
+
               ListTile(
                 title: Text('대중교통'),
                 onTap: () {
                   Get.to(TransScreen(), arguments: {'latlng': centerCoords});
+
                 },
+                child: Icon(Icons.my_location),
               ),
-            ],
-          ),
-        );
-      },
+
+            ),*/
+          ]
+        ),
+
+        // floatingActionButton 클릭시 줌 아웃
+        /*floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _controller.animateCamera(CameraUpdate.zoomOut());
+          },
+          child: Icon(Icons.zoom_out),
+        )*/
     );
   }
 }
+
