@@ -60,7 +60,9 @@ class Items {
 
   Items.fromJson(Map<String, dynamic> json) {
     item = List<Item>.from(
-        (json['item'] as List<dynamic>).map((x) => Item.fromJson(x)));
+        (json['item'] as List<dynamic>)
+            .where((item) => item.containsKey('nodeno'))
+            .map((x) => Item.fromJson(x)));
   }
 }
 
@@ -89,10 +91,10 @@ class Item {
   });
 
   Item.fromJson(Map<String, dynamic> json) {
-    gpslati = json['gpslati'];
-    gpslong = json['gpslong'];
-    nodeid = json['nodeid'];
-    nodenm = json['nodenm'];
-    citycode = json['citycode'];
+    gpslati = json['gpslati'].toString();
+    gpslong = json['gpslong'].toString();
+    nodeid = json['nodeid'].toString();
+    nodenm = json['nodenm'].toString();
+    citycode = json['citycode'].toString();
   }
 }

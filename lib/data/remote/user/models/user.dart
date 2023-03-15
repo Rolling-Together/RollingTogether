@@ -5,7 +5,6 @@ class UserDto {
   late String name;
   late String email;
   late List<String> dangerousZoneReportList;
-  late Map<String, Map<String, String>> busReportListMap;
   late List<String> facilityReportList;
   late List<String> dangerousZoneLikeList;
   late List<String> facilityReviewList;
@@ -16,7 +15,6 @@ class UserDto {
       required this.name,
       required this.email,
       required this.dangerousZoneReportList,
-      required this.busReportListMap,
       required this.facilityReportList,
       required this.dangerousZoneLikeList,
       required this.facilityReviewList});
@@ -25,7 +23,6 @@ class UserDto {
         'name': name,
         'email': email,
         'dangerousZoneReportList': dangerousZoneReportList,
-        'busReportListMap': busReportListMap,
         'facilityReportList': facilityReportList,
         'dangerousZoneLikeList': dangerousZoneLikeList,
         'facilityReviewList': facilityReviewList,
@@ -38,7 +35,6 @@ class UserDto {
     name = map['name'];
     email = map['email'];
     dangerousZoneReportList = map['dangerousZoneReportList'];
-    busReportListMap = map['busReportListMap'];
     facilityReportList = map['facilityReportList'];
     dangerousZoneLikeList = map['dangerousZoneLikeList'];
     facilityReviewList = map['facilityReviewList'];
@@ -51,7 +47,6 @@ class UserDto {
     name = map?['name'];
     email = map?['email'];
     dangerousZoneReportList = map?['dangerousZoneReportList'];
-    busReportListMap = map?['busReportListMap'];
     facilityReportList = map?['facilityReportList'];
     dangerousZoneLikeList = map?['dangerousZoneLikeList'];
     facilityReviewList = map?['facilityReviewList'];

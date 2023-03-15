@@ -3,14 +3,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class FacilityDto {
   late String placeId;
   late String name;
-  late String latitude;
-  late String longitude;
+  late List<double> latlng;
   late String categoryName;
   late String categoryGroupCode;
   late String categoryGroupName;
   late String addressName;
   late String roadAddressName;
   late String placeUrl;
+  late String informerId;
   late Map<String, Map<String, dynamic>> checkListMap;
   late Timestamp checkListLastUpdate;
   late DocumentReference reference;
@@ -18,14 +18,14 @@ class FacilityDto {
   FacilityDto(
       {required this.placeId,
       required this.name,
-      required this.latitude,
-      required this.longitude,
+      required this.latlng,
       required this.categoryName,
       required this.categoryGroupCode,
       required this.categoryGroupName,
       required this.addressName,
       required this.roadAddressName,
       required this.placeUrl,
+      required this.informerId,
       required this.checkListMap,
       Timestamp? checkListLastUpdate})
       : checkListLastUpdate = checkListLastUpdate ?? Timestamp(0, 0);
@@ -33,12 +33,12 @@ class FacilityDto {
   Map<String, dynamic> toMap() => {
         'placeId': placeId,
         'name': name,
-        'latitude': latitude,
-        'longitude': longitude,
+        'latlng': latlng,
         'categoryName': categoryName,
         'categoryGroupName': categoryGroupName,
         'categoryGroupCode': categoryGroupCode,
         'addressName': addressName,
+        'informerId': informerId,
         'roadAddressName': roadAddressName,
         'checkListMap': checkListMap,
         'checkListLastUpdate': FieldValue.serverTimestamp(),
@@ -50,14 +50,14 @@ class FacilityDto {
 
     placeId = map['placeId'];
     name = map['name'];
-    latitude = map['latitude'];
-    longitude = map['longitude'];
+    latlng = map['latlng'];
     categoryName = map['categoryName'];
     categoryGroupName = map['categoryGroupName'];
     categoryGroupCode = map['categoryGroupCode'];
     addressName = map['addressName'];
     roadAddressName = map['roadAddressName'];
     placeUrl = map['placeUrl'];
+    informerId = map['informerId'];
     checkListMap = map['checkListMap'];
     checkListLastUpdate = map['checkListLastUpdate'];
 
@@ -67,14 +67,14 @@ class FacilityDto {
   FacilityDto.fromMap(Map<String, dynamic>? map) {
     placeId = map?['placeId'];
     name = map?['name'];
-    latitude = map?['latitude'];
-    longitude = map?['longitude'];
+    latlng = map?['latlng'];
     categoryName = map?['categoryName'];
     categoryGroupName = map?['categoryGroupName'];
     categoryGroupCode = map?['categoryGroupCode'];
     addressName = map?['addressName'];
     roadAddressName = map?['roadAddressName'];
     placeUrl = map?['placeUrl'];
+    informerId = map?['informerId'];
     checkListMap = map?['checkListMap'];
     checkListLastUpdate = map?['checkListLastUpdate'];
   }
