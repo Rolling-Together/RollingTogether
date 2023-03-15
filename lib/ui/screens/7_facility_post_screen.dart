@@ -264,6 +264,22 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                     ],
                   )),
               commentChild(filedata),
+                ///주소 불러오는 값 임의로 지정해놨음
+                padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.05,
+                    top: MediaQuery.of(context).size.height * 0.01),
+                alignment: Alignment.centerLeft,
+                child: Text('부산광역시 남구 용소로 45, 부경대학교 대연캠퍼스'),
+              ),
+              Column(
+                //padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+                children: [
+                  FacilityInfo(text: '휠체어 접근 가능성', icon: Icons.accessible),
+                  FacilityInfo(text: '1층에 위치함', icon: Icons.looks_one),
+                  FacilityInfo(text: '장애인 화장실', icon: Icons.wc),
+                  FacilityInfo(text: '엘리베이터', icon: Icons.elevator),
+                ],
+              ),
               Container(
                   child: ListTile(
                 tileColor: Color(0xffF2F2F2),
