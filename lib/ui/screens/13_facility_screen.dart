@@ -30,7 +30,7 @@ class FacilityScreen extends StatelessWidget {
                 child: Text('편의시설', style: TextStyle(fontSize: 16)),
               ),
               Container(
-                  ///카테고리
+                ///카테고리
                   padding: EdgeInsets.only(
                       top: MediaQuery.of(context).size.height * 0.01,
                       bottom: MediaQuery.of(context).size.height * 0.03),
@@ -46,7 +46,7 @@ class FacilityScreen extends StatelessWidget {
               ),
               Container(
                 padding:
-                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.2),
+                EdgeInsets.all(MediaQuery.of(context).size.width * 0.2),
                 child: Text('지도 API'),
               ),
               Container(
@@ -68,16 +68,16 @@ class FacilityScreen extends StatelessWidget {
                 //padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
                 children: [
                   FacilityInfo(text: '휠체어 접근 가능성', icon: Icons.accessible),
-                  FacilityInfo(text: '장애인 엘리베이터', icon: Icons.elevator),
-                  FacilityInfo(text: '엘리베이터 있음', icon: Icons.elevator),
-                  FacilityInfo(text: '전동 휠체어 충전소', icon: Icons.ev_station),
+                  FacilityInfo(text: '1층에 위치함', icon: Icons.looks_one),
+                  FacilityInfo(text: '장애인 화장실', icon: Icons.wc),
+                  FacilityInfo(text: '엘리베이터', icon: Icons.elevator),
                 ],
               ),
               Container(
                 margin:
-                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+                EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
                 decoration:
-                    BoxDecoration(border: Border.all(color: Colors.black)),
+                BoxDecoration(border: Border.all(color: Colors.black)),
                 child: TextField(
                   decoration: InputDecoration(focusedBorder: InputBorder.none),
                   keyboardType: TextInputType.multiline,
@@ -106,7 +106,7 @@ class FacilityScreen extends StatelessWidget {
   }
 }
 
-///category_option 버튼
+///category_option버튼
 const List<String> list = <String>['음식점', '카페', '공공시설', '문화시설'];
 
 class CategoryButton extends StatefulWidget {
@@ -122,13 +122,13 @@ class _CategoryButtonState extends State<CategoryButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      ///나중에 category 디자인 필요할 때 쓰려고 Container에 담아두고 decoration 부여
-      /*decoration: BoxDecoration(
+      ///나중에 category디자인 필요할 때 쓰려고 Container에 담아두고 decoration부여
+/*decoration: BoxDecoration(
         color: Colors.blueGrey,
       ),*/
       child: DropdownButton<String>(
-        ///underline 안보이게 할 때
-        //underline: SizedBox.shrink(),
+        ///underline안보이게 할 때
+//underline: SizedBox.shrink(),
         isExpanded: true,
         value: dropdownValue,
         icon: const Icon(Icons.arrow_drop_down),
@@ -139,7 +139,7 @@ class _CategoryButtonState extends State<CategoryButton> {
           });
         },
         items: list.map<DropdownMenuItem<String>>(
-          (String value) {
+              (String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
@@ -151,7 +151,7 @@ class _CategoryButtonState extends State<CategoryButton> {
   }
 }
 
-///image_picker 방법2 >> 나중에 합칠 때, util에 image_picker 추가해야함
+///image_picker방법2 >>나중에 합칠 때, util에 image_picker추가해야함
 class ImageUploader extends StatefulWidget {
   const ImageUploader({Key? key}) : super(key: key);
   @override
@@ -162,11 +162,11 @@ class _ImageUploaderState extends State<ImageUploader> {
   File? _image;
   final picker = ImagePicker();
 
-  ///비동기 처리 > 이미지 가져오기
+  ///비동기 처리 >이미지 가져오기
   Future<void> _pickImage(ImageSource source) async {
     final pickedFile = await picker.pickImage(source: source);
     if (pickedFile != Null) {
-      ///if없어도 될 듯. 어차피 !.로 null이 아님을 정해줘서
+      ///if없어도 될 듯.어차피 !.로 null이 아님을 정해줘서
       setState(() {
         _image = File(pickedFile!.path);
       });
@@ -205,16 +205,16 @@ class _ImageUploaderState extends State<ImageUploader> {
       ),*/
       child: _image == null
           ? InkWell(
-              onTap: () =>
-                  showDialog(context: context, builder: (_) => _optionDialog()),
-              child: Icon(Icons.camera_alt),
-            )
+        onTap: () =>
+            showDialog(context: context, builder: (_) => _optionDialog()),
+        child: Icon(Icons.camera_alt),
+      )
           : Image.file(_image!),
     );
   }
 }
 
-///장소정보 >> 여기서 오류난당~~
+///장소정보 >>여기서 오류난당~~
 const List<String> option_list = <String>['선택', '예', '아니오'];
 
 class FacilityInfo extends StatefulWidget {
@@ -246,12 +246,12 @@ class _FacilityInfoState extends State<FacilityInfo> {
           Container(
             width: 120,
             margin:
-                EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.2),
+            EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.2),
             child: Text(this.widget.text),
           ),
           Container(
-            ///dropdownButton 정렬하려고.. > 해결해야함
-            //alignment: Alignment.centerRight,
+            ///dropdownButton정렬하려고.. >해결해야함
+//alignment: Alignment.centerRight,
             child: DropdownButton<String>(
               isDense: true,
               //isExpanded: true,
@@ -264,7 +264,7 @@ class _FacilityInfoState extends State<FacilityInfo> {
                 });
               },
               items: option_list.map<DropdownMenuItem<String>>(
-                (String value) {
+                    (String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(value),
@@ -275,7 +275,7 @@ class _FacilityInfoState extends State<FacilityInfo> {
           ),
           Container(
             margin:
-                EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
+            EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
             child: ImageUploader(),
           ),
         ],

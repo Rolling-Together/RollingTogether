@@ -37,7 +37,7 @@ class _LocationScreenState extends State<LocationScreen> {
                 child: Text('위험 장소', style: TextStyle(fontSize: 16)),
               ),
               Container(
-                  ///카테고리
+                ///카테고리
                   padding: EdgeInsets.only(
                       top: MediaQuery.of(context).size.height * 0.01,
                       bottom: MediaQuery.of(context).size.height * 0.03),
@@ -55,7 +55,7 @@ class _LocationScreenState extends State<LocationScreen> {
               //]),
               Container(
                 padding:
-                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.2),
+                EdgeInsets.all(MediaQuery.of(context).size.width * 0.2),
                 child: Text('지도 API'),
               ),
               Container(
@@ -75,9 +75,9 @@ class _LocationScreenState extends State<LocationScreen> {
               ),
               Container(
                 margin:
-                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+                EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
                 decoration:
-                    BoxDecoration(border: Border.all(color: Colors.black)),
+                BoxDecoration(border: Border.all(color: Colors.black)),
                 child: TextField(
                   decoration: InputDecoration(focusedBorder: InputBorder.none),
                   keyboardType: TextInputType.multiline,
@@ -106,7 +106,7 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 }
 
-///category_option 버튼
+///category_option버튼
 const List<String> list = <String>['턱이 있음', '경사로가 높음', '사고 위험 있음'];
 
 class CategoryButton extends StatefulWidget {
@@ -122,13 +122,13 @@ class _CategoryButtonState extends State<CategoryButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      ///나중에 category 디자인 필요할 때 쓰려고 Container에 담아두고 decoration 부여
-      /*decoration: BoxDecoration(
+      ///나중에 category디자인 필요할 때 쓰려고 Container에 담아두고 decoration부여
+/*decoration: BoxDecoration(
         color: Colors.blueGrey,
       ),*/
       child: DropdownButton<String>(
-        ///underline 안보이게 할 때
-        //underline: SizedBox.shrink(),
+        ///underline안보이게 할 때
+//underline: SizedBox.shrink(),
         isExpanded: true,
         value: dropdownValue,
         icon: const Icon(Icons.arrow_drop_down),
@@ -139,7 +139,7 @@ class _CategoryButtonState extends State<CategoryButton> {
           });
         },
         items: list.map<DropdownMenuItem<String>>(
-          (String value) {
+              (String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
@@ -151,7 +151,7 @@ class _CategoryButtonState extends State<CategoryButton> {
   }
 }
 
-///image_picker 방법2
+///image_picker방법2
 /*class ImageUploader extends StatefulWidget {
   const ImageUploader({Key? key}) : super(key: key);
 
