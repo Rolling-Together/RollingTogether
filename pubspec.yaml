@@ -28,7 +28,6 @@ dependencies:
 
   firebase_storage: ^11.0.14
 
-  location: ^4.4.0
   flutter_exif_rotation: ^0.5.1
 
 dev_dependencies:

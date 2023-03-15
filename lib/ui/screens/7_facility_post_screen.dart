@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:comment_box/comment/comment.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:rolling_together/commons/enum/facility_checklist.dart';
+
+import '13_facility_screen.dart';
 
 /// 7. 시설 게시글
 
@@ -145,12 +145,14 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ClipOval(
+
                               child:Container(
                                 width: 100,
                                 height:100,
                                 color: Colors.white,
                               )
                           ),
+
                           Container(
                               width: 100,
                               height: 100,
@@ -168,12 +170,14 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ClipOval(
+
                               child:Container(
                                 width: 100,
                                 height:100,
                                 color: Colors.white,
                               )
                           ),
+
                           Container(
                               width: 100,
                               height: 100,
@@ -191,12 +195,14 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ClipOval(
+
                               child:Container(
                                 width: 100,
                                 height:100,
                                 color: Colors.white,
                               )
                           ),
+
                           Container(
                               width: 100,
                               height: 100,
@@ -214,12 +220,14 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ClipOval(
+
                               child:Container(
                                 width: 100,
                                 height:100,
                                 color: Colors.white,
                               )
                           ),
+
                           Container(
                               width: 100,
                               height: 100,
@@ -231,7 +239,9 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                         ],
                       ),
                     ),
+
                   ],),
+
               ),
               Container(
                 width: MediaQuery.of(context).size.width * 0.8,
@@ -263,7 +273,9 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                       )
                     ],
                   )),
+
               commentChild(filedata ),
+
               Container(
                   child: ListTile(
                     tileColor: Color(0xffF2F2F2),

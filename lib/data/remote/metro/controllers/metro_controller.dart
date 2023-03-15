@@ -14,6 +14,12 @@ class MetroController extends GetxController {
   // 지하철 역 장애인 편의 시설 정보
   final Rxn<busan_metro_response.Item> convenienceInfoInMetroStation = Rxn();
 
+  @override
+  void onInit() {
+    loadMetroStationMap();
+    super.onInit();
+  }
+
   /// 부산 지하철 역 목록 맵 반환
   loadMetroStationMap() {
     metroService.loadMetroStationMap().then((value) {

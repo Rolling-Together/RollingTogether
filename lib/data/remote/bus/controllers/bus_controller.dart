@@ -1,10 +1,7 @@
 import 'package:get/get.dart';
 import 'package:rolling_together/data/remote/bus/models/bus.dart';
-import 'package:rolling_together/data/remote/bus/models/jsonresponse/get_car_list_tago.dart';
 import 'package:rolling_together/data/remote/bus/service/bus_service.dart';
 import 'package:rolling_together/data/remote/user/service/report_list_service.dart';
-
-import '../models/jsonresponse/get_car_list_tago.dart' as car_list_of_route;
 
 import '../models/jsonresponse/get_bus_list_at_bus_stop_response.dart'
     as bus_list_at_bus_stop_response;
@@ -35,7 +32,7 @@ class BusController extends GetxController {
 
   String cityCode = '';
 
-  late var latlng = <double>[];
+  var latlng = <double>[];
   late String myUIdInFirebase;
   late String myUserName;
 
