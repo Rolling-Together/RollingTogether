@@ -1,7 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rolling_together/data/remote/user/models/user.dart';
 
 class ReportListService {
   final firestore = FirebaseFirestore.instance;
+
+  /// 내 정보 로드
+  Future<UserDto?> loadMyUserData(String myUID) async {
+    try {
+      final result = await firestore.collection('Users').doc(myUID).get();
+      return Future.value(UserDto.fromSnapshot(result));
+    } catch (e) {
+      return Future.error('failed');
+    }
+  }
 
   /// 위험 장소 추가 시 로직
   /// 매개변수 : userId - 유저UID(이메일X)

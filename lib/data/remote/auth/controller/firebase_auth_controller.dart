@@ -4,12 +4,12 @@ import 'package:rolling_together/data/remote/user/models/user.dart';
 
 class AuthController extends GetxController {
   static const tag = 'AuthController';
+
   static AuthController get to => Get.find<AuthController>();
   final Rxn<User> firebaseUser = Rxn<User>();
   final Rxn<UserDto> myUser = Rxn();
 
   User? get user => firebaseUser.value;
-
 
   @override
   void onInit() {
