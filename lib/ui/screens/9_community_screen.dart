@@ -60,12 +60,6 @@ class _CommunityScreenState extends State<CommunityScreen> {
             ],
           ),
 
-          OutlinedButton(onPressed: () { Get.to(DangerousZonePostScreen(context));},
-              child: Text('임시 위험장소 게시글 버튼')),
-
-          OutlinedButton(onPressed: () { Get.to(FacilityPostScreen(context));},
-              child: Text('임시 편의시설 게시글 버튼')),
-
           selectedCategory == "위험장소"
               ? Container(
               margin: EdgeInsets.all(10),
