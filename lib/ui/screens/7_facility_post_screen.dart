@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:comment_box/comment/comment.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:rolling_together/commons/enum/facility_checklist.dart';
+
+import '13_facility_screen.dart';
 
 /// 7. 시설 게시글
 
@@ -132,107 +132,104 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                     ],
                   )),
               Container(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  color: Color(0xffcD9D9D9),
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  padding: EdgeInsets.all(20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ClipOval(
-                                child:Container(
-                                  width: 100,
-                                  height:100,
-                                  color: Colors.white,
-                                )
-                            ),
-                            Container(
-                                width: 100,
-                                height: 100,
-                                child: Center(child: Text('사진'))),
-                            Container(
-                                width: 100,
-                                height: 40,
-                                child: Center(child: Text('사진'))),
-                          ],
-                        ),
+                width: MediaQuery.of(context).size.width * 0.8,
+                color: Color(0xffcD9D9D9),
+                margin: EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ClipOval(
+                              child: Container(
+                            width: 100,
+                            height: 100,
+                            color: Colors.white,
+                          )),
+                          Container(
+                              width: 100,
+                              height: 100,
+                              child: Center(child: Text('사진'))),
+                          Container(
+                              width: 100,
+                              height: 40,
+                              child: Center(child: Text('사진'))),
+                        ],
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ClipOval(
-                                child:Container(
-                                  width: 100,
-                                  height:100,
-                                  color: Colors.white,
-                                )
-                            ),
-                            Container(
-                                width: 100,
-                                height: 100,
-                                child: Center(child: Text('사진'))),
-                            Container(
-                                width: 100,
-                                height: 40,
-                                child: Center(child: Text('사진'))),
-                          ],
-                        ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ClipOval(
+                              child: Container(
+                            width: 100,
+                            height: 100,
+                            color: Colors.white,
+                          )),
+                          Container(
+                              width: 100,
+                              height: 100,
+                              child: Center(child: Text('사진'))),
+                          Container(
+                              width: 100,
+                              height: 40,
+                              child: Center(child: Text('사진'))),
+                        ],
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ClipOval(
-                                child:Container(
-                                  width: 100,
-                                  height:100,
-                                  color: Colors.white,
-                                )
-                            ),
-                            Container(
-                                width: 100,
-                                height: 100,
-                                child: Center(child: Text('사진'))),
-                            Container(
-                                width: 100,
-                                height: 40,
-                                child: Center(child: Text('사진'))),
-                          ],
-                        ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ClipOval(
+                              child: Container(
+                            width: 100,
+                            height: 100,
+                            color: Colors.white,
+                          )),
+                          Container(
+                              width: 100,
+                              height: 100,
+                              child: Center(child: Text('사진'))),
+                          Container(
+                              width: 100,
+                              height: 40,
+                              child: Center(child: Text('사진'))),
+                        ],
                       ),
-                      Container(
-                        padding: EdgeInsets.symmetric(vertical: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ClipOval(
-                                child:Container(
-                                  width: 100,
-                                  height:100,
-                                  color: Colors.white,
-                                )
-                            ),
-                            Container(
-                                width: 100,
-                                height: 100,
-                                child: Center(child: Text('사진'))),
-                            Container(
-                                width: 100,
-                                height: 40,
-                                child: Center(child: Text('사진'))),
-                          ],
-                        ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ClipOval(
+                              child: Container(
+                            width: 100,
+                            height: 100,
+                            color: Colors.white,
+                          )),
+                          Container(
+                              width: 100,
+                              height: 100,
+                              child: Center(child: Text('사진'))),
+                          Container(
+                              width: 100,
+                              height: 40,
+                              child: Center(child: Text('사진'))),
+                        ],
                       ),
-                  ],),
-                  ),
+                    ),
+                  ],
+                ),
+              ),
               Container(
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
@@ -264,20 +261,17 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                     ],
                   )),
               commentChild(filedata),
-                ///주소 불러오는 값 임의로 지정해놨음
-                padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.05,
-                    top: MediaQuery.of(context).size.height * 0.01),
-                alignment: Alignment.centerLeft,
-                child: Text('부산광역시 남구 용소로 45, 부경대학교 대연캠퍼스'),
-              ),
               Column(
                 //padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
                 children: [
-                  FacilityInfo(text: '휠체어 접근 가능성', icon: Icons.accessible),
-                  FacilityInfo(text: '1층에 위치함', icon: Icons.looks_one),
-                  FacilityInfo(text: '장애인 화장실', icon: Icons.wc),
-                  FacilityInfo(text: '엘리베이터', icon: Icons.elevator),
+                  FacilityInfo(
+                    type: FacilityCheckListType.wheelChair,
+                  ),
+                  FacilityInfo(
+                    type: FacilityCheckListType.floorFirst,
+                  ),
+                  FacilityInfo(type: FacilityCheckListType.toilet),
+                  FacilityInfo(type: FacilityCheckListType.elevator),
                 ],
               ),
               Container(
