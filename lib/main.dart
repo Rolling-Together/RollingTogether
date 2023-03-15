@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rolling_together/ui/screens/0_login_screen.dart';
 
 import 'data/remote/auth/controller/firebase_auth_controller.dart';
 import 'firebase_options.dart';
@@ -14,9 +15,9 @@ void main() async {
 
   final authController = Get.put(AuthController(), permanent: true);
 
-  runApp(const GetMaterialApp(
+  runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    home: InitMapScreen(),
+    home: LoginScreen(),
 
   ));
 }
