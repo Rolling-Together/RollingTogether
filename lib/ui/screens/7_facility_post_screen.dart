@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class FacilityScreen extends StatelessWidget {
-  const FacilityScreen({Key? key}) : super(key: key);
+class FacilityPostScreen extends StatelessWidget {
+  const FacilityPostScreen({Key? key}) : super(key: key);
 
   Widget RegisterDialog(){
     return AlertDialog(

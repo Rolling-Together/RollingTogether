@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
-/// 7. 게시글
+/// 14. 위험장소 게시글
 
-class PostScreen extends StatelessWidget {
-  const PostScreen({Key? key}) : super(key: key);
 
+class DangerousZonePostScreen extends StatefulWidget {
+  _DangerousZonePostScreenState createState() => _DangerousZonePostScreenState();
+}
+
+class _DangerousZonePostScreenState extends State<DangerousZonePostScreen> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Container();
   }
 }
