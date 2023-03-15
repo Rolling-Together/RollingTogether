@@ -10,8 +10,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const GetMaterialApp(
+  runApp( GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    home: InitMapScreen(),
+    home: MyMapScreen();
   ));
 }

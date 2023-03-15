@@ -1,62 +1,269 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:comment_box/comment/comment.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-class FacilityScreen extends StatelessWidget {
-  const FacilityScreen({Key? key}) : super(key: key);
+/// 7. 시설 게시글
 
-  Widget RegisterDialog(){
-    return AlertDialog(
-      title: Container(
-        alignment: Alignment.center,
-        child: Text('등록되었습니다'),
-      ),
+class FacilityPostScreen extends StatefulWidget {
+  FacilityPostScreen(BuildContext context);
+
+  _FacilityPostScreenState createState() => _FacilityPostScreenState();
+}
+
+class _FacilityPostScreenState extends State<FacilityPostScreen> {
+  final formKey = GlobalKey<FormState>();
+  final TextEditingController commentController = TextEditingController();
+
+  List filedata = [
+    {
+      'name': '글쓴이',
+      'pic': 'https://picsum.photos/300/30',
+      'message': '혼밥으로도 너무 괜찮은 곳입니다!'
+    },
+    {
+      'name': '임은서',
+      'pic': 'https://picsum.photos/300/30',
+      'message': '저도 내일 가봐야겠습니다~~'
+    },
+  ];
+
+  Widget commentChild(data) {
+    return Column(
+      //shrinkWrap: true,
+      children: [
+        for (var i = 0; i < data.length; i++)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
+            child: ListTile(
+              leading: GestureDetector(
+                onTap: () async {
+                  // Display the image in large form.
+                  print("Comment Clicked");
+                },
+                child: Container(
+                  height: 50.0,
+                  width: 50.0,
+                  decoration: new BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: new BorderRadius.all(Radius.circular(50))),
+                  child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: NetworkImage(data[i]['pic'] + "$i")),
+                ),
+              ),
+              title: Text(
+                data[i]['name'],
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(data[i]['message']),
+            ),
+          )
+      ],
     );
   }
+
+  void addComment() {
+    if (commentController.text.isNotEmpty) {
+      setState(() {
+        filedata.add({
+          'name': 'UserName',
+          'pic': 'https://picsum.photos/300/30',
+          'message': commentController.text,
+        });
+      });
+      commentController.clear();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            color: Colors.black,
+            onPressed: () => Navigator.pop(context),
+          ),
+          title: Column(
+            children: [
+              Text("마마도마 경성대점",
+                  style: TextStyle(fontSize: 30, color: Colors.black)),
+            ],
+          ),
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(30),
+            child: Container(
+              margin: EdgeInsets.only(bottom: 10),
+              child: Container(
+                margin: EdgeInsets.all(10),
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text("부산 남구 수영로 3334번길 정현빌 1층",
+                          style: TextStyle(fontSize: 15, color: Colors.black)),
+                      Text("051-622-9712",
+                          style: TextStyle(fontSize: 15, color: Colors.black)),
+                    ]),
+              ),
+            ),
+          )),
       body: SingleChildScrollView(
-        child: Container(
+        child: SafeArea(
           child: Column(
             children: [
-              Container(
-                ///대분류
-                padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.width * 0.1,
-                    left: MediaQuery.of(context).size.width * 0.05),
-                alignment: Alignment.centerLeft,
-                child: Text('편의시설', style: TextStyle(fontSize: 16)),
+              SizedBox(
+                height: 20,
               ),
               Container(
-                  ///카테고리
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.01,
-                      bottom: MediaQuery.of(context).size.height * 0.03),
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  decoration: BoxDecoration(),
-                  child: CategoryButton()),
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "정보 업데이트 하기",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      Text(
+                        "업데이트 : 2023년 02월 10일 15시 34분",
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                      ),
+                    ],
+                  )),
               Container(
-                padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.05),
-                alignment: Alignment.centerLeft,
-                child: Text("주소 검색 창 위치"),
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  color: Color(0xffcD9D9D9),
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ClipOval(
+                                child:Container(
+                                  width: 100,
+                                  height:100,
+                                  color: Colors.white,
+                                )
+                            ),
+                            Container(
+                                width: 100,
+                                height: 100,
+                                child: Center(child: Text('사진'))),
+                            Container(
+                                width: 100,
+                                height: 40,
+                                child: Center(child: Text('사진'))),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ClipOval(
+                                child:Container(
+                                  width: 100,
+                                  height:100,
+                                  color: Colors.white,
+                                )
+                            ),
+                            Container(
+                                width: 100,
+                                height: 100,
+                                child: Center(child: Text('사진'))),
+                            Container(
+                                width: 100,
+                                height: 40,
+                                child: Center(child: Text('사진'))),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ClipOval(
+                                child:Container(
+                                  width: 100,
+                                  height:100,
+                                  color: Colors.white,
+                                )
+                            ),
+                            Container(
+                                width: 100,
+                                height: 100,
+                                child: Center(child: Text('사진'))),
+                            Container(
+                                width: 100,
+                                height: 40,
+                                child: Center(child: Text('사진'))),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ClipOval(
+                                child:Container(
+                                  width: 100,
+                                  height:100,
+                                  color: Colors.white,
+                                )
+                            ),
+                            Container(
+                                width: 100,
+                                height: 100,
+                                child: Center(child: Text('사진'))),
+                            Container(
+                                width: 100,
+                                height: 40,
+                                child: Center(child: Text('사진'))),
+                          ],
+                        ),
+                      ),
+                  ],),
+                  ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 10, right: 10, bottom: 10),
+                    child: CircleAvatar(
+                      child: Image.network(
+                        'https://avatars.githubusercontent.com/u/113813770?s=400&u=c4addb4d0b81eabc9faef9f13adc3dea18ddf83a&v=4',
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Text('작성자 : 임은서'),
+                  Icon(Icons.star),
+                ]),
               ),
               Container(
-                padding:
-                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.2),
-                child: Text('지도 API'),
-              ),
-              Container(
-                ///주소
-                padding: EdgeInsets.only(
-                    left: MediaQuery.of(context).size.width * 0.05),
-                alignment: Alignment.centerLeft,
-                child: Text('주소'),
-              ),
-              Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 60,
+                  margin: EdgeInsets.symmetric(vertical: 20),
+                  color: Color(0xffcD9D9D9),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text("공감"),
+                      Row(
+                        children: [Text('공유')],
+                      )
+                    ],
+                  )),
+              commentChild(filedata),
                 ///주소 불러오는 값 임의로 지정해놨음
                 padding: EdgeInsets.only(
                     left: MediaQuery.of(context).size.width * 0.05,
@@ -68,217 +275,49 @@ class FacilityScreen extends StatelessWidget {
                 //padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
                 children: [
                   FacilityInfo(text: '휠체어 접근 가능성', icon: Icons.accessible),
-                  FacilityInfo(text: '장애인 엘리베이터', icon: Icons.elevator),
-                  FacilityInfo(text: '엘리베이터 있음', icon: Icons.elevator),
-                  FacilityInfo(text: '전동 휠체어 충전소', icon: Icons.ev_station),
+                  FacilityInfo(text: '1층에 위치함', icon: Icons.looks_one),
+                  FacilityInfo(text: '장애인 화장실', icon: Icons.wc),
+                  FacilityInfo(text: '엘리베이터', icon: Icons.elevator),
                 ],
               ),
               Container(
-                margin:
-                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.black)),
-                child: TextField(
-                  decoration: InputDecoration(focusedBorder: InputBorder.none),
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
+                  child: ListTile(
+                tileColor: Color(0xffF2F2F2),
+                leading: Container(
+                  height: 40.0,
+                  width: 40.0,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(50))),
+                  child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: NetworkImage(
+                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDJ3-SXqfJljzjSYtNKZ6LN63CjmJYCTJT8g&usqp=CAU')),
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).size.height * 0.03),
-                child: OutlinedButton(
-                  onPressed: () => showDialog(
-                    context: context,
-                    builder: (_) => RegisterDialog(),
-                  ),
-                  child: Text(
-                    '등록',
-                    style: TextStyle(color: Colors.black),
+                title: Form(
+                  key: formKey,
+                  child: TextFormField(
+                    controller: commentController,
+                    decoration: InputDecoration(
+
+                        ///댓글 창 배경색
+                        filled: true,
+                        fillColor: Color(0xffE3E3E3),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          borderSide: BorderSide.none,
+                        )),
                   ),
                 ),
-              ),
+                trailing: GestureDetector(
+                  onTap: () {
+                    addComment();
+                  },
+                  child: Icon(Icons.send_sharp, size: 30, color: Colors.black),
+                ),
+              )),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-///category_option 버튼
-const List<String> list = <String>['음식점', '카페', '공공시설', '문화시설'];
-
-class CategoryButton extends StatefulWidget {
-  const CategoryButton({Key? key}) : super(key: key);
-
-  @override
-  State<CategoryButton> createState() => _CategoryButtonState();
-}
-
-class _CategoryButtonState extends State<CategoryButton> {
-  String dropdownValue = list.first;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      ///나중에 category 디자인 필요할 때 쓰려고 Container에 담아두고 decoration 부여
-      /*decoration: BoxDecoration(
-        color: Colors.blueGrey,
-      ),*/
-      child: DropdownButton<String>(
-        ///underline 안보이게 할 때
-        //underline: SizedBox.shrink(),
-        isExpanded: true,
-        value: dropdownValue,
-        icon: const Icon(Icons.arrow_drop_down),
-        elevation: 16,
-        onChanged: (String? value) {
-          setState(() {
-            dropdownValue = value!;
-          });
-        },
-        items: list.map<DropdownMenuItem<String>>(
-          (String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          },
-        ).toList(),
-      ),
-    );
-  }
-}
-
-///image_picker 방법2 >> 나중에 합칠 때, util에 image_picker 추가해야함
-class ImageUploader extends StatefulWidget {
-  const ImageUploader({Key? key}) : super(key: key);
-  @override
-  State<ImageUploader> createState() => _ImageUploaderState();
-}
-
-class _ImageUploaderState extends State<ImageUploader> {
-  File? _image;
-  final picker = ImagePicker();
-
-  ///비동기 처리 > 이미지 가져오기
-  Future<void> _pickImage(ImageSource source) async {
-    final pickedFile = await picker.pickImage(source: source);
-    if (pickedFile != Null) {
-      ///if없어도 될 듯. 어차피 !.로 null이 아님을 정해줘서
-      setState(() {
-        _image = File(pickedFile!.path);
-      });
-    }
-  }
-
-  Widget _optionDialog() {
-    return AlertDialog(
-      content: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FloatingActionButton(
-              child: Icon(Icons.add_a_photo),
-              onPressed: () {
-                Navigator.of(context).pop();
-                _pickImage(ImageSource.camera);
-              }),
-          FloatingActionButton(
-              child: Icon(Icons.wallpaper),
-              onPressed: () {
-                Navigator.of(context).pop();
-                _pickImage(ImageSource.gallery);
-              }),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 30,
-      height: 30,
-      /*decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-      ),*/
-      child: _image == null
-          ? InkWell(
-              onTap: () =>
-                  showDialog(context: context, builder: (_) => _optionDialog()),
-              child: Icon(Icons.camera_alt),
-            )
-          : Image.file(_image!),
-    );
-  }
-}
-
-///장소정보 >> 여기서 오류난당~~
-const List<String> option_list = <String>['선택', '예', '아니오'];
-
-class FacilityInfo extends StatefulWidget {
-  final String text;
-  final IconData icon;
-  const FacilityInfo({Key? key, required this.text, required this.icon})
-      : super(key: key);
-
-  @override
-  State<FacilityInfo> createState() => _FacilityInfoState();
-}
-
-class _FacilityInfoState extends State<FacilityInfo> {
-  String dropdownValues = option_list.first;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
-      alignment: Alignment.centerLeft,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            margin: EdgeInsets.only(
-                right: MediaQuery.of(context).size.width * 0.05),
-            child: Icon(this.widget.icon),
-          ),
-          Container(
-            width: 120,
-            margin:
-                EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.2),
-            child: Text(this.widget.text),
-          ),
-          Container(
-            ///dropdownButton 정렬하려고.. > 해결해야함
-            //alignment: Alignment.centerRight,
-            child: DropdownButton<String>(
-              isDense: true,
-              //isExpanded: true,
-              value: dropdownValues,
-              icon: const Icon(Icons.arrow_drop_down),
-              elevation: 16,
-              onChanged: (String? value) {
-                setState(() {
-                  dropdownValues = value!;
-                });
-              },
-              items: option_list.map<DropdownMenuItem<String>>(
-                (String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                },
-              ).toList(),
-            ),
-          ),
-          Container(
-            margin:
-                EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
-            child: ImageUploader(),
-          ),
-        ],
       ),
     );
   }

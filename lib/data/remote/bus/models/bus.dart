@@ -7,6 +7,8 @@ class BusDto {
   late String vehicleNo;
   late bool lift;
   late bool liftStatus;
+  late String informerId;
+  late Timestamp updated;
   late DocumentReference reference;
 
   // 지역 코드 : 21(부산광역시)
@@ -16,10 +18,20 @@ class BusDto {
   late String routeId;
 
   BusDto(
-      {required this.vehicleNo, required this.lift, required this.liftStatus});
+      {required this.vehicleNo,
+      required this.lift,
+      required this.liftStatus,
+      required this.informerId,
+      Timestamp? timestamp})
+      : updated = timestamp ?? Timestamp(0, 0);
 
-  Map<String, dynamic> toMap() =>
-      {'lift': lift, 'liftStatus': liftStatus, 'vehicleNo': vehicleNo};
+  Map<String, dynamic> toMap() => {
+        'lift': lift,
+        'liftStatus': liftStatus,
+        'vehicleNo': vehicleNo,
+        'informerId': informerId,
+        'updated': FieldValue.serverTimestamp()
+      };
 
   BusDto.fromSnapshot(
       DocumentSnapshot snapshot, String _cityCode, String _routeId) {
@@ -29,6 +41,8 @@ class BusDto {
     lift = map['lift'];
     liftStatus = map['liftStatus'];
     vehicleNo = map['vehicleNo'];
+    informerId = map['informerId'];
+    updated = map['updated'];
 
     reference = snapshot.reference;
 
@@ -42,6 +56,8 @@ class BusDto {
     lift = map?['lift'];
     liftStatus = map?['liftStatus'];
     vehicleNo = map?['vehicleNo'];
+    informerId = map?['informerId'];
+    updated = map?['updated'];
 
     cityCode = _cityCode;
     routeId = _routeId;

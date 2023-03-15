@@ -1,7 +1,7 @@
 /// '정류소별로 실시간 도착예정정보 및 운행정보 목록을 조회한다.'의 응답 데이터
 class EstBusesAtBusStopResponse {
-  Header header;
-  Body body;
+  Header? header;
+  Body? body;
 
   EstBusesAtBusStopResponse({required this.header, required this.body});
 

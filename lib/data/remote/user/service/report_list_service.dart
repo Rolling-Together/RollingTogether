@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rolling_together/data/remote/bus/models/bus.dart';
 
 class ReportListService {
   final firestore = FirebaseFirestore.instance;
@@ -8,11 +9,12 @@ class ReportListService {
   Future<void> addDangerousZone(
       String dangerousZoneDocId, String userId) async {
     try {
-      await firestore.collection('Users').doc(userId).update({
+      return await Future.value(
+          firestore.collection('Users').doc(userId).update({
         'dangerousZoneReportList': FieldValue.arrayUnion([dangerousZoneDocId])
-      });
+      }));
     } catch (e) {
-      rethrow;
+      return Future.error('failed');
     }
   }
 
@@ -21,11 +23,12 @@ class ReportListService {
   Future<void> removeDangerousZone(
       String dangerousZoneDocId, String userId) async {
     try {
-      await firestore.collection('Users').doc(userId).update({
+      return await Future.value(
+          firestore.collection('Users').doc(userId).update({
         'dangerousZoneReportList': FieldValue.arrayRemove([dangerousZoneDocId])
-      });
+      }));
     } catch (e) {
-      rethrow;
+      return Future.error('failed');
     }
   }
 
@@ -33,11 +36,12 @@ class ReportListService {
   /// 매개변수 : userId - 유저UID(이메일X)
   Future<void> addFacility(String placeId, String userId) async {
     try {
-      await firestore.collection('Users').doc(userId).update({
+      return await Future.value(
+          firestore.collection('Users').doc(userId).update({
         'facilityReportList': FieldValue.arrayUnion([placeId])
-      });
+      }));
     } catch (e) {
-      rethrow;
+      return Future.error('failed');
     }
   }
 
@@ -45,38 +49,41 @@ class ReportListService {
   /// 매개변수 : userId - 유저UID(이메일X)
   Future<void> removeFacility(String placeId, String userId) async {
     try {
-      await firestore.collection('Users').doc(userId).update({
+      return await Future.value(
+          firestore.collection('Users').doc(userId).update({
         'facilityReportList': FieldValue.arrayRemove([placeId])
-      });
+      }));
     } catch (e) {
-      rethrow;
+      return Future.error('failed');
     }
   }
 
   /// 버스 정보 추가 시 로직
   /// 매개변수 : userId - 유저UID(이메일X)
-  Future<void> addBusInfo(
-      String carDocId, String areaCode, String routeId, String userId) async {
+  Future<void> updateBusInfo(BusDto busDto) async {
     try {
-      await firestore.collection('Users').doc(userId).update({
-        'busReportListMap.$carDocId': {'areaCode': areaCode, 'routeId': routeId}
-      });
+      return await Future.value(
+          firestore.collection('Users').doc(busDto.informerId).set({
+        'busReportListMap.${busDto.id}': {
+          'cityCode': busDto.cityCode,
+          'routeId': busDto.routeId
+        }
+      }));
     } catch (e) {
-      rethrow;
+      return Future.error('failed');
     }
   }
 
   /// 버스 정보 제거 시 로직
   /// 매개변수 : userId - 유저UID(이메일X)
-  Future<void> removeBusInfo(
-      String carDocId, String areaCode, String routeId, String userId) async {
+  Future<void> removeBusInfo(String carDocId, String userId) async {
     try {
-      await firestore
+      return await Future.value(firestore
           .collection('Users')
           .doc(userId)
-          .update({'busReportListMap.$carDocId': FieldValue.delete()});
+          .update({'busReportListMap.$carDocId': FieldValue.delete()}));
     } catch (e) {
-      rethrow;
+      return Future.error('failed');
     }
   }
 }
