@@ -59,6 +59,10 @@ class _CommunityScreenState extends State<CommunityScreen> {
               ),
             ],
           ),
+          
+          OutlinedButton(
+              onPressed: () {Get.to(FacilityPostScreen(context));},
+              child: Text('임시')),
 
           selectedCategory == "위험장소"
               ? Container(

@@ -29,6 +29,8 @@ dependencies:
   firebase_storage: ^11.0.14
 
   flutter_exif_rotation: ^0.5.1
+  flutter_share: ^2.0.0
+  path_provider: ^2.0.13
 
 dev_dependencies:
   flutter_test:

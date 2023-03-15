@@ -1,7 +1,11 @@
+import 'dart:js';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rolling_together/ui/screens/0_login_screen.dart';
+import 'package:rolling_together/ui/screens/7_facility_post_screen.dart';
+import 'package:rolling_together/ui/screens/9_community_screen.dart';
 
 import 'data/remote/auth/controller/firebase_auth_controller.dart';
 import 'firebase_options.dart';
@@ -17,7 +21,6 @@ void main() async {
 
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    home: LoginScreen(),
-
+    home: CommunityScreen(),
   ));
 }

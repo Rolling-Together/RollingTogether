@@ -1,7 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:rolling_together/commons/enum/facility_checklist.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'package:rolling_together/commons/utils/share_screen_shot.dart';
+import 'package:flutter_share/flutter_share.dart';
+import 'package:image_picker/image_picker.dart';
 
-import '13_facility_screen.dart';
+Future<void> shareScreenshot() async {
+  try {
+    // 캡쳐할 화면의 스크린샷 가져오기
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    // 가져온 스크린샷을 파일로 저장
+    final bytes = await pickedFile?.readAsBytes();
+    final fileName = pickedFile?.path.split('/').last;
+    final fileExtension = fileName?.split('.').last;
+    final tempDir = await getTemporaryDirectory();
+    final file = await new File('${tempDir.path}/$fileName').create();
+    await file.writeAsBytes(bytes!);
+
+    // 스크린샷을 sns에 공유
+    await FlutterShare.shareFile(
+      title: 'Share Screenshot',
+      text: 'Check out this screenshot!',
+      filePath: file.path,
+      fileType: 'image/$fileExtension',
+    );
+  } catch (e) {
+    print('Error sharing screenshot: $e');
+  }
+}
 
 /// 7. 시설 게시글
 
@@ -131,6 +159,7 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                       ),
                     ],
                   )),
+
               Container(
                 width: MediaQuery.of(context).size.width * 0.8,
                 color: Color(0xffcD9D9D9),
@@ -145,14 +174,33 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ClipOval(
-
-                              child:Container(
-                                width: 100,
-                                height:100,
-                                color: Colors.white,
-                              )
-                          ),
-
+                              child: Container(
+                            width: 100,
+                            height: 100,
+                            color: Colors.white,
+                          )),
+                          Container(
+                              width: 100,
+                              height: 100,
+                              child: Center(child: Text('사진'))),
+                          Container(
+                              width: 100,
+                              height: 40,
+                              child: Center(child: Text('사진'))),
+                        ],
+                      ),
+                    ),/*
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ClipOval(
+                              child: Container(
+                            width: 100,
+                            height: 100,
+                            color: Colors.white,
+                          )),
                           Container(
                               width: 100,
                               height: 100,
@@ -170,14 +218,11 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ClipOval(
-
-                              child:Container(
-                                width: 100,
-                                height:100,
-                                color: Colors.white,
-                              )
-                          ),
-
+                              child: Container(
+                            width: 100,
+                            height: 100,
+                            color: Colors.white,
+                          )),
                           Container(
                               width: 100,
                               height: 100,
@@ -195,14 +240,11 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ClipOval(
-
-                              child:Container(
-                                width: 100,
-                                height:100,
-                                color: Colors.white,
-                              )
-                          ),
-
+                              child: Container(
+                            width: 100,
+                            height: 100,
+                            color: Colors.white,
+                          )),
                           Container(
                               width: 100,
                               height: 100,
@@ -213,35 +255,9 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                               child: Center(child: Text('사진'))),
                         ],
                       ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ClipOval(
-
-                              child:Container(
-                                width: 100,
-                                height:100,
-                                color: Colors.white,
-                              )
-                          ),
-
-                          Container(
-                              width: 100,
-                              height: 100,
-                              child: Center(child: Text('사진'))),
-                          Container(
-                              width: 100,
-                              height: 40,
-                              child: Center(child: Text('사진'))),
-                        ],
-                      ),
-                    ),
-
-                  ],),
-
+                    ), */
+                  ],
+                ),
               ),
               Container(
                 width: MediaQuery.of(context).size.width * 0.8,
@@ -268,49 +284,48 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text("공감"),
-                      Row(
-                        children: [Text('공유')],
-                      )
+                      GestureDetector(
+                        child: Text('공유'),
+                        onTap: shareScreenshot,
+                      ),
                     ],
                   )),
-
-              commentChild(filedata ),
-
+              commentChild(filedata),
               Container(
                   child: ListTile(
-                    tileColor: Color(0xffF2F2F2),
-                    leading: Container(
-                      height: 40.0,
-                      width: 40.0,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(50))),
-                      child: CircleAvatar(
-                          radius: 50,
-                          backgroundImage: NetworkImage(
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDJ3-SXqfJljzjSYtNKZ6LN63CjmJYCTJT8g&usqp=CAU')),
-                    ),
-                    title: Form(
-                      key: formKey,
-                      child: TextFormField(
-                        controller: commentController,
-                        decoration: InputDecoration(
+                tileColor: Color(0xffF2F2F2),
+                leading: Container(
+                  height: 40.0,
+                  width: 40.0,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(50))),
+                  child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: NetworkImage(
+                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDJ3-SXqfJljzjSYtNKZ6LN63CjmJYCTJT8g&usqp=CAU')),
+                ),
+                title: Form(
+                  key: formKey,
+                  child: TextFormField(
+                    controller: commentController,
+                    decoration: InputDecoration(
 
-                          ///댓글 창 배경색
-                            filled: true,
-                            fillColor: Color(0xffE3E3E3),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(20)),
-                              borderSide: BorderSide.none,
-                            )),
-                      ),
-                    ),
-                    trailing: GestureDetector(
-                      onTap: () {
-                        addComment();
-                      },
-                      child: Icon(Icons.send_sharp, size: 30, color: Colors.black),
-                    ),
-                  )),
+                        ///댓글 창 배경색
+                        filled: true,
+                        fillColor: Color(0xffE3E3E3),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          borderSide: BorderSide.none,
+                        )),
+                  ),
+                ),
+                trailing: GestureDetector(
+                  onTap: () {
+                    addComment();
+                  },
+                  child: Icon(Icons.send_sharp, size: 30, color: Colors.black),
+                ),
+              )),
             ],
           ),
         ),
