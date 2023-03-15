@@ -145,11 +145,14 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ClipOval(
-                              child: Container(
-                            width: 100,
-                            height: 100,
-                            color: Colors.white,
-                          )),
+
+                              child:Container(
+                                width: 100,
+                                height:100,
+                                color: Colors.white,
+                              )
+                          ),
+
                           Container(
                               width: 100,
                               height: 100,
@@ -167,11 +170,14 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ClipOval(
-                              child: Container(
-                            width: 100,
-                            height: 100,
-                            color: Colors.white,
-                          )),
+
+                              child:Container(
+                                width: 100,
+                                height:100,
+                                color: Colors.white,
+                              )
+                          ),
+
                           Container(
                               width: 100,
                               height: 100,
@@ -189,11 +195,14 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ClipOval(
-                              child: Container(
-                            width: 100,
-                            height: 100,
-                            color: Colors.white,
-                          )),
+
+                              child:Container(
+                                width: 100,
+                                height:100,
+                                color: Colors.white,
+                              )
+                          ),
+
                           Container(
                               width: 100,
                               height: 100,
@@ -211,11 +220,14 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           ClipOval(
-                              child: Container(
-                            width: 100,
-                            height: 100,
-                            color: Colors.white,
-                          )),
+
+                              child:Container(
+                                width: 100,
+                                height:100,
+                                color: Colors.white,
+                              )
+                          ),
+
                           Container(
                               width: 100,
                               height: 100,
@@ -227,8 +239,9 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                         ],
                       ),
                     ),
-                  ],
-                ),
+
+                  ],),
+
               ),
               Container(
                 width: MediaQuery.of(context).size.width * 0.8,
@@ -260,55 +273,44 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                       )
                     ],
                   )),
-              commentChild(filedata),
-              Column(
-                //padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
-                children: [
-                  FacilityInfo(
-                    type: FacilityCheckListType.wheelChair,
-                  ),
-                  FacilityInfo(
-                    type: FacilityCheckListType.floorFirst,
-                  ),
-                  FacilityInfo(type: FacilityCheckListType.toilet),
-                  FacilityInfo(type: FacilityCheckListType.elevator),
-                ],
-              ),
+
+              commentChild(filedata ),
+
               Container(
                   child: ListTile(
-                tileColor: Color(0xffF2F2F2),
-                leading: Container(
-                  height: 40.0,
-                  width: 40.0,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(50))),
-                  child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: NetworkImage(
-                          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDJ3-SXqfJljzjSYtNKZ6LN63CjmJYCTJT8g&usqp=CAU')),
-                ),
-                title: Form(
-                  key: formKey,
-                  child: TextFormField(
-                    controller: commentController,
-                    decoration: InputDecoration(
+                    tileColor: Color(0xffF2F2F2),
+                    leading: Container(
+                      height: 40.0,
+                      width: 40.0,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(50))),
+                      child: CircleAvatar(
+                          radius: 50,
+                          backgroundImage: NetworkImage(
+                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDJ3-SXqfJljzjSYtNKZ6LN63CjmJYCTJT8g&usqp=CAU')),
+                    ),
+                    title: Form(
+                      key: formKey,
+                      child: TextFormField(
+                        controller: commentController,
+                        decoration: InputDecoration(
 
-                        ///댓글 창 배경색
-                        filled: true,
-                        fillColor: Color(0xffE3E3E3),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                          borderSide: BorderSide.none,
-                        )),
-                  ),
-                ),
-                trailing: GestureDetector(
-                  onTap: () {
-                    addComment();
-                  },
-                  child: Icon(Icons.send_sharp, size: 30, color: Colors.black),
-                ),
-              )),
+                          ///댓글 창 배경색
+                            filled: true,
+                            fillColor: Color(0xffE3E3E3),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                              borderSide: BorderSide.none,
+                            )),
+                      ),
+                    ),
+                    trailing: GestureDetector(
+                      onTap: () {
+                        addComment();
+                      },
+                      child: Icon(Icons.send_sharp, size: 30, color: Colors.black),
+                    ),
+                  )),
             ],
           ),
         ),
