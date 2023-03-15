@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
-import 'package:rolling_together/data/remote/metro/models/busan_metro_station_convenience.dart';
+import 'package:rolling_together/data/remote/metro/models'
+    '/busan_metro_station_convenience.dart' as busan_metro_response;
 import 'package:rolling_together/data/remote/metro/models/metro_station.dart';
 import 'package:rolling_together/data/remote/metro/service/metro_service.dart';
 
@@ -11,19 +12,7 @@ class MetroController extends GetxController {
   final metroStationMap = <String, MetroStationDto>{}.obs;
 
   // 지하철 역 장애인 편의 시설 정보
-  final Rx<Item?> convenienceInfoInMetroStation = Item(
-          sname: '',
-          wlI: 0,
-          wlO: 0,
-          elI: 0,
-          elO: 0,
-          es: 0,
-          blindroad: 0,
-          ourbridge: 0,
-          helptake: 0,
-          toilet: 0,
-          toiletGubun: '')
-      .obs;
+  final Rxn<busan_metro_response.Item> convenienceInfoInMetroStation = Rxn();
 
   /// 부산 지하철 역 목록 맵 반환
   loadMetroStationMap() {

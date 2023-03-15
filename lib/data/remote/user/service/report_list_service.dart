@@ -1,8 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:rolling_together/data/remote/bus/models/bus.dart';
+import 'package:rolling_together/data/remote/user/models/user.dart';
 
 class ReportListService {
   final firestore = FirebaseFirestore.instance;
+
+  /// 내 정보 로드
+  Future<UserDto?> loadMyUserData(String myUID) async {
+    try {
+      final result = await firestore.collection('Users').doc(myUID).get();
+      return Future.value(UserDto.fromSnapshot(result));
+    } catch (e) {
+      return Future.error('failed');
+    }
+  }
 
   /// 위험 장소 추가 시 로직
   /// 매개변수 : userId - 유저UID(이메일X)
@@ -58,17 +68,25 @@ class ReportListService {
     }
   }
 
+/*
   /// 버스 정보 추가 시 로직
   /// 매개변수 : userId - 유저UID(이메일X)
-  Future<void> updateBusInfo(BusDto busDto) async {
+  Future<void> updateBusInfo(List<String> list, String cityCode, String,
+      routeId, String informerId) async {
     try {
-      return await Future.value(
-          firestore.collection('Users').doc(busDto.informerId).set({
-        'busReportListMap.${busDto.id}': {
-          'cityCode': busDto.cityCode,
-          'routeId': busDto.routeId
-        }
-      }));
+      final batch = firestore.batch();
+      final doc =  firestore.collection('Users').doc(informerId);
+
+      for (final bus in list) {
+        batch.set(doc, {
+          'busReportListMap.$bus': {
+            'cityCode': cityCode,
+            'routeId': routeId
+          }
+        });
+      }
+
+      return await Future.value(batch.commit());
     } catch (e) {
       return Future.error('failed');
     }
@@ -86,4 +104,6 @@ class ReportListService {
       return Future.error('failed');
     }
   }
+
+   */
 }

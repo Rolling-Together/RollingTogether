@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:rolling_together/ui/screens/13_facility_screen.dart';
+import 'package:rolling_together/ui/screens/6_dangerous_zone_screen.dart';
+import 'package:rolling_together/ui/screens/8_trans_screen.dart';
 import '../../commons/widgets/custom_chip.dart';
+import 'package:get/get.dart';
 import 'new_page.dart';
 import 'option_page.dart';
 
@@ -18,6 +22,8 @@ class _MyMapScreenState extends State<MyMapScreen>
   late GoogleMapController _controller;
   Location _location = Location();
   bool _showAdditionalChips = false;
+
+  LatLng centerCoords = LatLng(0.0, 0.0);
 
   Future<LocationData?> getCurrentLocation() async {
     try {
@@ -59,6 +65,10 @@ class _MyMapScreenState extends State<MyMapScreen>
     };
   }
 
+  onCameraMoved(CameraPosition position) {
+    centerCoords = position.target;
+  }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -75,8 +85,9 @@ class _MyMapScreenState extends State<MyMapScreen>
             onMapCreated: (GoogleMapController controller) {
               _controller = controller;
             },
+            onCameraMove: onCameraMoved,
             initialCameraPosition: CameraPosition(
-              target: LatLng(37.422, -122.084),
+              target: LatLng(35.1348, 129.1009),
               zoom: 12,
             ),
           ),
@@ -87,8 +98,9 @@ class _MyMapScreenState extends State<MyMapScreen>
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 InkWell(
-                  //onTap: () => ,
-                    child: CostomChip('위험장소', Icon(Icons.dangerous) ,Colors.redAccent)),
+                    //onTap: () => ,
+                    child: CostomChip(
+                        '위험장소', Icon(Icons.dangerous), Colors.redAccent)),
                 SizedBox(width: 10),
                 GestureDetector(
                     onTap: () {
@@ -96,10 +108,10 @@ class _MyMapScreenState extends State<MyMapScreen>
                         _showAdditionalChips = !_showAdditionalChips;
                       });
                     },
-                    child: CostomChip('편의시설', Icon(Icons.place) ,Colors.yellow)
-                ),
+                    child:
+                        CostomChip('편의시설', Icon(Icons.place), Colors.yellow)),
                 SizedBox(width: 10),
-                CostomChip('대중교통', Icon(Icons.bus_alert_rounded) ,Colors.cyan)
+                CostomChip('대중교통', Icon(Icons.bus_alert_rounded), Colors.cyan)
               ],
             ),
           ),
@@ -118,7 +130,8 @@ class _MyMapScreenState extends State<MyMapScreen>
                           MaterialPageRoute(builder: (context) => NewPage()),
                         );
                       },
-                      child: CostomChip('식당', Icon(Icons.fastfood), Colors.yellow),
+                      child:
+                          CostomChip('식당', Icon(Icons.fastfood), Colors.yellow),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -127,7 +140,8 @@ class _MyMapScreenState extends State<MyMapScreen>
                           MaterialPageRoute(builder: (context) => NewPage()),
                         );
                       },
-                      child: CostomChip('카페', Icon(Icons.emoji_food_beverage), Colors.yellow),
+                      child: CostomChip(
+                          '카페', Icon(Icons.emoji_food_beverage), Colors.yellow),
                     ),
                   ],
                 ),
@@ -137,13 +151,13 @@ class _MyMapScreenState extends State<MyMapScreen>
           Positioned(
             right: 5,
             bottom: 100,
-              child: FloatingActionButton(
-                elevation: 10,
-                onPressed: () {
-                  showOptions(context);
-                },
-                child: Text('글쓰기'),
-              ),
+            child: FloatingActionButton(
+              elevation: 10,
+              onPressed: () {
+                showOptions(context);
+              },
+              child: Text('글쓰기'),
+            ),
           ),
           Positioned(
             right: 5,
@@ -159,13 +173,11 @@ class _MyMapScreenState extends State<MyMapScreen>
               },
               child: Icon(Icons.my_location),
             ),
-
           ),
         ],
       ), // Unique bucket for this page
     );
   }
-
 
   _showBlueMarkerBottomSheet() {
     showModalBottomSheet(
@@ -356,34 +368,19 @@ class _MyMapScreenState extends State<MyMapScreen>
               ListTile(
                 title: Text('위험장소'),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => Option1Screen(),
-                    ),
-                  );
+                  Get.to(LocationScreen(), arguments: {'latlng': centerCoords});
                 },
               ),
               ListTile(
                 title: Text('편의시설'),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => Option2Screen(),
-                    ),
-                  );
+                  Get.to(FacilityScreen(),  arguments: {'latlng': centerCoords});
                 },
               ),
               ListTile(
                 title: Text('대중교통'),
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => Option3Screen(),
-                    ),
-                  );
+                  Get.to(TransScreen(), arguments: {'latlng': centerCoords});
                 },
               ),
             ],
@@ -393,4 +390,3 @@ class _MyMapScreenState extends State<MyMapScreen>
     );
   }
 }
-

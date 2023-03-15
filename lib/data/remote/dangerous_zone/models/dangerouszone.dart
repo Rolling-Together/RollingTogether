@@ -16,6 +16,7 @@ class DangerousZoneDto {
 
   LikesDangerousZoneDto? likes;
 
+
   DangerousZoneDto(
       {this.id,
       required this.categoryId,
