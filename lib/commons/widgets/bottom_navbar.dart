@@ -7,6 +7,7 @@ import '../../ui/screens/11_guide_screen.dart';
 import '../../ui/screens/12_profile_screen.dart';
 
 
+
 class BottomNavbar extends StatefulWidget {
   const BottomNavbar({super.key});
 
@@ -21,7 +22,7 @@ class _BottomNavbarState extends State<BottomNavbar>
   final _pages = [
     PageStorage(
       bucket: PageStorageBucket(),
-      child: MyMapScreen(),
+      child: MapSample(),
     ),
     PageStorage(
       bucket: PageStorageBucket(),
