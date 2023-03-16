@@ -14,6 +14,7 @@ import 'package:rolling_together/data/remote/search_places/controllers/search_pl
 import 'package:rolling_together/data/remote/search_places/models/places_response.dart';
 import 'package:rolling_together/ui/screens/search_places/search_places_screen.dart';
 
+import '../../data/remote/dangerous_zone/controllers/add_dangerous_zone_controller.dart';
 import '../../data/remote/facility/models/facility.dart';
 
 final TextEditingController reviewTextEditingController =
@@ -30,6 +31,10 @@ class UpdateFacilityScreenState extends State<FacilityScreen> {
   final FacilityController facilityController = Get.put(FacilityController());
   final SearchPlacesController searchPlacesController =
       Get.put(SearchPlacesController());
+
+  final AddDangerousZoneController addDangerousZoneController = Get.put(
+      AddDangerousZoneController(),
+      tag: AddDangerousZoneController.tag);
 
   @override
   void dispose() {
@@ -96,7 +101,9 @@ class UpdateFacilityScreenState extends State<FacilityScreen> {
                                     "")))),
                     Container(
                       padding: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.05),
+                          left: MediaQuery.of(context).size.width * 0.03,
+                          right: MediaQuery.of(context).size.width * 0.03
+                      ),
                       alignment: Alignment.centerLeft,
                       child: InkWell(
                         onTap: () async {
@@ -126,9 +133,28 @@ class UpdateFacilityScreenState extends State<FacilityScreen> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(
-                          MediaQuery.of(context).size.width * 0.2),
-                      child: Text('지도 API'),
+                      height: 150,
+                      margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.04),
+                      child: Stack(
+                        children: [
+                          GoogleMap(
+                            initialCameraPosition: CameraPosition(
+                              target: LatLng(37,37), //컨트롤러사용시 빈값에 접근한다는 에러 발생
+                              zoom: 14,
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              width: 5,
+                              height: 5,
+                              child: Image.asset(
+                                'https://th.bing.com/th/id/OIP.RaP9RPe_tQF_LetUdg0n5gHaHa?w=186&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     Container(
                       ///주소

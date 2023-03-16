@@ -99,9 +99,28 @@ class _LocationScreenState extends State<LocationScreen> {
                 ImageUploader(),
                 //]),
                 Container(
-                  padding:
-                      EdgeInsets.all(MediaQuery.of(context).size.width * 0.2),
-                  child: Text('지도 API'),
+                  height: 150,
+                  margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+                  child: Stack(
+                    children: [
+                      GoogleMap(
+                        initialCameraPosition: CameraPosition(
+                        target: LatLng(addDangerousZoneController.latlng[0], addDangerousZoneController.latlng[1]),
+                        zoom: 14,
+                      ),
+                    ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                            width: 5,
+                            height: 5,
+                            child: Image.asset(
+              'https://th.bing.com/th/id/OIP.RaP9RPe_tQF_LetUdg0n5gHaHa?w=186&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7',
+            ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 Container(
 
