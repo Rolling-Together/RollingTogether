@@ -154,6 +154,9 @@ class _LocationScreenState extends State<LocationScreen> {
                               informerId:
                                   addDangerousZoneController.myUIdInFirebase,
                               tipOffPhotos: [],
+                              likes: {},
+                              addressName: reverseGeocodingController
+                                  .addressResult.value!.address.addressName,
                               informerName:
                                   addDangerousZoneController.myUserName),
                           addDangerousZoneController.imageList);

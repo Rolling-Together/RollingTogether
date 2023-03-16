@@ -10,7 +10,7 @@ class LikesDangerousZoneService {
       String dangerousZoneDocId, String userId, String userName) async {
     try {
       return await Future.value(firestore
-          .collection('LikesDangerousZone')
+          .collection('DangerousZone')
           .doc(dangerousZoneDocId)
           .update({'likes.$userId': userName}));
     } catch (e) {
@@ -24,7 +24,7 @@ class LikesDangerousZoneService {
       String dangerousZoneDocId, String userId) async {
     try {
       return await Future.value(firestore
-          .collection('LikesDangerousZone')
+          .collection('DangerousZone')
           .doc(dangerousZoneDocId)
           .update({'likes.$userId': FieldValue.delete()}));
     } catch (e) {
@@ -34,12 +34,10 @@ class LikesDangerousZoneService {
 
   /// 위험 장소 공감 데이터 로드
   Future<Map<String, LikesDangerousZoneDto>> getLikesDangerousZoneList(
-      List<String> dangerousZoneDocIds) async {
-    final query = firestore.collection('LikesDangerousZone');
+      String myUid) async {
+    final query = firestore.collection('DangerousZone');
 
-    var result = await query
-        .where('dangerousZoneDocId', whereIn: dangerousZoneDocIds)
-        .get();
+    var result = await query.where('likes', arrayContains: myUid).get();
 
     if (result.docs.isNotEmpty) {
       final Map<String, LikesDangerousZoneDto> map = {};
@@ -63,7 +61,7 @@ class LikesDangerousZoneService {
     final minLon = (longitude) - rangeKM;
     final maxLon = (longitude) + rangeKM;
 
-    final query = firestore.collection('LikesDangerousZone');
+    final query = firestore.collection('DangerousZone');
 
     var result = await query
         .where('latlng', isGreaterThanOrEqualTo: [minLat, minLon])

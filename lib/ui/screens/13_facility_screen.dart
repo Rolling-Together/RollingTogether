@@ -248,7 +248,7 @@ class UpdateFacilityScreenState extends State<FacilityScreen> {
 const List<String> list = <String>['음식점', '카페', '공공시설', '문화시설'];
 
 class CategoryButton extends StatefulWidget {
-  final FacilityType facilityType;
+  final SharedDataCategory facilityType;
 
   const CategoryButton({Key? key, required this.facilityType})
       : super(key: key);

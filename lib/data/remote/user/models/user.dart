@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../grade/models/user_grade.dart';
+
 class UserDto {
   late String? id;
   late String name;
@@ -9,6 +11,8 @@ class UserDto {
   late List<String> dangerousZoneLikeList;
   late List<String> facilityReviewList;
   late DocumentReference reference;
+
+  UserGradeDto? userGradeDto;
 
   UserDto(
       {this.id,

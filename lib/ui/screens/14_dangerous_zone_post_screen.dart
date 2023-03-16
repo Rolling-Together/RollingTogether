@@ -6,8 +6,6 @@ import 'package:get/get.dart';
 /// 14. 위험장소 게시글
 
 class DangerousZonePostScreen extends StatefulWidget {
-  DangerousZonePostScreen(BuildContext context);
-
   _DangerousZonePostScreenState createState() =>
       _DangerousZonePostScreenState();
 }

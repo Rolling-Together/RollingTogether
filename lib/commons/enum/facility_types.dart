@@ -1,6 +1,4 @@
-import 'package:rolling_together/commons/class/facility_tile.dart';
-
-enum FacilityType {
+enum SharedDataCategory {
   /// 음식점, 카페
   restaurantCafe('0', '음식점, 카페'),
 
@@ -24,14 +22,28 @@ enum FacilityType {
 
   /// 교통시설
   transportation('7', '교통시설'),
-  undefined('-1', '정의되지않음');
 
-  const FacilityType(this.id, this.name);
+  /// 대중 교통
+  publicTransport('8', '대중 교통'),
+
+  /// 편의 시설
+  facility('9', '편의 시설'),
+
+  /// 위험 장소
+  dangerousZone('10', '위험 장소'),
+
+  /// 정의 되지 않음
+  undefined('-1', '정의 되지 않음'),
+
+  /// 전체
+  all('11', '전체');
+
+  const SharedDataCategory(this.id, this.name);
 
   final String id;
   final String name;
 
-  factory FacilityType.getByFieldName(String fieldName) =>
-      FacilityType.values.firstWhere((element) => element.id == fieldName,
-          orElse: () => FacilityType.undefined);
+  factory SharedDataCategory.getByFieldName(String fieldName) =>
+      SharedDataCategory.values.firstWhere((element) => element.id == fieldName,
+          orElse: () => SharedDataCategory.undefined);
 }

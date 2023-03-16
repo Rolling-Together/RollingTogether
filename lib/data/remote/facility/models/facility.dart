@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rolling_together/commons/utils/facility_type_util.dart';
+
+import '../../../../commons/enum/facility_types.dart';
 
 class FacilityDto {
   late String placeId;
@@ -14,6 +17,8 @@ class FacilityDto {
   late Map<String, Map<String, dynamic>> checkListMap;
   late Timestamp checkListLastUpdate;
   late DocumentReference reference;
+
+  late SharedDataCategory category;
 
   FacilityDto(
       {required this.placeId,
@@ -60,6 +65,8 @@ class FacilityDto {
     informerId = map['informerId'];
     checkListMap = map['checkListMap'];
     checkListLastUpdate = map['checkListLastUpdate'];
+
+    category = FacilityTypeUtil.toEnum(categoryGroupCode, categoryName);
 
     reference = snapshot.reference;
   }

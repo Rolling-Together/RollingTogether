@@ -19,7 +19,6 @@ import '../models/review.dart';
 class FacilityController extends GetxController {
   final imgUploadService = ImgUploadService();
   final facilityService = FacilityService();
-  final reportService = ReportListService();
 
   final TextEditingController reviewTextEditingController =
   TextEditingController();
@@ -53,7 +52,7 @@ class FacilityController extends GetxController {
 
   /// 해당 위/경도 근처에 있는 장소(편의 시설) 목록 로드
   getFacilityList(
-      List<FacilityType> facilityTypes, double latitude, double longitude) {
+      List<SharedDataCategory> facilityTypes, double latitude, double longitude) {
     final categoryIds = facilityTypes.map((e) => e.id).toList();
     facilityService.getFacilityList(categoryIds, latitude, longitude).then(
         (value) {
@@ -100,8 +99,7 @@ class FacilityController extends GetxController {
     facilityDto.checkListMap = finalCheckListMap;
 
     facilityService.updateFacility(facilityDto).then((value) {
-      // 편의시설 업데이트 완료 -> 이미지 업로드, 내 제보 목록에 추가
-      reportService.addFacility(facilityDto.placeId, facilityDto.informerId);
+      // 편의시설 업데이트 완료 -> 이미지 업로드
 
       imgUploadService.uploadImgs('facilitychecklist', images).then((value) {
         updateFacilityResult.value = true;

@@ -2,6 +2,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:rolling_together/commons/enum/facility_checklist.dart';
+import 'package:rolling_together/commons/enum/facility_types.dart';
 
 import '../../commons/widgets/custom_chip.dart';
 import '13_facility_screen.dart';
@@ -356,7 +358,9 @@ class _MapSampleState extends State<MapSample> {
                     CostomChip('식당', Icon(Icons.fastfood), Colors.yellow),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+
+                    },
                     child: CostomChip(
                         '카페', Icon(Icons.emoji_food_beverage), Colors.yellow),
                   ),

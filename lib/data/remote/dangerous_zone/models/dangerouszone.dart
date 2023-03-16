@@ -10,31 +10,34 @@ class DangerousZoneDto {
   late String informerId;
   late String informerName;
   late List<String> tipOffPhotos;
+  late String addressName;
 
+  late Map<String, String> likes;
   late Timestamp dateTime;
   late DocumentReference? reference;
 
-  LikesDangerousZoneDto? likes;
-
-
-  DangerousZoneDto(
-      {this.id,
-      required this.categoryId,
-      required this.description,
-      required this.latlng,
-      required this.informerId,
-      required this.tipOffPhotos,
-      required this.informerName,
-      Timestamp? dateTime})
+  DangerousZoneDto({this.id,
+    required this.categoryId,
+    required this.description,
+    required this.latlng,
+    required this.informerId,
+    required this.tipOffPhotos,
+    required this.informerName,
+    required this.addressName,
+    required this.likes,
+    Timestamp? dateTime})
       : dateTime = dateTime ?? Timestamp(0, 0);
 
-  Map<String, dynamic> toMap() => {
+  Map<String, dynamic> toMap() =>
+      {
         'categoryId': categoryId,
         'description': description,
         'latlng': latlng,
         'informerId': informerId,
         'informerName': informerName,
         'tipOffPhotos': tipOffPhotos,
+        'addressName': addressName,
+        'likes': likes,
         'dateTime': FieldValue.serverTimestamp(),
       };
 
@@ -47,8 +50,10 @@ class DangerousZoneDto {
     latlng = map['latlng'];
     informerId = map['informerId'];
     informerName = map['informerName'];
+    addressName = map['addressName'];
     tipOffPhotos = map['tipOffPhotos'];
     dateTime = map['dateTime'];
+    likes = map['likes'];
 
     reference = snapshot.reference;
   }
@@ -60,7 +65,9 @@ class DangerousZoneDto {
     latlng = map?['latlng'];
     informerId = map?['informerId'];
     informerName = map?['informerName'];
+    addressName = map?['addressName'];
     tipOffPhotos = map?['tipOffPhotos'];
     dateTime = map?['dateTime'];
+    likes = map?['likes'];
   }
 }

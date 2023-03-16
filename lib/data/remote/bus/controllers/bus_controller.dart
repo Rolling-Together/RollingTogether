@@ -11,7 +11,6 @@ import '../models/jsonresponse/get_bus_stop_list_around_latlng_response.dart'
 
 class BusController extends GetxController {
   final busService = BusService();
-  final reportService = ReportListService();
 
   ///  파이어스토어에 저장된 버스 노선 별 차량 목록
   final RxList<BusDto> carList = <BusDto>[].obs;
