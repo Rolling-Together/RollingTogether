@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
-import 'package:rolling_together/commons/utils/share_screen_shot.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:image_picker/image_picker.dart';
 
