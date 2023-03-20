@@ -78,8 +78,8 @@ class _TransScreenState extends State<TransScreen> {
               Container(
 
                   ///버스 노선 목록
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.05),
+                  /*padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.05),*/
                   alignment: Alignment.center,
                   width: MediaQuery.of(context).size.width * 0.9,
                   decoration: BoxDecoration(),
