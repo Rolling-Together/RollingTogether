@@ -19,6 +19,6 @@ void main() async {
 
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    home: CommunityScreen(),
+    home:CommunityScreen(),
   ));
 }
