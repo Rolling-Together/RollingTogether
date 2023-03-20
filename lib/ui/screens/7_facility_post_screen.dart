@@ -1,35 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'dart:io';
-import 'package:rolling_together/commons/utils/share_screen_shot.dart';
-import 'package:flutter_share/flutter_share.dart';
 import 'package:image_picker/image_picker.dart';
-
-Future<void> shareScreenshot() async {
-  try {
-    // 캡쳐할 화면의 스크린샷 가져오기
-    final pickedFile =
-    await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    // 가져온 스크린샷을 파일로 저장
-    final bytes = await pickedFile?.readAsBytes();
-    final fileName = pickedFile?.path.split('/').last;
-    final fileExtension = fileName?.split('.').last;
-    final tempDir = await getTemporaryDirectory();
-    final file = await new File('${tempDir.path}/$fileName').create();
-    await file.writeAsBytes(bytes!);
-
-    // 스크린샷을 sns에 공유
-    await FlutterShare.shareFile(
-      title: 'Share Screenshot',
-      text: 'Check out this screenshot!',
-      filePath: file.path,
-      fileType: 'image/$fileExtension',
-    );
-  } catch (e) {
-    print('Error sharing screenshot: $e');
-  }
-}
 
 /// 7. 시설 게시글
 
@@ -286,7 +257,7 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                       Text("공감"),
                       GestureDetector(
                         child: Text('공유'),
-                        onTap: shareScreenshot,
+                        onTap: (){},
                       ),
                     ],
                   )),
