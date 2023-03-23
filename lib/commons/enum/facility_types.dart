@@ -46,4 +46,16 @@ enum SharedDataCategory {
   factory SharedDataCategory.getByFieldName(String fieldName) =>
       SharedDataCategory.values.firstWhere((element) => element.id == fieldName,
           orElse: () => SharedDataCategory.undefined);
+
+  static List<SharedDataCategory> toList() => [
+        SharedDataCategory.restaurantCafe,
+        SharedDataCategory.healthCare,
+        SharedDataCategory.cultureSports,
+        SharedDataCategory.accommodation,
+        SharedDataCategory.publicEducation,
+        SharedDataCategory.welFare,
+        SharedDataCategory.commercialProperty,
+        SharedDataCategory.transportation,
+        SharedDataCategory.publicTransport
+      ];
 }

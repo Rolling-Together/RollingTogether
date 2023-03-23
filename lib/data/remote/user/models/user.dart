@@ -6,30 +6,19 @@ class UserDto {
   late String? id;
   late String name;
   late String email;
-  late List<String> dangerousZoneReportList;
-  late List<String> facilityReportList;
-  late List<String> dangerousZoneLikeList;
-  late List<String> facilityReviewList;
   late DocumentReference reference;
 
   UserGradeDto? userGradeDto;
 
-  UserDto(
-      {this.id,
-      required this.name,
-      required this.email,
-      required this.dangerousZoneReportList,
-      required this.facilityReportList,
-      required this.dangerousZoneLikeList,
-      required this.facilityReviewList});
+  UserDto({
+    this.id,
+    required this.name,
+    required this.email,
+  });
 
   Map<String, dynamic> toMap() => {
         'name': name,
         'email': email,
-        'dangerousZoneReportList': dangerousZoneReportList,
-        'facilityReportList': facilityReportList,
-        'dangerousZoneLikeList': dangerousZoneLikeList,
-        'facilityReviewList': facilityReviewList,
       };
 
   UserDto.fromSnapshot(DocumentSnapshot snapshot) {
@@ -38,10 +27,6 @@ class UserDto {
     id = snapshot.reference.id;
     name = map['name'];
     email = map['email'];
-    dangerousZoneReportList = map['dangerousZoneReportList'];
-    facilityReportList = map['facilityReportList'];
-    dangerousZoneLikeList = map['dangerousZoneLikeList'];
-    facilityReviewList = map['facilityReviewList'];
 
     reference = snapshot.reference;
   }
@@ -50,9 +35,5 @@ class UserDto {
     id = _id;
     name = map?['name'];
     email = map?['email'];
-    dangerousZoneReportList = map?['dangerousZoneReportList'];
-    facilityReportList = map?['facilityReportList'];
-    dangerousZoneLikeList = map?['dangerousZoneLikeList'];
-    facilityReviewList = map?['facilityReviewList'];
   }
 }

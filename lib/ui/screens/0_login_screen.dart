@@ -10,23 +10,10 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: Obx(() {
-      if (authController.user == null) {
+      if (authController.myUserDto.value == null) {
         return loginBody(context);
       } else {
-        return AlertDialog(
-          title: Container(
-            alignment: Alignment.center,
-            child: Text('로그인 성공'),
-          ),
-          actions: [
-            TextButton(
-              child: Text('확인'),
-              onPressed: () {
-                Get.to(InitMapScreen());
-              },
-            ),
-          ],
-        );
+        return Container();
       }
     }));
   }
@@ -39,7 +26,7 @@ class LoginScreen extends StatelessWidget {
             padding: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * 0.2,
                 bottom: MediaQuery.of(context).size.height * 0.1),
-            child: Text(
+            child: const Text(
               'Rolling\nTogether',
               style: TextStyle(
                 color: Colors.white,
@@ -54,7 +41,7 @@ class LoginScreen extends StatelessWidget {
             ),
         Container(
           color: Colors.white,
-          padding: EdgeInsets.only(top: 50, bottom: 0),
+          padding: const EdgeInsets.only(top: 50, bottom: 0),
           height: MediaQuery.of(context).size.height,
           child: _LoginForm(),
         ),
@@ -68,24 +55,25 @@ Widget _LoginForm() {
     child: Column(
       children: [
         Container(
-          padding: EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.only(bottom: 10),
           width: 300,
           child: CustomTextFormField(
             controller: authController.idTextController,
             hint: "ID", //// 텍스트 정렬 center
           ),
         ),
-        Container(
+        SizedBox(
           width: 300,
           child: CustomTextFormField(
             controller: authController.pwTextController,
             hint: "Password",
+            isPassword: true,
           ),
         ),
         Container(
           width: 300,
           height: 40,
-          margin: EdgeInsets.only(top: 30),
+          margin: const EdgeInsets.only(top: 30),
           child: CustomElevatedButton(
             text: "login",
             funPageRoute: () {
@@ -94,7 +82,7 @@ Widget _LoginForm() {
             },
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
       ],
     ),
   );
@@ -107,8 +95,10 @@ class CustomTextFormField extends StatelessWidget {
 
   final String hint;
   final TextEditingController controller;
+  final bool isPassword;
 
-  const CustomTextFormField({required this.hint, required this.controller});
+  const CustomTextFormField(
+      {required this.hint, required this.controller, this.isPassword = false});
 
   @override
   Widget build(BuildContext context) {
@@ -122,16 +112,17 @@ class CustomTextFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       textAlignVertical: TextAlignVertical.bottom,
+      obscureText: isPassword,
       decoration: InputDecoration(
         isDense: true,
-        contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+        contentPadding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
         hintText: hint,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: Color(0xff006285),
           ),
         ),
@@ -140,7 +131,7 @@ class CustomTextFormField extends StatelessWidget {
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: Colors.red,
           ),
         ),
@@ -161,7 +152,7 @@ class CustomElevatedButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: Color(0xff2D3C72),
-        minimumSize: Size(double.infinity, 50),
+        minimumSize: const Size(double.infinity, 50),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),

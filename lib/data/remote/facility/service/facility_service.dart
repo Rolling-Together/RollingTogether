@@ -18,18 +18,22 @@ class FacilityService {
 
     final query = firestore.collection('Facilities');
 
-    var result = await query
-        .where('latlng', isGreaterThanOrEqualTo: [minLat, minLon])
-        .where('latlng', isLessThanOrEqualTo: [maxLat, maxLon])
-        .where('categoryId', whereIn: facilityTypes)
-        .get();
+    var result = await query.where('latlng', isGreaterThanOrEqualTo: [
+      minLat,
+      minLon
+    ]).where('latlng', isLessThan: [maxLat, maxLon]).get();
 
     if (result.docs.isNotEmpty) {
       List<FacilityDto> list = [];
+
       for (var snapshot in result.docs) {
-        list.add(FacilityDto.fromSnapshot(snapshot));
+        var dto = FacilityDto.fromSnapshot(snapshot);
+        if (facilityTypes.contains(dto.categoryId)) {
+          list.add(dto);
+        }
       }
       return Future.value(list);
+
     } else {
       return Future.value(List.empty());
     }
@@ -72,8 +76,7 @@ class FacilityService {
         return await Future.value(
             collection.doc(facilityDto.placeId).update(map));
       } else {
-        return await Future.value(
-            collection.doc(facilityDto.placeId).set(map));
+        return await Future.value(collection.doc(facilityDto.placeId).set(map));
       }
     } catch (e) {
       return Future.error('failed');

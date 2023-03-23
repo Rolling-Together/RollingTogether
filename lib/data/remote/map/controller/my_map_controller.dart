@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rolling_together/data/remote/bus/models/jsonresponse'
     '/get_bus_stop_list_around_latlng_response.dart' as bus_stop_response;
 import 'package:rolling_together/data/remote/bus/service/bus_service.dart';
@@ -29,9 +28,7 @@ class MyMapController extends GetxController {
   final RxSet<SharedDataCategory> selectedCategorySet = RxSet();
 
   /// 지도 중심부 좌표, 지도 카메라 변경 될 때 마다 값 업데 이트
-  LatLng lastCoords;
-
-  MyMapController({required this.lastCoords});
+  final RxList<double> lastCoords = RxList([35.1343, 129.0884]);
 
   loadDataList(List<SharedDataCategory> selectedCategoryList, bool show) {
     if (!show) {
@@ -91,8 +88,9 @@ class MyMapController extends GetxController {
   }
 
   loadBusStopList() {
-    busService.getBusStopList(lastCoords.latitude, lastCoords.longitude).then(
-        (response) {
+    busService
+        .getBusStopList(lastCoords.value.first, lastCoords.value.last)
+        .then((response) {
       busStopList.value = response.response.body.items.item;
     }, onError: (error) {
       busStopList.value = [];
@@ -101,7 +99,7 @@ class MyMapController extends GetxController {
 
   loadMetroStationList() {
     metroService
-        .loadAroundStations(lastCoords.latitude, lastCoords.longitude)
+        .loadAroundStations(lastCoords.value.first, lastCoords.value.last)
         .then((response) {
       metroStationList.value = response;
     }, onError: (error) {
@@ -112,7 +110,7 @@ class MyMapController extends GetxController {
   loadFacilities(List<SharedDataCategory> categoryList) {
     facilityService
         .getFacilityList(categoryList.map((e) => e.id).toList(),
-            lastCoords.latitude, lastCoords.longitude)
+            lastCoords.value.first, lastCoords.value.last)
         .then((response) {
       Map<SharedDataCategory, List<FacilityDto>> responseMap = {};
 
@@ -134,7 +132,7 @@ class MyMapController extends GetxController {
 
   loadDangerousZoneList() {
     dangerousZoneService
-        .getDangerousZoneList(lastCoords.latitude, lastCoords.longitude)
+        .getDangerousZoneList(lastCoords.value.first, lastCoords.value.last)
         .then((response) {
       dangerousZoneList.value = response;
     }, onError: (error) {

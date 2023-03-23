@@ -27,6 +27,7 @@ dependencies:
   comment_box: ^0.0.17
 
   firebase_storage: ^11.0.14
+  shared_preferences: ^2.0.18
 
   flutter_exif_rotation: ^0.5.1
 

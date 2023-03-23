@@ -1,16 +1,40 @@
-import 'dart:math';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:rolling_together/commons/class/facility_tile.dart';
-import 'package:rolling_together/commons/class/dangerous_zone_tile.dart';
-import 'package:rolling_together/commons/class/popular_post_tile.dart';
+import 'package:rolling_together/commons/class/i_refresh_data.dart';
 import 'package:rolling_together/commons/enum/facility_types.dart';
-import 'package:rolling_together/commons/widgets/custom_appbar.dart';
-import '../../commons/utils/button.dart';
 
-class CommunityScreen extends StatefulWidget {
+import '../../commons/widgets/custom_appbar.dart';
+import '../../data/remote/community/controller/community_controller.dart';
+import '../../data/remote/dangerous_zone/controllers/dangerous_zone_controller.dart';
+import '../../data/remote/facility/controllers/facility_controller.dart';
+import '../../data/remote/map/controller/my_map_controller.dart';
+import 'community/all_post_list_screen.dart';
+import 'community/dangerous_zones_list_screen.dart';
+import 'community/facility_list_screen.dart';
+
+class CommunityScreen extends StatefulWidget implements OnRefreshDataListener {
+  final CommunityController communityController =
+      Get.put(CommunityController(), permanent: true);
+  final MyMapController myMapController = Get.find<MyMapController>();
+
+  final DangerousZoneController dangerousZoneController =
+      Get.put(DangerousZoneController());
+
+  final FacilityController facilityController = Get.put(FacilityController());
+
+  @override
   _CommunityScreenState createState() => _CommunityScreenState();
+
+  @override
+  void refreshData() {
+    if (communityController.lastCoords.first !=
+            myMapController.lastCoords.first ||
+        communityController.lastCoords.last !=
+            myMapController.lastCoords.last) {
+      communityController.lastCoords.value = myMapController.lastCoords;
+    }
+    communityController.reverseGeocoding();
+  }
 }
 
 class _CommunityScreenState extends State<CommunityScreen> {
@@ -18,8 +42,18 @@ class _CommunityScreenState extends State<CommunityScreen> {
 
   @override
   Widget build(BuildContext context) {
+    widget.communityController.lastCoords.value =
+        widget.myMapController.lastCoords;
+    widget.communityController.reverseGeocoding();
+
     return Scaffold(
-      appBar: CustomAppBar(),
+      appBar: AppBar(title: Obx(() {
+        if (widget.communityController.lastAddress.value == '') {
+          return const Text('loading...');
+        } else {
+          return Text(widget.communityController.lastAddress.value);
+        }
+      })),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -36,18 +70,25 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   selected: selectedCategory == category,
                   onSelected: (bool selected) {
                     setState(() {
-                      selectedCategory = selected ? category : SharedDataCategory.all;
+                      selectedCategory =
+                          selected ? category : SharedDataCategory.all;
                     });
                   },
                 );
               }).toList(),
             ),
             const SizedBox(height: 10.0),
+            if (selectedCategory == SharedDataCategory.dangerousZone)
+              Expanded(child: DangerousZoneListScreen())
+            else if (selectedCategory == SharedDataCategory.facility)
+              Expanded(child: FacilityListScreenWidget())
+            else
+              Expanded(child: (AllPostListScreen()))
           ],
         ),
       ),
     );
-
+/*
     return Scaffold(
       appBar: CustomAppBar(),
       body: Column(
@@ -145,5 +186,6 @@ class _CommunityScreenState extends State<CommunityScreen> {
         ],
       ),
     );
+ */
   }
 }

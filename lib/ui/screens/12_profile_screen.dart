@@ -3,7 +3,14 @@ import 'package:get/get.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/models/dangerouszone.dart';
 import 'package:rolling_together/data/remote/user/controllers/my_data_controller.dart';
 
-class ProfileScreen extends StatelessWidget {
+import '../../commons/class/firebase_storage.dart';
+import '../../commons/class/i_refresh_data.dart';
+import '../../config.dart';
+import '../../data/remote/auth/controller/firebase_auth_controller.dart';
+import '../../data/remote/dangerous_zone/controllers/dangerous_zone_controller.dart';
+import '14_dangerous_zone_post_screen.dart';
+
+class ProfileScreen extends StatelessWidget implements OnRefreshDataListener {
   final MyDataController myDataController =
       Get.put(MyDataController(), permanent: true);
 
@@ -30,18 +37,25 @@ class ProfileScreen extends StatelessWidget {
                 left: MediaQuery.of(context).size.width * 0.05,
               ),
               child: Obx(() => Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(myDataController.myUserDto.value?.name ?? "이름",
+                      Text(AuthController.to.myUserDto.value!.name ?? "이름",
                           style: const TextStyle(fontSize: 20)),
-                      Expanded(
+                      Flexible(
+                        fit: FlexFit.loose,
                         child: Container(
-                          alignment: Alignment.centerLeft,
-                          //color: Colors.red,
-                          child: Icon(Icons.star,
-                              color: myDataController.myUserDto.value
-                                      ?.userGradeDto?.iconColor ??
-                                  Colors.grey),
-                        ),
+                            alignment: Alignment.centerLeft,
+                            child: Row(
+                              children: [
+                                Icon(Icons.star,
+                                    color: AuthController.to.myUserDto.value
+                                            ?.userGradeDto?.iconColor ??
+                                        Colors.grey),
+                                Text(
+                                    '${AuthController.to.myUserDto.value?.userGradeDto?.reportCount}회' ??
+                                        '0회')
+                              ],
+                            )),
                       )
                     ],
                   )),
@@ -51,7 +65,7 @@ class ProfileScreen extends StatelessWidget {
             child: Container(
                 //color: Colors.indigo,
                 alignment: Alignment.centerRight,
-                child: Icon(
+                child: const Icon(
                   Icons.settings_outlined,
                 )),
           ),
@@ -67,12 +81,19 @@ class ProfileScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            UserInfo(context),
             MyLikeDangerousZonesWidget(),
             MySharedDangerousZonesWidget(),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void refreshData() {
+    myDataController.loadMySharedDangerousZone();
+    myDataController.loadMyLikeDangerousZone();
   }
 }
 
@@ -87,25 +108,50 @@ class MyLikeDangerousZonesWidget extends StatelessWidget {
           left: MediaQuery.of(context).size.width * 0.025,
           top: MediaQuery.of(context).size.height * 0.02),
       child: InkWell(
-          onTap: () {},
+          onTap: () {
+            Get.to(DangerousZonePostScreen(),
+                arguments: {'dangerousZoneDto': dangerousZoneDto});
+          },
           child: Column(
             children: [
-              Image.network(
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4h-NJbPkhTtNdwdDfYl1eSBbj6uc53-qdyw&usqp=CAU',
-                height: MediaQuery.of(context).size.height * 0.2,
-                width: MediaQuery.of(context).size.width * 0.3,
-                fit: BoxFit.cover,
-              ),
+              SizedBox(
+                  width: 100.0,
+                  height: 100.0,
+                  child: FutureBuilder(
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done &&
+                          snapshot.hasData) {
+                        return Image.network(
+                          snapshot.data.toString(),
+                          fit: BoxFit.fill,
+                        );
+                      } else {
+                        return const Icon(Icons.remove, size: 50);
+                      }
+                    },
+                    future: dangerousZoneDto.tipOffPhotos.isNotEmpty
+                        ? getFirebaseStorageDownloadUrl(
+                            'dangerouszones/${dangerousZoneDto.tipOffPhotos[0]}')
+                        : Future.error(''),
+                  )),
               Container(
                 margin: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.01),
-                child: Row(children: [
-                  const Icon(
-                    Icons.favorite_border,
-                    color: Colors.red,
-                  ),
-                  Text(dangerousZoneDto.likes.length.toString())
-                ]),
+                child: GestureDetector(
+                  onTap: () {
+                    myDataController.unlikeDangerousZone(
+                      dangerousZoneDto.id!,
+                      myDataController.myUid,
+                    );
+                  },
+                  child: Row(children: [
+                    const Icon(
+                      Icons.favorite,
+                      color: Colors.yellow,
+                    ),
+                    Text(dangerousZoneDto.likes.length.toString())
+                  ]),
+                ),
               ),
               Text(dangerousZoneDto.addressName),
             ],
@@ -134,13 +180,16 @@ class MyLikeDangerousZonesWidget extends StatelessWidget {
               )),
           Obx(() => SizedBox(
               height: MediaQuery.of(context).size.height * 0.3,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: myDataController.myLikesDangerousZoneList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return postItem(context,
-                        myDataController.mySharedDangerousZoneList[index]);
-                  }))),
+              child: myDataController.myLikesDangerousZoneList.isEmpty
+                  ? const Center(child: Text('공감한 위험장소가 없습니다.'))
+                  : ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount:
+                          myDataController.myLikesDangerousZoneList.length,
+                      itemBuilder: (context, index) {
+                        return postItem(context,
+                            myDataController.myLikesDangerousZoneList[index]);
+                      }))),
           const Divider(
             color: Colors.black38,
           )
@@ -161,25 +210,61 @@ class MySharedDangerousZonesWidget extends StatelessWidget {
           left: MediaQuery.of(context).size.width * 0.025,
           top: MediaQuery.of(context).size.height * 0.02),
       child: InkWell(
-          onTap: () {},
+          onTap: () {
+            Get.to(DangerousZonePostScreen(),
+                arguments: {'dangerousZoneDto': dangerousZoneDto});
+          },
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Image.network(
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4h-NJbPkhTtNdwdDfYl1eSBbj6uc53-qdyw&usqp=CAU',
-                height: MediaQuery.of(context).size.height * 0.2,
-                width: MediaQuery.of(context).size.width * 0.3,
-                fit: BoxFit.cover,
-              ),
+              SizedBox(
+                  width: 100.0,
+                  height: 100.0,
+                  child: FutureBuilder(
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done &&
+                          snapshot.hasData) {
+                        return Image.network(
+                          snapshot.data.toString(),
+                          fit: BoxFit.fill,
+                        );
+                      } else {
+                        return const Icon(Icons.remove, size: 50);
+                      }
+                    },
+                    future: dangerousZoneDto.tipOffPhotos.isNotEmpty
+                        ? getFirebaseStorageDownloadUrl(
+                            'dangerouszones/${dangerousZoneDto.tipOffPhotos[0]}')
+                        : Future.error(''),
+                  )),
               Container(
                 margin: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.01),
-                child: Row(children: [
-                  const Icon(
-                    Icons.favorite_border,
-                    color: Colors.red,
-                  ),
-                  Text(dangerousZoneDto.likes.length.toString()) //공감개수
-                ]),
+                child: GestureDetector(
+                  onTap: () {
+                    dangerousZoneDto.likes.contains(myDataController.myUid)
+                        ? myDataController.unlikeDangerousZone(
+                            dangerousZoneDto.id!,
+                            myDataController.myUid,
+                          )
+                        : myDataController.likeDangerousZone(
+                            dangerousZoneDto.id!,
+                            myDataController.myUid,
+                          );
+                  },
+                  child: Row(children: [
+                    dangerousZoneDto.likes.contains(myDataController.myUid)
+                        ? const Icon(
+                            Icons.favorite,
+                            color: Colors.yellow,
+                          )
+                        : const Icon(
+                            Icons.favorite_border,
+                            color: Colors.yellow,
+                          ),
+                    Text(dangerousZoneDto.likes.length.toString())
+                  ]),
+                ),
               ),
               Text(dangerousZoneDto.addressName),
             ],
@@ -208,13 +293,16 @@ class MySharedDangerousZonesWidget extends StatelessWidget {
               )),
           Obx(() => SizedBox(
               height: MediaQuery.of(context).size.height * 0.3,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: myDataController.mySharedDangerousZoneList.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return postItem(context,
-                        myDataController.mySharedDangerousZoneList[index]);
-                  }))),
+              child: myDataController.mySharedDangerousZoneList.isEmpty
+                  ? const Center(child: Text('제보한 위험장소가 없습니다.'))
+                  : ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount:
+                          myDataController.mySharedDangerousZoneList.length,
+                      itemBuilder: (context, index) {
+                        return postItem(context,
+                            myDataController.mySharedDangerousZoneList[index]);
+                      }))),
           const Divider(
             color: Colors.black38,
           )

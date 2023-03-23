@@ -1,6 +1,8 @@
 /// 위험 장소 타일
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:rolling_together/commons/class/firebase_storage.dart';
 import 'package:rolling_together/ui/screens/14_dangerous_zone_post_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
@@ -8,6 +10,7 @@ import '../../data/remote/dangerous_zone/models/dangerouszone.dart';
 
 class DangerousZoneTile extends StatelessWidget {
   final DangerousZoneDto dto;
+  final FirebaseStorage storageRef = FirebaseStorage.instance;
 
   static final dateFormat = DateFormat("yyyy-MM-dd HH:mm");
 
@@ -16,34 +19,61 @@ class DangerousZoneTile extends StatelessWidget {
   final Widget representativePicture = ClipRRect(
     //대표사진(썸네일)
     borderRadius: BorderRadius.circular(0.0),
-    child: Image.network(
-      'https://avatars.githubusercontent.com/u/113813770?s=400&u=c4addb4d0b81eabc9faef9f13adc3dea18ddf83a&v=4',
-      fit: BoxFit.cover,
-    ),
+    child: const Icon(Icons.person),
   );
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () {
+        Get.to(DangerousZonePostScreen(), arguments: {'dangerousZoneDto': dto});
+      },
       child: Card(
         child: ListTile(
           title: Text(
             dto.description,
-            style: const TextStyle(fontSize: 18),
+            style: TextStyle(fontSize: 18),
           ),
-          trailing:
-              SizedBox(width: 50.0, height: 50.0, child: representativePicture),
-          subtitle:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            const Text('위험'),
-            Text(dto.addressName),
-            Text(dateFormat.format(dto.dateTime.toDate()))
-          ]),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                '위험',
+                style: TextStyle(color: Colors.red),
+              ),
+              Text(dto.addressName),
+              Text(
+                DateFormat('MM/dd HH:mm').format(dto.dateTime.toDate()),
+                style: const TextStyle(fontStyle: FontStyle.italic),
+              ),
+            ],
+          ),
+          trailing: SizedBox(
+            width: 50,
+            height: 50,
+            child: FutureBuilder<String>(
+              future: dto.tipOffPhotos.isNotEmpty
+                  ? getFirebaseStorageDownloadUrl(
+                      'dangerouszones/${dto.tipOffPhotos[0]}')
+                  : Future.value(null),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError || snapshot.data == null) {
+                  return const Icon(Icons.dangerous, size: 50);
+                } else {
+                  return Image.network(
+                    snapshot.data!,
+                    fit: BoxFit.cover,
+                  );
+                }
+              },
+            ),
+          ),
         ),
       ),
-      onTap: () {
-        Get.to(DangerousZonePostScreen());
-      },
     );
   }
 }

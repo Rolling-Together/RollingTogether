@@ -1,100 +1,100 @@
 import 'package:flutter/material.dart';
+import 'package:rolling_together/data/remote/dangerous_zone/models/dangerouszone.dart';
+import 'package:intl/intl.dart';
+import 'package:get/get.dart';
+
+import '../../config.dart';
+import '../../ui/screens/14_dangerous_zone_post_screen.dart';
+import 'firebase_storage.dart';
 
 class PopularPostTile extends StatefulWidget {
-  const PopularPostTile({Key? key}) : super(key: key);
+  final DangerousZoneDto dangerousZoneDto;
+
+  const PopularPostTile({Key? key, required this.dangerousZoneDto})
+      : super(key: key);
 
   _PopularPostTileState createState() => _PopularPostTileState();
 }
 
 class _PopularPostTileState extends State<PopularPostTile> {
-  late Image representativePicture;
-  late String description;  // 신고내용
-  late String type;  // 위험 분류 (ex.턱이있음)
-  late String address;  // 주소
-  late String time;  // 신고 시간
-
   @override
   void initState() {
     super.initState();
-    setInformation();
-  }
-
-  void setInformation() {
-    // comment, address, time, representativePicture 세팅하기
-    setState(() {
-      /// 서버에서 인기글 정보 가져오기
-      representativePicture = Image.network(
-        'https://avatars.githubusercontent.com/u/113813770?s=400&u=c4addb4d0b81eabc9faef9f13adc3dea18ddf83a&v=4',
-        fit: BoxFit.cover,
-      );
-      description = "신고내용";
-      type = '턱이 있음';
-      address = "인기글 주소";
-      time = "인기글 업로드시간";
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.28,
-      height: MediaQuery.of(context).size.width * 0.35,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: Container(
+    return InkWell(
+      onTap: () {
+        Get.to(DangerousZonePostScreen(), arguments: {'dangerousZoneDto':
+        widget.dangerousZoneDto});
+      },
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.28,
+        height: MediaQuery.of(context).size.width * 0.35,
+        child: Stack(
+          children: [
+            Positioned.fill(
               child: Opacity(
                 opacity: 0.5,
-                child: representativePicture,
+                child: FutureBuilder(
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.hasData) {
+                      return Image.network(
+                        snapshot.data.toString(),
+                        fit: BoxFit.cover,
+                        width: 50,
+                        height: 50,
+                      );
+                    } else {
+                      return const Icon(Icons.remove, size: 50);
+                    }
+                  },
+                  future: widget.dangerousZoneDto.tipOffPhotos.isNotEmpty
+                      ? getFirebaseStorageDownloadUrl(
+                          'dangerouszones/${widget.dangerousZoneDto.tipOffPhotos[0]}')
+                      : null,
+                ),
               ),
             ),
-          ),Expanded(child: Container(
-              margin: EdgeInsets.all(8),
+            Positioned(
+              bottom: 8,
+              left: 8,
+              right: 8,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    child: Text(
-                      description,
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  const Text(
+                    '위험',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Container(
-                    child: Text(type),
+                  Text(
+                    widget.dangerousZoneDto.description,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                   ),
-                  Container(
-                    child: Text(address),
+                  Text(
+                    widget.dangerousZoneDto.addressName,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
-                  Container(
-                    child: Text(time),
+                  Text(
+                    DateFormat('MM/dd HH:mm').format(
+                      widget.dangerousZoneDto.dateTime.toDate(),
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
                   ),
                 ],
               ),
-          ),
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }
 }
-
-/*
-class PopularPostTileList extends StatefulWidget {
-  const PopularPostTileList({Key? key}) : super(key: key);
-
-  _PopularPostTileListState createState() => _PopularPostTileListState();
-}
-
-
-class _PopularPostTileListState extends State<PopularPostTileList> {
-
-  List<PopularPostTile> popularPostTiles = [];
-
-  @override
-  Widget build(BuildContext context){
-    return Container();
-  }
-}
-
- */
