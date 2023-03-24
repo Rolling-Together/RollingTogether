@@ -2,6 +2,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:rolling_together/commons/class/i_refresh_data.dart';
+import 'package:rolling_together/commons/enum/facility_checklist.dart';
+import 'package:rolling_together/commons/enum/facility_types.dart';
 
 import '../../commons/utils/bottom_sheet.dart';
 import '../../commons/widgets/custom_chip.dart';
@@ -9,11 +12,16 @@ import '13_facility_screen.dart';
 import '6_dangerous_zone_screen.dart';
 import '8_trans_screen.dart';
 
-class MapSample extends StatefulWidget {
+class MapSample extends StatefulWidget implements OnRefreshDataListener {
   late final String title;
 
   @override
   _MapSampleState createState() => _MapSampleState();
+
+  @override
+  void refreshData() {
+    // TODO: implement refreshData
+  }
 }
 
 class _MapSampleState extends State<MapSample> {
@@ -158,6 +166,7 @@ class _MapSampleState extends State<MapSample> {
                     icon: Icon(Icons.fastfood),
                     onPressed: () {},
                   ),
+
                   TransparentButton(
                     label: "식당",
                     icon: Icon(Icons.fastfood),
@@ -170,6 +179,7 @@ class _MapSampleState extends State<MapSample> {
                     label: "식당",
                     icon: Icon(Icons.fastfood),
                     onPressed: () {},
+
                   ),
                   TransparentButton(
                     label: "식당",

@@ -1,12 +1,32 @@
 import 'package:flutter/material.dart';
+
 import 'package:rolling_together/commons/enum/facility_checklist.dart';
+import 'package:rolling_together/data/remote/auth/controller/firebase_auth_controller.dart';
+import 'package:rolling_together/data/remote/facility/models/facility.dart';
+import 'package:rolling_together/data/remote/facility/models/review.dart';
+import 'package:rolling_together/ui/screens/facility/modification/facility_modification_screen.dart';
+import 'package:rolling_together/commons/utils/capture_and_share_screenshot.dart';
+import 'package:flutter_share/flutter_share.dart';
+import '../../commons/class/firebase_storage.dart';
+import '../../data/remote/facility/controllers/facility_controller.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:rolling_together/commons/class/icon_and_photo_tile.dart';
+
+
 
 import '13_facility_screen.dart';
 
 /// 7. 시설 게시글
 
 class FacilityPostScreen extends StatefulWidget {
-  FacilityPostScreen(BuildContext context);
+  final FacilityDto facilityDto;
+  final FacilityController facilityController = Get.find<FacilityController>();
+  static final DateFormat dateFormat = DateFormat('MM-dd HH:mm');
+
+  FacilityPostScreen({required this.facilityDto});
 
   _FacilityPostScreenState createState() => _FacilityPostScreenState();
 }
@@ -15,48 +35,39 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController commentController = TextEditingController();
 
-  List filedata = [
-    {
-      'name': '글쓴이',
-      'pic': 'https://picsum.photos/300/30',
-      'message': '혼밥으로도 너무 괜찮은 곳입니다!'
-    },
-    {
-      'name': '임은서',
-      'pic': 'https://picsum.photos/300/30',
-      'message': '저도 내일 가봐야겠습니다~~'
-    },
-  ];
 
-  Widget commentChild(data) {
+  Widget commentChild() {
+
     return Column(
-      //shrinkWrap: true,
       children: [
-        for (var i = 0; i < data.length; i++)
+        for (final review in widget.facilityController.reviewList)
           Padding(
             padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
             child: ListTile(
               leading: GestureDetector(
                 onTap: () async {
-                  // Display the image in large form.
-                  print("Comment Clicked");
+                  widget.facilityController.addReview(
+                      FacilityReviewDto(
+                          userId: AuthController.to.myUserDto.value!.id!,
+                          userName: AuthController.to.myUserDto.value!.name,
+                          content: commentController.text),
+                      widget.facilityDto.placeId);
                 },
                 child: Container(
                   height: 50.0,
                   width: 50.0,
-                  decoration: new BoxDecoration(
+                  decoration: const BoxDecoration(
                       color: Colors.blue,
-                      borderRadius: new BorderRadius.all(Radius.circular(50))),
-                  child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: NetworkImage(data[i]['pic'] + "$i")),
+                      borderRadius: BorderRadius.all(Radius.circular(50))),
+                  child: const CircleAvatar(
+                      radius: 50, child: Icon(Icons.person, size: 50)),
                 ),
               ),
               title: Text(
-                data[i]['name'],
-                style: TextStyle(fontWeight: FontWeight.bold),
+                review.userName,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              subtitle: Text(data[i]['message']),
+              subtitle: Text(review.content),
             ),
           )
       ],
@@ -65,255 +76,192 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
 
   void addComment() {
     if (commentController.text.isNotEmpty) {
-      setState(() {
-        filedata.add({
-          'name': 'UserName',
-          'pic': 'https://picsum.photos/300/30',
-          'message': commentController.text,
-        });
-      });
+      widget.facilityController.addReview(
+          FacilityReviewDto(
+              userId: AuthController.to.myUserDto.value!.id!,
+              userName: AuthController.to.myUserDto.value!.name,
+              content: commentController.text),
+          widget.facilityDto.placeId);
       commentController.clear();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    widget.facilityController.getAllReviews(widget.facilityDto.placeId);
+
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.white,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            color: Colors.black,
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: Column(
+        backgroundColor: Colors.white,
+        leading: IconButton(
+
+          icon: const Icon(Icons.arrow_back),
+          color: Colors.black,
+          onPressed: () => Get.back(),
+        ),
+        title: Column(
+          children: [
+            Text(widget.facilityDto.name,
+                style: const TextStyle(color: Colors.black)),
+
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: SafeArea(
+
+          child: Column(
             children: [
-              Text("마마도마 경성대점",
-                  style: TextStyle(fontSize: 30, color: Colors.black)),
-            ],
-          ),
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(30),
-            child: Container(
-              margin: EdgeInsets.only(bottom: 10),
-              child: Container(
-                margin: EdgeInsets.all(10),
+              Container(
+                margin: const EdgeInsets.all(10),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text("부산 남구 수영로 3334번길 정현빌 1층",
-                          style: TextStyle(fontSize: 15, color: Colors.black)),
-                      Text("051-622-9712",
-                          style: TextStyle(fontSize: 15, color: Colors.black)),
+                      Text(widget.facilityDto.addressName,
+                          style: const TextStyle(
+                              fontSize: 15, color: Colors.black)),
+                      Text(widget.facilityDto.placeUrl,
+                          style: const TextStyle(
+                              fontSize: 15, color: Colors.black)),
                     ]),
               ),
-            ),
-          )),
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              Container(
+              SizedBox(
+
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "정보 업데이트 하기",
-                        style: TextStyle(fontSize: 16),
+                      GestureDetector(
+                        child: const Text(
+                          "정보 업데이트 하기",
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        onTap: () {
+                          Get.to(FacilityModificationScreen(),
+                              arguments: {'facilityDto': widget.facilityDto});
+                        },
                       ),
+
                       Text(
-                        "업데이트 : 2023년 02월 10일 15시 34분",
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                        "업데이트 : ${FacilityPostScreen.dateFormat.format(widget.facilityDto.dateTime.toDate())}",
+                        style:
+                            const TextStyle(fontSize: 14, color: Colors.grey),
                       ),
                     ],
                   )),
               Container(
                 width: MediaQuery.of(context).size.width * 0.8,
-                color: Color(0xffcD9D9D9),
-                margin: EdgeInsets.symmetric(vertical: 10),
-                padding: EdgeInsets.all(20),
+                color: const Color(0xffcD9D9D9),
+                margin: const EdgeInsets.symmetric(vertical: 10),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ClipOval(
-
-                              child:Container(
-                                width: 100,
-                                height:100,
-                                color: Colors.white,
-                              )
-                          ),
-
-                          Container(
-                              width: 100,
-                              height: 100,
-                              child: Center(child: Text('사진'))),
-                          Container(
-                              width: 100,
-                              height: 40,
-                              child: Center(child: Text('사진'))),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ClipOval(
-
-                              child:Container(
-                                width: 100,
-                                height:100,
-                                color: Colors.white,
-                              )
-                          ),
-
-                          Container(
-                              width: 100,
-                              height: 100,
-                              child: Center(child: Text('사진'))),
-                          Container(
-                              width: 100,
-                              height: 40,
-                              child: Center(child: Text('사진'))),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ClipOval(
-
-                              child:Container(
-                                width: 100,
-                                height:100,
-                                color: Colors.white,
-                              )
-                          ),
-
-                          Container(
-                              width: 100,
-                              height: 100,
-                              child: Center(child: Text('사진'))),
-                          Container(
-                              width: 100,
-                              height: 40,
-                              child: Center(child: Text('사진'))),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ClipOval(
-
-                              child:Container(
-                                width: 100,
-                                height:100,
-                                color: Colors.white,
-                              )
-                          ),
-
-                          Container(
-                              width: 100,
-                              height: 100,
-                              child: Center(child: Text('사진'))),
-                          Container(
-                              width: 100,
-                              height: 40,
-                              child: Center(child: Text('사진'))),
-                        ],
-                      ),
-                    ),
-
-                  ],),
-
+                    for (final type in FacilityCheckListType.toList())
+                      addFacilityCheckData(type)
+                  ],
+                ),
               ),
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 10, right: 10, bottom: 10),
-                    child: CircleAvatar(
-                      child: Image.network(
-                        'https://avatars.githubusercontent.com/u/113813770?s=400&u=c4addb4d0b81eabc9faef9f13adc3dea18ddf83a&v=4',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Text('작성자 : 임은서'),
-                  Icon(Icons.star),
+                  const Icon(Icons.person),
+                  Text('작성자 : ${widget.facilityDto.informerName}'),
+                  const Icon(Icons.star),
                 ]),
               ),
               Container(
                   width: MediaQuery.of(context).size.width,
                   height: 60,
-                  margin: EdgeInsets.symmetric(vertical: 20),
-                  color: Color(0xffcD9D9D9),
+                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  color: const Color(0xffcD9D9D9),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Text("공감"),
+                      const Text("공감"),
                       Row(
-                        children: [Text('공유')],
+                        children: const [Text('공유')],
                       )
                     ],
                   )),
+              Obx(() => commentChild()),
+              ListTile(
+                tileColor: const Color(0xffF2F2F2),
+                leading: Container(
+                  height: 40.0,
+                  width: 40.0,
+                  decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(50))),
+                  child:
+                      const CircleAvatar(radius: 50, child: Icon(Icons.person)),
+                ),
+                title: Form(
+                  key: formKey,
+                  child: TextFormField(
+                    controller: commentController,
+                    decoration: const InputDecoration(
 
-              commentChild(filedata ),
-
-              Container(
-                  child: ListTile(
-                    tileColor: Color(0xffF2F2F2),
-                    leading: Container(
-                      height: 40.0,
-                      width: 40.0,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(50))),
-                      child: CircleAvatar(
-                          radius: 50,
-                          backgroundImage: NetworkImage(
-                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDJ3-SXqfJljzjSYtNKZ6LN63CjmJYCTJT8g&usqp=CAU')),
-                    ),
-                    title: Form(
-                      key: formKey,
-                      child: TextFormField(
-                        controller: commentController,
-                        decoration: InputDecoration(
-
-                          ///댓글 창 배경색
-                            filled: true,
-                            fillColor: Color(0xffE3E3E3),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(20)),
-                              borderSide: BorderSide.none,
-                            )),
-                      ),
-                    ),
-                    trailing: GestureDetector(
-                      onTap: () {
-                        addComment();
-                      },
-                      child: Icon(Icons.send_sharp, size: 30, color: Colors.black),
-                    ),
-                  )),
+                        ///댓글 창 배경색
+                        filled: true,
+                        fillColor: Color(0xffE3E3E3),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          borderSide: BorderSide.none,
+                        )),
+                  ),
+                ),
+                trailing: GestureDetector(
+                  onTap: () {
+                    addComment();
+                  },
+                  child: const Icon(Icons.send_sharp,
+                      size: 30, color: Colors.black),
+                ),
+              ),
             ],
+
           ),
         ),
+      ),
+    );
+  }
+
+  addFacilityCheckData(FacilityCheckListType type) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ClipOval(
+            child: FutureBuilder(
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done &&
+                    snapshot.hasData) {
+                  return Image.network(
+                    snapshot.data.toString(),
+                    fit: BoxFit.cover,
+                    width: 50,
+                    height: 50,
+                  );
+                } else {
+                  return Icon(type.icon, size: 50);
+                }
+              },
+              future: widget.facilityDto.checkList[type]!.imgUrls.isNotEmpty
+                  ? getFirebaseStorageDownloadUrl(
+                      'facilitychecklist/${widget.facilityDto.checkList[type]!.imgUrls[0]}')
+                  : Future.error(''),
+            ),
+          ),
+          Column(
+            children: [
+              Text(type.description),
+              Text(widget.facilityDto.checkList[type]!.status.toString()),
+            ],
+          ),
+        ],
       ),
     );
   }

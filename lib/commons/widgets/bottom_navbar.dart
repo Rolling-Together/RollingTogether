@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:rolling_together/commons/class/i_refresh_data.dart';
 import 'package:rolling_together/ui/screens/5_my_map_screen.dart';
-
 
 import '../../ui/screens/9_community_screen.dart';
 import '../../ui/screens/11_guide_screen.dart';
 import '../../ui/screens/12_profile_screen.dart';
-
-
+import '../class/i_refresh_data.dart';
 
 class BottomNavbar extends StatefulWidget {
   const BottomNavbar({super.key});
@@ -44,6 +43,7 @@ class _BottomNavbarState extends State<BottomNavbar>
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      (_pages[_selectedIndex].child as OnRefreshDataListener).refreshData();
     });
   }
 

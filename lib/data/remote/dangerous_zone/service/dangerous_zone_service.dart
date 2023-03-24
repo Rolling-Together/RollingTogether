@@ -19,7 +19,7 @@ class DangerousZoneService {
     final result = await query.where('latlng', isGreaterThanOrEqualTo: [
       minLat,
       minLon
-    ]).where('latlng', isLessThanOrEqualTo: [maxLat, maxLon]).get();
+    ]).where('latlng', isLessThan: [maxLat, maxLon]).get();
 
     if (result.docs.isNotEmpty) {
       List<DangerousZoneDto> list = [];

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-class GuideScreen extends StatelessWidget {
+import '../../commons/class/i_refresh_data.dart';
+
+class GuideScreen extends StatelessWidget implements OnRefreshDataListener {
   const GuideScreen({Key? key}) : super(key: key);
 
   @override
@@ -102,5 +104,10 @@ class GuideScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  void refreshData() {
+    // TODO: implement refreshData
   }
 }

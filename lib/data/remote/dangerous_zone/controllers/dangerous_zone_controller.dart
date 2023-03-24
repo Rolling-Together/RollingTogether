@@ -4,7 +4,6 @@ import 'package:rolling_together/commons/utils/coords_dist_util.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/likes/service/likes_dangerous_zone_service.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/models/dangerouszone.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/service/dangerous_zone_service.dart';
-import 'package:rolling_together/data/remote/user/service/report_list_service.dart';
 
 import '../../imgs/service/img_upload_service.dart';
 import '../models/dangerous_zone_comment.dart';
@@ -15,67 +14,53 @@ class DangerousZoneController extends GetxController {
   final DangerousZoneService dangerousZoneService = DangerousZoneService();
   final LikesDangerousZoneService likeListService = LikesDangerousZoneService();
   final ImgUploadService imgUploadService = ImgUploadService();
-  final ReportListService reportListService = ReportListService();
 
   // 특정 위/경도 근처 위험 장소 리스트 맵
   final RxMap<String, DangerousZoneDto> dangerousZoneListMap =
       <String, DangerousZoneDto>{}.obs;
 
-  // 조회한 단일 위험 장소
-  final Rx<DangerousZoneDto?> dangerousZone = DangerousZoneDto(
-          categoryId: '',
-          description: '',
-          latlng: [],
-          informerId: '',
-          tipOffPhotos: [],
-          informerName: '')
-      .obs;
+  // 특정 위/경도 근처 위험 장소 공감 top3 리스트 맵
+  final RxMap<String, DangerousZoneDto> mostLikesDangerousZoneListMap =
+      <String, DangerousZoneDto>{}.obs;
 
-  // 댓글 등록 결과
-  final RxBool addCommentResult = false.obs;
+  // 조회한 단일 위험 장소
+  final Rxn<DangerousZoneDto> dangerousZone = Rxn();
 
   // 댓글 목록
   final RxList<DangerousZoneCommentDto> commentList =
       <DangerousZoneCommentDto>[].obs;
 
   /// 지도 중심부 마지막 위경도
-  Rx<List<double>> lastLatLng = Rx([35.4348, 129.1009]);
+  List<double> lastLatLng = [];
+
+  /// 지도 중심부 주소
+  String lastAddress = '';
 
   /// 해당 위/경도 근처에 있는 위험 장소 목록 로드
-  /// 공감 데이터 로드
   getDangerousZoneList(double latitude, double longitude, bool force) {
     // 마지막 지도 중심 좌표 값과의 거리가 1km 내외면 업데이트 안함
     if (!force) {
-      final dist = haversineDistance(
-          lastLatLng.value[0], lastLatLng.value[1], latitude, longitude);
+      final dist =
+          haversineDistance(lastLatLng[0], lastLatLng[1], latitude, longitude);
       if (dist < 1000.0) {
         return;
       }
     }
 
-    lastLatLng.value = [latitude, longitude];
+    lastLatLng = [latitude, longitude];
 
     dangerousZoneService.getDangerousZoneList(latitude, longitude).then(
         (dangerousZones) {
       // 위험 장소 목록 로드 성공
       // 위험 장소 id 목록
+      final dangerousZoneMap = <String, DangerousZoneDto>{};
 
-      final ids = dangerousZones.map((e) => e.id!).toList();
+      for (final dto in dangerousZones) {
+        dangerousZoneMap[dto.id!] = dto;
+      }
 
-      // 공감 데이터 로드
-      likeListService.getLikesDangerousZoneList(ids).then((likesMap) {
-        final dangerousZoneMap = <String, DangerousZoneDto>{};
-
-        for (final dto in dangerousZones) {
-          dto.likes = likesMap[dto.id!];
-          dangerousZoneMap[dto.id!] = dto;
-        }
-
-        // 모두 성공
-        dangerousZoneListMap.value = dangerousZoneMap;
-      }, onError: (obj) {
-        dangerousZoneListMap.value = obj;
-      });
+      //  성공
+      dangerousZoneListMap.value = dangerousZoneMap;
     }, onError: (obj) {
       dangerousZoneListMap.value = obj;
     });
@@ -86,17 +71,6 @@ class DangerousZoneController extends GetxController {
     dangerousZoneService.getDangerousZone(dangerousZoneDocId).then(
         (dangerousZoneResult) {
       // 위험 장소 로드 성공
-      // 위험 장소 id
-      final docId = dangerousZoneResult.id!;
-
-      // 공감 데이터 로드
-      likeListService.getLikesDangerousZoneList([docId]).then((likesMap) {
-        dangerousZoneResult.likes = likesMap[dangerousZoneResult.id!];
-        // 모두 성공
-        dangerousZone.value = dangerousZoneResult;
-      }, onError: (obj) {
-        dangerousZone.value = dangerousZoneResult;
-      });
       dangerousZone.value = dangerousZoneResult;
     }, onError: (obj) {
       dangerousZone.value = null;
@@ -107,10 +81,8 @@ class DangerousZoneController extends GetxController {
   addComment(DangerousZoneCommentDto commentDto, String dangerousZoneDocId) {
     dangerousZoneService.addComment(commentDto, dangerousZoneDocId).then(
         (value) {
-      addCommentResult.value = true;
-    }, onError: (obj) {
-      addCommentResult.value = false;
-    });
+      getAllComments(dangerousZoneDocId);
+    }, onError: (obj) {});
   }
 
   /// 모든 댓글 내용 로드
@@ -118,16 +90,28 @@ class DangerousZoneController extends GetxController {
     dangerousZoneService.getAllComments(dangerousZoneDocId).then((value) {
       commentList.value = value;
     }, onError: (obj) {
-      commentList.value = obj;
+      commentList.value = List<DangerousZoneCommentDto>.empty();
+    });
+  }
+
+  getMostLikesDangerousZoneList(double latitude, double longitude) {
+    likeListService.getMostLikesDangerousZoneList(latitude, longitude).then(
+        (value) {
+      var map = <String, DangerousZoneDto>{};
+      for (final dto in value) {
+        map[dto.id!] = dto;
+      }
+      mostLikesDangerousZoneListMap.value = map;
+    }, onError: (obj) {
+      mostLikesDangerousZoneListMap.value = {};
     });
   }
 
   /// 위험 장소 공감 클릭 시 로직
   /// 매개변수 : userId - 유저UID(이메일X)
-  likeDangerousZone(String dangerousZoneDocId, String userId, String userName) {
-    likeListService
-        .likeDangerousZone(dangerousZoneDocId, userId, userName)
-        .then((result) {
+  likeDangerousZone(String dangerousZoneDocId, String userId) {
+    likeListService.likeDangerousZone(dangerousZoneDocId, userId).then(
+        (result) {
       // 위험 장소 데이터 리로드
       getDangerousZone(dangerousZoneDocId);
     }, onError: (obj) {});

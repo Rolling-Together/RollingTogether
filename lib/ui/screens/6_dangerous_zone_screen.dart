@@ -50,14 +50,14 @@ class _LocationScreenState extends State<LocationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = AuthController.to.firebaseUser.value;
+    final user = AuthController.to.myUserDto.value;
 
     if (user != null && addDangerousZoneController.latlng.isEmpty) {
       final arguments = Get.arguments;
       final LatLng latlng = arguments['latlng'];
 
       addDangerousZoneController
-          .initData([latlng.latitude, latlng.longitude], user.uid, '박준성');
+          .initData([latlng.latitude, latlng.longitude], user.id!, user.name);
 
       reverseGeocodingController.coordToAddress(
           latlng.latitude, latlng.longitude);
@@ -173,6 +173,10 @@ class _LocationScreenState extends State<LocationScreen> {
                               informerId:
                                   addDangerousZoneController.myUIdInFirebase,
                               tipOffPhotos: [],
+                              likes: [],
+                              likeCounts: 0,
+                              addressName: reverseGeocodingController
+                                  .addressResult.value!.address.addressName,
                               informerName:
                                   addDangerousZoneController.myUserName),
                           addDangerousZoneController.imageList);

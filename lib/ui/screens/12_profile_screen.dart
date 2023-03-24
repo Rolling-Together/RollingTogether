@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rolling_together/data/remote/dangerous_zone/controllers/dangerous_zone_controller.dart';
+import 'package:rolling_together/data/remote/dangerous_zone/models/dangerouszone.dart';
+import 'package:rolling_together/data/remote/user/controllers/my_data_controller.dart';
 
-import '../../commons/widgets/bottom_navbar.dart';
+import '../../commons/class/firebase_storage.dart';
+import '../../commons/class/i_refresh_data.dart';
+import '../../config.dart';
+import '../../data/remote/auth/controller/firebase_auth_controller.dart';
+import '../../data/remote/dangerous_zone/controllers/dangerous_zone_controller.dart';
+import '14_dangerous_zone_post_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class ProfileScreen extends StatelessWidget implements OnRefreshDataListener {
+  final MyDataController myDataController =
+      Get.put(MyDataController(), permanent: true);
 
   Widget UserInfo(context) {
     return Container(
@@ -24,28 +31,41 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            ///글자 길이에 맞게 width를 보장하는 법...?
-            ///지금은 3글자에 맞춤
             child: Container(
               margin: EdgeInsets.only(
                 //right: MediaQuery.of(context).size.width*0.05,
                 left: MediaQuery.of(context).size.width * 0.05,
               ),
-              child: Text('이홍주', style: TextStyle(fontSize: 20)),
+              child: Obx(() => Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(AuthController.to.myUserDto.value!.name ?? "이름",
+                          style: const TextStyle(fontSize: 20)),
+                      Flexible(
+                        fit: FlexFit.loose,
+                        child: Container(
+                            alignment: Alignment.centerLeft,
+                            child: Row(
+                              children: [
+                                Icon(Icons.star,
+                                    color: AuthController.to.myUserDto.value
+                                            ?.userGradeDto?.iconColor ??
+                                        Colors.grey),
+                                Text(
+                                    '${AuthController.to.myUserDto.value?.userGradeDto?.reportCount}회' ??
+                                        '0회')
+                              ],
+                            )),
+                      )
+                    ],
+                  )),
             ),
           ),
           Expanded(
             child: Container(
-              alignment: Alignment.centerLeft,
-              //color: Colors.red,
-              child: Icon(Icons.star, color: Colors.green),
-            ),
-          ),
-          Expanded(
-            child: Container(
-              //color: Colors.indigo,
+                //color: Colors.indigo,
                 alignment: Alignment.centerRight,
-                child: Icon(
+                child: const Icon(
                   Icons.settings_outlined,
                 )),
           ),
@@ -62,55 +82,78 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             UserInfo(context),
-            PostRow(Name: '공유한 게시글'),
-            PostRow(
-              Name: '찜한 장소',
-            )
+            MyLikeDangerousZonesWidget(),
+            MySharedDangerousZonesWidget(),
           ],
         ),
       ),
     );
   }
+
+  @override
+  void refreshData() {
+    myDataController.loadMySharedDangerousZone();
+    myDataController.loadMyLikeDangerousZone();
+  }
 }
 
-class PostRow extends StatelessWidget {
-  final String Name;
-  const PostRow({Key? key, required this.Name}) : super(key: key);
+class MyLikeDangerousZonesWidget extends StatelessWidget {
+  final MyDataController myDataController = Get.find<MyDataController>();
 
   ///게시글 1개당 폼
-  Widget Post(BuildContext context) {
+  Widget postItem(BuildContext context, DangerousZoneDto dangerousZoneDto) {
     return Container(
       margin: EdgeInsets.only(
           right: MediaQuery.of(context).size.width * 0.025,
           left: MediaQuery.of(context).size.width * 0.025,
           top: MediaQuery.of(context).size.height * 0.02),
       child: InkWell(
-
-        ///게시글 하나 클릭했을 때 ... InkWell
-          onTap: () {},
+          onTap: () {
+            Get.to(DangerousZonePostScreen(),
+                arguments: {'dangerousZoneDto': dangerousZoneDto});
+          },
           child: Column(
             children: [
-              Container(
-                //사진담는 container
-                child: Image.network(
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4h-NJbPkhTtNdwdDfYl1eSBbj6uc53-qdyw&usqp=CAU',
-                  height: MediaQuery.of(context).size.height * 0.2,
-                  width: MediaQuery.of(context).size.width * 0.3,
-                  fit: BoxFit.cover,
-                ),
-              ),
+              SizedBox(
+                  width: 100.0,
+                  height: 100.0,
+                  child: FutureBuilder(
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done &&
+                          snapshot.hasData) {
+                        return Image.network(
+                          snapshot.data.toString(),
+                          fit: BoxFit.fill,
+                        );
+                      } else {
+                        return const Icon(Icons.remove, size: 50);
+                      }
+                    },
+                    future: dangerousZoneDto.tipOffPhotos.isNotEmpty
+                        ? getFirebaseStorageDownloadUrl(
+                            'dangerouszones/${dangerousZoneDto.tipOffPhotos[0]}')
+                        : Future.error(''),
+                  )),
               Container(
                 margin: EdgeInsets.only(
                     top: MediaQuery.of(context).size.height * 0.01),
-                child: Row(children: [
-                  Icon(
-                    Icons.favorite_border,
-                    color: Colors.red,
-                  ),
-                  Text(' 2') //공감개수
-                ]),
+                child: GestureDetector(
+                  onTap: () {
+                    myDataController.unlikeDangerousZone(
+                      dangerousZoneDto.id!,
+                      myDataController.myUid,
+                    );
+                  },
+                  child: Row(children: [
+                    const Icon(
+                      Icons.favorite,
+                      color: Colors.yellow,
+                    ),
+                    Text(dangerousZoneDto.likes.length.toString())
+                  ]),
+                ),
               ),
-              Container(child: Text('위치')),
+              Text(dangerousZoneDto.addressName),
             ],
           )),
     );
@@ -131,43 +174,136 @@ class PostRow extends StatelessWidget {
               margin: EdgeInsets.only(
                   left: MediaQuery.of(context).size.width * 0.025),
               alignment: Alignment.centerLeft,
-              child: Text(
-                this.Name,
+              child: const Text(
+                '내가 공감한 위험장소',
                 style: TextStyle(fontSize: 15),
               )),
+          Obx(() => SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: myDataController.myLikesDangerousZoneList.isEmpty
+                  ? const Center(child: Text('공감한 위험장소가 없습니다.'))
+                  : ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount:
+                          myDataController.myLikesDangerousZoneList.length,
+                      itemBuilder: (context, index) {
+                        return postItem(context,
+                            myDataController.myLikesDangerousZoneList[index]);
+                      }))),
+          const Divider(
+            color: Colors.black38,
+          )
+        ],
+      ),
+    );
+  }
+}
 
-          /// 방법 1 : container에 높이값을 지정하고 받는 방식 >> 되긴 됨
+class MySharedDangerousZonesWidget extends StatelessWidget {
+  final MyDataController myDataController = Get.find<MyDataController>();
+
+  ///게시글 1개당 폼
+  Widget postItem(BuildContext context, DangerousZoneDto dangerousZoneDto) {
+    return Container(
+      margin: EdgeInsets.only(
+          right: MediaQuery.of(context).size.width * 0.025,
+          left: MediaQuery.of(context).size.width * 0.025,
+          top: MediaQuery.of(context).size.height * 0.02),
+      child: InkWell(
+          onTap: () {
+            Get.to(DangerousZonePostScreen(),
+                arguments: {'dangerousZoneDto': dangerousZoneDto});
+          },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                  width: 100.0,
+                  height: 100.0,
+                  child: FutureBuilder(
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done &&
+                          snapshot.hasData) {
+                        return Image.network(
+                          snapshot.data.toString(),
+                          fit: BoxFit.fill,
+                        );
+                      } else {
+                        return const Icon(Icons.remove, size: 50);
+                      }
+                    },
+                    future: dangerousZoneDto.tipOffPhotos.isNotEmpty
+                        ? getFirebaseStorageDownloadUrl(
+                            'dangerouszones/${dangerousZoneDto.tipOffPhotos[0]}')
+                        : Future.error(''),
+                  )),
+              Container(
+                margin: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.01),
+                child: GestureDetector(
+                  onTap: () {
+                    dangerousZoneDto.likes.contains(myDataController.myUid)
+                        ? myDataController.unlikeDangerousZone(
+                            dangerousZoneDto.id!,
+                            myDataController.myUid,
+                          )
+                        : myDataController.likeDangerousZone(
+                            dangerousZoneDto.id!,
+                            myDataController.myUid,
+                          );
+                  },
+                  child: Row(children: [
+                    dangerousZoneDto.likes.contains(myDataController.myUid)
+                        ? const Icon(
+                            Icons.favorite,
+                            color: Colors.yellow,
+                          )
+                        : const Icon(
+                            Icons.favorite_border,
+                            color: Colors.yellow,
+                          ),
+                    Text(dangerousZoneDto.likes.length.toString())
+                  ]),
+                ),
+              ),
+              Text(dangerousZoneDto.addressName),
+            ],
+          )),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(
+        top: MediaQuery.of(context).size.height * 0.03,
+        right: MediaQuery.of(context).size.width * 0.05,
+        left: MediaQuery.of(context).size.width * 0.05,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
           Container(
-            height: MediaQuery.of(context).size.height*0.3,
-            child : ListView.builder(
-              scrollDirection: Axis.horizontal,
-                itemCount: 10,
-                itemBuilder: (BuildContext context, int index){
-                  return Post(context);
-                })
-          ),
-          ///방법 2 : Expanded로 묶어서 자식에게 할당된 만큼 높이값을 가지기
-          /*Expanded(
-            child: ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return Post(context);
-                }),
-          ),*/
-          /*SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                Post(context),
-                Post(context),
-                Post(context),
-                Post(context),
-              ],
-            ),
-          ),*/
-          Divider(
+              margin: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width * 0.025),
+              alignment: Alignment.centerLeft,
+              child: const Text(
+                '내가 제보한 위험장소',
+                style: TextStyle(fontSize: 15),
+              )),
+          Obx(() => SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: myDataController.mySharedDangerousZoneList.isEmpty
+                  ? const Center(child: Text('제보한 위험장소가 없습니다.'))
+                  : ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount:
+                          myDataController.mySharedDangerousZoneList.length,
+                      itemBuilder: (context, index) {
+                        return postItem(context,
+                            myDataController.mySharedDangerousZoneList[index]);
+                      }))),
+          const Divider(
             color: Colors.black38,
           )
         ],

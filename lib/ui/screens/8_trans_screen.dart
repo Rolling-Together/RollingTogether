@@ -46,14 +46,14 @@ class _TransScreenState extends State<TransScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = AuthController.to.firebaseUser.value;
+    final user = AuthController.to.myUserDto.value;
 
     if (user != null && busController.latlng.isEmpty) {
       final arguments = Get.arguments;
       final LatLng latlng = arguments['latlng'];
 
       busController.latlng = [latlng.latitude, latlng.longitude];
-      busController.myUIdInFirebase = user.uid;
+      busController.myUIdInFirebase = user.id!;
       busController.myUserName = '박준성';
 
       busController.getBusStopList(latlng.latitude, latlng.longitude);
@@ -78,8 +78,8 @@ class _TransScreenState extends State<TransScreen> {
               Container(
 
                   ///버스 노선 목록
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height * 0.05),
+                  /*padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.05),*/
                   alignment: Alignment.center,
                   width: MediaQuery.of(context).size.width * 0.9,
                   decoration: BoxDecoration(),
