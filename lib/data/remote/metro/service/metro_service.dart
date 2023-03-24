@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:rolling_together/commons/utils/coords_dist_util.dart';
 import 'package:rolling_together/data/remote/metro/models'
     '/busan_metro_station_convenience.dart' as busan_metro_response;
 import 'package:rolling_together/data/remote/metro/models/metro_station.dart';
@@ -24,6 +25,21 @@ class MetroService {
       });
     }
     return busanMetroStationMap;
+  }
+
+  /// 부산 지하철 역 목록 맵 반환
+  Future<List<MetroStationDto>> loadAroundStations(
+      double lat, double lon) async {
+    // 주변 역 1km 이내
+    List<MetroStationDto> aroundStations = [];
+    for (var station in busanMetroStationMap.values) {
+      if (haversineDistance(lat, lon, station.latitude, station.longitude) <=
+          1000) {
+        aroundStations.add(station);
+      }
+    }
+
+    return aroundStations;
   }
 
   /// 부산 도시 철도 장애인 편의 시설 정보 로드

@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../models/user_grade.dart';
 
@@ -8,19 +10,38 @@ class UserGradeService {
   /// 유저 등급을 반환
   Future<UserGradeDto> getUserGrade(String userId) async {
     try {
-      final result = await firestore.collection('Users').doc(userId).get();
+      final response = await firestore
+          .collection('DangerousZone')
+          .where('informerId', isEqualTo: userId)
+          .get();
 
-      if (result.exists) {
-        final List<String> reportList =
-            result.data()?['dangerousZoneReportList'];
-        final userGrade =
-            UserGradeDto(userId: userId, reportCount: reportList.length);
-        // 제보 횟수에 따른 등급 분류 표가 없음
+      final reportCount = response.size;
+      int r = 0;
+      int g = 0;
+      int b = 0;
 
-        return Future.value(userGrade);
+      // 제보 10개 이상 : 금 255 215 0
+      // 제보 10개 미만 3개 초과 : 은 192 192 192
+      // 제보 3개 이하 : 동 205 127 50
+      if (reportCount >= 10) {
+        r = 255;
+        g = 215;
+        b = 0;
+      } else if (reportCount > 3) {
+        r = 192;
+        g = 192;
+        b = 192;
       } else {
-        return Future.error('failed');
+        r = 205;
+        g = 127;
+        b = 50;
       }
+
+      final userGrade = UserGradeDto(
+          userId: userId,
+          reportCount: reportCount,
+          iconColor: Color.fromARGB(255, r, g, b));
+      return Future.value(userGrade);
     } catch (e) {
       return Future.error('failed');
     }

@@ -6,8 +6,7 @@ class UserGradeController extends GetxController {
   final userGradeService = UserGradeService();
 
   // 유저 등급
-  final Rx<UserGradeDto?> userGrade =
-      UserGradeDto(userId: '', reportCount: 0).obs;
+  final Rxn<UserGradeDto> userGrade = Rxn();
 
   // 유저 등급 로드
   getUserGrade(String userId) {

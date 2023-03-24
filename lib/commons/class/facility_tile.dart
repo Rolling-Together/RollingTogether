@@ -6,56 +6,51 @@ FacilityInfo(text: '전동 휠체어 충전소', icon: Icons.ev_station)
  */
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
-import '../../ui/screens/7_facility_post_screen.dart';
+import 'package:rolling_together/commons/enum/facility_checklist.dart';
+import 'package:rolling_together/data/remote/facility/models/facility.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:rolling_together/ui/screens/7_facility_post_screen.dart';
+
 
 class FacilityTile extends StatefulWidget {
-  final String time; // 신고 시간
-  FacilityTile({required this.time});
+  final FacilityDto facilityDto;
+
+  FacilityTile({required this.facilityDto});
 
   _FacilityTileState createState() => _FacilityTileState();
 }
 
 class _FacilityTileState extends State<FacilityTile> {
-  late Image facilityPhoto; // 사진
-  late String facilityName; // 시설 이름
-  late String address; // 주소
+  static final DateFormat dateFormat = DateFormat('MM/dd HH:mm');
 
   @override
   void initState() {
     super.initState();
-    getInformation();
-  }
-
-  void getInformation() {
-    // comment, address, time, representativePicture 세팅하기
-    setState(() {
-      facilityPhoto = Image.network(
-        'https://avatars.githubusercontent.com/u/113813770?s=400&u=c4addb4d0b81eabc9faef9f13adc3dea18ddf83a&v=4',
-        fit: BoxFit.cover,
-      );
-      facilityName = "마마도마";
-      address = "ㅇㅇ로 ㅇㅇ번길";
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(FacilityPostScreen(context));
+
+        Get.to(FacilityPostScreen(
+          facilityDto: widget.facilityDto,
+        ));
+
       },
       child: Card(
         child: ListTile(
           horizontalTitleGap: 10, // trailing과 (title, subtitle) 간격 조절
           title: Text(
-            facilityName,
-            style: TextStyle(fontSize: 23),
+            widget.facilityDto.name,
+            style: const TextStyle(fontSize: 23),
           ),
-          trailing: SizedBox(width: 80, height: 80, child: facilityPhoto),
-          subtitle: Container(
+
+          trailing: const Icon(Icons.remove, size: 50),
+          subtitle: SizedBox(
+
             width: MediaQuery.of(context).size.width * 0.7,
             child: Column(
               children: [
@@ -63,11 +58,16 @@ class _FacilityTileState extends State<FacilityTile> {
                   Container(
                     height: 40,
                     width: 40,
-                    margin: EdgeInsets.all(10),
-                    padding: EdgeInsets.all(10),
+
+                    margin: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     color: Colors.grey,
                     child: Center(
-                        child: Text('Icon\n1', style: TextStyle(fontSize: 10))),
+                        child: Text(
+                            '화장실'
+                            '\n${widget.facilityDto.checkList[FacilityCheckListType.toilet]!.status.toString()}',
+                            style: const TextStyle(fontSize: 10))),
+
                   ),
                   Container(
                     height: 40,
@@ -76,7 +76,12 @@ class _FacilityTileState extends State<FacilityTile> {
                     padding: EdgeInsets.all(10),
                     color: Colors.grey,
                     child: Center(
-                        child: Text('Icon\n2', style: TextStyle(fontSize: 10))),
+
+                        child: Text(
+                            '1층'
+                            '\n${widget.facilityDto.checkList[FacilityCheckListType.floorFirst]!.status.toString()}',
+                            style: const TextStyle(fontSize: 10))),
+
                   ),
                   Container(
                     height: 40,
@@ -85,7 +90,12 @@ class _FacilityTileState extends State<FacilityTile> {
                     padding: EdgeInsets.all(10),
                     color: Colors.grey,
                     child: Center(
-                        child: Text('Icon\n3', style: TextStyle(fontSize: 10))),
+
+                        child: Text(
+                            '휠체어'
+                            '\n${widget.facilityDto.checkList[FacilityCheckListType.wheelChair]!.status.toString()}',
+                            style: TextStyle(fontSize: 10))),
+
                   ),
                   Container(
                     height: 40,
@@ -94,12 +104,19 @@ class _FacilityTileState extends State<FacilityTile> {
                     padding: EdgeInsets.all(10),
                     color: Colors.grey,
                     child: Center(
-                        child: Text('Icon\n4', style: TextStyle(fontSize: 10))),
+
+                        child: Text(
+                            '승강기'
+                            '\n${widget.facilityDto.checkList[FacilityCheckListType.elevator]!.status.toString()}',
+                            style: TextStyle(fontSize: 10))),
+
                   ),
                 ]),
                 Row(
                   //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text(address), Text(widget.time)],
+
+                  children: [Text(widget.facilityDto.addressName)],
+
                 ),
               ],
             ),
@@ -109,3 +126,13 @@ class _FacilityTileState extends State<FacilityTile> {
     );
   }
 }
+
+/*
+ widget.facilityDto.checkList.isNotEmpty
+        ? SizedBox(
+        width: 50.0,
+            height: 50.0,
+            child: Image.network(
+                '${firebaseStorageBucket}facilitychecklist/${widget.facilityDto.[0]}',fit: BoxFit.cover))
+              : const Icon(Icons.remove, size: 50),
+ */

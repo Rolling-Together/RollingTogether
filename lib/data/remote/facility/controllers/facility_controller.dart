@@ -19,10 +19,9 @@ import '../models/review.dart';
 class FacilityController extends GetxController {
   final imgUploadService = ImgUploadService();
   final facilityService = FacilityService();
-  final reportService = ReportListService();
 
   final TextEditingController reviewTextEditingController =
-  TextEditingController();
+      TextEditingController();
 
   // 편의 시설 목록
   final RxList<FacilityDto> facilityList = <FacilityDto>[].obs;
@@ -32,9 +31,6 @@ class FacilityController extends GetxController {
 
   // 편의 시설 추가
   final RxBool updateFacilityResult = false.obs;
-
-  // 리뷰 추가
-  final RxBool addReviewResult = false.obs;
 
   // 모든 리뷰 목록
   final RxList<FacilityReviewDto> reviewList = <FacilityReviewDto>[].obs;
@@ -48,12 +44,13 @@ class FacilityController extends GetxController {
 
   /// 체크 리스트 업데 이트 데이터
   Map<FacilityCheckListType, FacilityCheckListDto> newCheckListMap = {
-    for (var key in FacilityCheckListType.toList()) key: FacilityCheckListDto()
+    for (var key in FacilityCheckListType.toList())
+      key: FacilityCheckListDto(type: key, imgUrls: [], status: false)
   };
 
   /// 해당 위/경도 근처에 있는 장소(편의 시설) 목록 로드
-  getFacilityList(
-      List<FacilityType> facilityTypes, double latitude, double longitude) {
+  getFacilityList(List<SharedDataCategory> facilityTypes, double latitude,
+      double longitude) {
     final categoryIds = facilityTypes.map((e) => e.id).toList();
     facilityService.getFacilityList(categoryIds, latitude, longitude).then(
         (value) {
@@ -100,8 +97,7 @@ class FacilityController extends GetxController {
     facilityDto.checkListMap = finalCheckListMap;
 
     facilityService.updateFacility(facilityDto).then((value) {
-      // 편의시설 업데이트 완료 -> 이미지 업로드, 내 제보 목록에 추가
-      reportService.addFacility(facilityDto.placeId, facilityDto.informerId);
+      // 편의시설 업데이트 완료 -> 이미지 업로드
 
       imgUploadService.uploadImgs('facilitychecklist', images).then((value) {
         updateFacilityResult.value = true;
@@ -116,10 +112,8 @@ class FacilityController extends GetxController {
   /// 리뷰 추가
   addReview(FacilityReviewDto reviewDto, String facilityPlaceId) {
     facilityService.addReview(reviewDto, facilityPlaceId).then((value) {
-      addReviewResult.value = true;
-    }, onError: (obj) {
-      addReviewResult.value = false;
-    });
+      getAllReviews(facilityPlaceId);
+    }, onError: (obj) {});
   }
 
   ///  모든 리뷰 로드

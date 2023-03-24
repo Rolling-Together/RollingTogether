@@ -6,8 +6,8 @@ import 'package:rolling_together/ui/screens/7_facility_post_screen.dart';
 import 'package:rolling_together/ui/screens/9_community_screen.dart';
 
 import 'data/remote/auth/controller/firebase_auth_controller.dart';
+import 'data/remote/map/controller/my_map_controller.dart';
 import 'firebase_options.dart';
-import 'ui/screens/init_map_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,9 +16,13 @@ void main() async {
   );
 
   final authController = Get.put(AuthController(), permanent: true);
+  final MyMapController myMapController =
+      Get.put(MyMapController(), permanent: true);
 
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
-    home:CommunityScreen(),
+
+    home: LoginScreen(),
+
   ));
 }

@@ -13,34 +13,34 @@ class FacilityTypeUtil {
   static final transportationCodes = <String>{'PK6', 'OL7'};
 
   /// 카카오 장소 검색 결과에 대하여 카테 고리 타입 반환
-  static FacilityType toEnum(String categoryGroupCode, String categoryName) {
+  static SharedDataCategory toEnum(String categoryGroupCode, String categoryName) {
     if (categoryGroupCode.isEmpty && categoryName.isEmpty) {
-      return FacilityType.undefined;
+      return SharedDataCategory.undefined;
     }
 
     if (restaurantCafeCodes.contains(categoryGroupCode) ||
         restaurantCafeCodes.contains(categoryName)) {
-      return FacilityType.restaurantCafe;
+      return SharedDataCategory.restaurantCafe;
     } else if (healthCareCodes.contains(categoryGroupCode) ||
         healthCareCodes.contains(categoryName)) {
-      return FacilityType.healthCare;
+      return SharedDataCategory.healthCare;
     } else if (cultureSportsCodes.contains(categoryGroupCode) ||
         cultureSportsCodes.contains(categoryName)) {
-      return FacilityType.cultureSports;
+      return SharedDataCategory.cultureSports;
     } else if (accommodationCodes.contains(categoryGroupCode) ||
         accommodationCodes.contains(categoryName)) {
-      return FacilityType.accommodation;
+      return SharedDataCategory.accommodation;
     } else if (publicEducationCodes.contains(categoryGroupCode) ||
         publicEducationCodes.contains(categoryName)) {
-      return FacilityType.publicEducation;
+      return SharedDataCategory.publicEducation;
     } else if (welFareCodes.contains(categoryGroupCode) ||
         welFareCodes.contains(categoryName)) {
-      return FacilityType.welFare;
+      return SharedDataCategory.welFare;
     } else if (commercialPropertyCodes.contains(categoryGroupCode) ||
         commercialPropertyCodes.contains(categoryName)) {
-      return FacilityType.commercialProperty;
+      return SharedDataCategory.commercialProperty;
     } else {
-      return FacilityType.transportation;
+      return SharedDataCategory.transportation;
     }
   }
 }

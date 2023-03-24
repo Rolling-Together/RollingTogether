@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 enum FacilityCheckListType {
   wheelChair('wheelchair', '휠체어 접근 가능성', 0, Icons.accessible),
   toilet('toilet', '1층에 위치함', 1, Icons.looks_one),
-  floorFirst('floot_first', '장애인 화장실', 2, Icons.wc),
+  floorFirst('floor_first', '장애인 화장실', 2, Icons.wc),
   elevator('elevator', '엘리베이터', 3, Icons.elevator),
   undefined('-', '정의되지않음', -1, Icons.close);
 
