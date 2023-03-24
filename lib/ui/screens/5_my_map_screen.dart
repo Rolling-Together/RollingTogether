@@ -6,6 +6,7 @@ import 'package:rolling_together/commons/class/i_refresh_data.dart';
 import 'package:rolling_together/commons/enum/facility_checklist.dart';
 import 'package:rolling_together/commons/enum/facility_types.dart';
 
+import '../../commons/utils/bottom_sheet.dart';
 import '../../commons/widgets/custom_chip.dart';
 import '13_facility_screen.dart';
 import '6_dangerous_zone_screen.dart';
@@ -57,222 +58,21 @@ class _MapSampleState extends State<MapSample> {
   // 마커를 탭할 때 호출되는 콜백 함수
   void onMarkerTapped(MarkerId markerId) {
     // 마커 ID를 사용하여 특정 마커를 찾음
-    Marker tappedMarker =
-    markers.firstWhere((marker) => marker.markerId == markerId);
+    Marker tappedMarker = markers.firstWhere((marker) => marker.markerId == markerId);
 
-    // If the marker with ID "1" is tapped, show the blue square
     if (markerId.value == "2") {
       //식당
       showModalBottomSheet(
         context: context,
         builder: (context) {
-          return /*Csontainer(
-          height: 200,
-          child: Center(
-            child: Text('Marker tapped: ${tappedMarker.markerId.value}'),
-          ),
-        );*/
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Container(
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height / 3,
-                child: Column(
-                  children: [
-                    Container(
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height / 6,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Title 1',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text('Description 1'),
-                                Text(
-                                  'Title 2',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text('Description 2'),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: 20,//식당 이미지
-                            )/*Image.network(
-                              'https://th.bing.com/th/id/OIP.rRw8sYj4rXkmurs2kCtjBQHaE8?w=287&h=191&c=7&r=0&o=5&dpr=1.3&pid=1.7',
-                              fit: BoxFit.cover,
-                            ),*/
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Icon(Icons.wheelchair_pickup),
-                          ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Title 2',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text('Description 2'),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Title 3',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text('Description 3'),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Title 4',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text('Description 4'),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
+          return Bus_BottomSheet();
         },
       );
     } else {
-      // showModalBottomSheet로 마커 정보를 표시하는 Bottom Sheet를 보여줌
       showModalBottomSheet(
         context: context,
         builder: (context) {
-          return /*Csontainer(
-          height: 200,
-          child: Center(
-            child: Text('Marker tapped: ${tappedMarker.markerId.value}'),
-          ),
-        );*/
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Container(
-                height: MediaQuery
-                    .of(context)
-                    .size
-                    .height / 3,
-                child: Column(
-                  children: [
-                    Container(
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height / 6,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Title 1',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text('Description 1'),
-                                Text(
-                                  'Title 2',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text('Description 2'),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: 20,//식당 이미지
-                            )/*Image.network(
-                              'https://th.bing.com/th/id/OIP.CWxD3nGIp_XU34nZ8G-p9AHaFj?w=263&h=197&c=7&r=0&o=5&dpr=1.3&pid=1.7',
-                              fit: BoxFit.cover,
-                            ),*/
-                          ),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Icon(Icons.wheelchair_pickup),
-                          ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Title 2',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text('Description 2'),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Title 3',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text('Description 3'),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Title 4',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Text('Description 4'),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
+          return Bus_BottomSheet();
         },
       );
     }

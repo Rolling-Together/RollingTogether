@@ -14,6 +14,7 @@ import 'package:rolling_together/data/remote/search_places/controllers/search_pl
 import 'package:rolling_together/data/remote/search_places/models/places_response.dart';
 import 'package:rolling_together/ui/screens/search_places/search_places_screen.dart';
 
+import '../../data/remote/dangerous_zone/controllers/add_dangerous_zone_controller.dart';
 import '../../data/remote/facility/models/facility.dart';
 
 final TextEditingController reviewTextEditingController =
@@ -30,6 +31,10 @@ class UpdateFacilityScreenState extends State<FacilityScreen> {
   final FacilityController facilityController = Get.put(FacilityController());
   final SearchPlacesController searchPlacesController =
       Get.put(SearchPlacesController());
+
+  final AddDangerousZoneController addDangerousZoneController = Get.put(
+      AddDangerousZoneController(),
+      tag: AddDangerousZoneController.tag);
 
   @override
   void dispose() {
@@ -99,6 +104,7 @@ class UpdateFacilityScreenState extends State<FacilityScreen> {
                                       "")))),
                       Container(
                         padding: EdgeInsets.only(
+
                             left: MediaQuery.of(context).size.width * 0.05),
                         alignment: Alignment.centerLeft,
                         child: InkWell(
@@ -159,6 +165,7 @@ class UpdateFacilityScreenState extends State<FacilityScreen> {
                               facilityController.selectedPlace.value!.placeName,
                               style: const TextStyle(
                                 color: Colors.black,
+
                               ),
                               textAlign: TextAlign.left,
                             ),

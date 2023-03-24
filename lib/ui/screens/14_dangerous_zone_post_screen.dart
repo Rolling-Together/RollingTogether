@@ -128,6 +128,7 @@ class _DangerousZonePostScreenState extends State<DangerousZonePostScreen> {
                         child: Icon(Icons.person),
                       ),
                     ),
+
                     Text(widget.dangerousZoneController.dangerousZone.value!
                         .informerName),
                     const Icon(Icons.star),
@@ -224,6 +225,7 @@ class _DangerousZonePostScreenState extends State<DangerousZonePostScreen> {
                   child: const CircleAvatar(
                     radius: 50,
                     child: Icon(Icons.person),
+
                   ),
                 ),
                 title: Form(

@@ -2,11 +2,15 @@
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+
 import 'package:rolling_together/commons/class/firebase_storage.dart';
+
 import 'package:rolling_together/ui/screens/14_dangerous_zone_post_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 import '../../data/remote/dangerous_zone/models/dangerouszone.dart';
+
+import '../../ui/screens/7_facility_post_screen.dart';
 
 class DangerousZoneTile extends StatelessWidget {
   final DangerousZoneDto dto;
@@ -25,9 +29,11 @@ class DangerousZoneTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+
       onTap: () {
         Get.to(DangerousZonePostScreen(), arguments: {'dangerousZoneDto': dto});
       },
+
       child: Card(
         child: ListTile(
           title: Text(
@@ -74,6 +80,8 @@ class DangerousZoneTile extends StatelessWidget {
           ),
         ),
       ),
+
     );
+
   }
 }

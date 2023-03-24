@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+
 import 'package:rolling_together/commons/enum/facility_checklist.dart';
 import 'package:rolling_together/data/remote/auth/controller/firebase_auth_controller.dart';
 import 'package:rolling_together/data/remote/facility/models/facility.dart';
 import 'package:rolling_together/data/remote/facility/models/review.dart';
 import 'package:rolling_together/ui/screens/facility/modification/facility_modification_screen.dart';
-
+import 'package:rolling_together/commons/utils/capture_and_share_screenshot.dart';
+import 'package:flutter_share/flutter_share.dart';
 import '../../commons/class/firebase_storage.dart';
 import '../../data/remote/facility/controllers/facility_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:rolling_together/commons/class/icon_and_photo_tile.dart';
+
+
 
 import '13_facility_screen.dart';
 
@@ -28,7 +35,9 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController commentController = TextEditingController();
 
+
   Widget commentChild() {
+
     return Column(
       children: [
         for (final review in widget.facilityController.reviewList)
@@ -85,6 +94,7 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
+
           icon: const Icon(Icons.arrow_back),
           color: Colors.black,
           onPressed: () => Get.back(),
@@ -93,11 +103,13 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
           children: [
             Text(widget.facilityDto.name,
                 style: const TextStyle(color: Colors.black)),
+
           ],
         ),
       ),
       body: SingleChildScrollView(
         child: SafeArea(
+
           child: Column(
             children: [
               Container(
@@ -117,9 +129,9 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                 height: 20,
               ),
               SizedBox(
+
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       GestureDetector(
                         child: const Text(
@@ -131,6 +143,7 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                               arguments: {'facilityDto': widget.facilityDto});
                         },
                       ),
+
                       Text(
                         "업데이트 : ${FacilityPostScreen.dateFormat.format(widget.facilityDto.dateTime.toDate())}",
                         style:
@@ -208,6 +221,7 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                 ),
               ),
             ],
+
           ),
         ),
       ),
