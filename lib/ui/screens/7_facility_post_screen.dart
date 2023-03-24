@@ -4,6 +4,9 @@ import 'package:get/get_core/src/get_main.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:rolling_together/commons/class/icon_and_photo_tile.dart';
+import 'package:get/get.dart';
+import 'package:rolling_together/commons/utils/capture_and_share_screenshot.dart';
+import 'package:flutter_share/flutter_share.dart';
 
 import '13_facility_screen.dart';
 
@@ -198,8 +201,21 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                           Text(' 2') //공감개수
                         ]),
                         GestureDetector(
-                          child: Text('공유'),
-                          onTap: () {},
+                            child: Text('공유'),
+                            onTap: () async {
+                              // 이미지를 캡쳐해서 imagePath에 저장하는 코드
+                              String? imagePath = await captureImage();
+
+                              if (imagePath != null) {
+                                // 이미지를 SNS에 공유하는 코드
+                                await FlutterShare.shareFile(
+                                  title: 'Share Image', filePath: imagePath,
+                                );
+                              } else {
+                                // imagePath가 null일 경우 예외 처리
+                                print('Image path is null');
+                              }
+                            }
                         ),
                       ],
                     )),
