@@ -1,7 +1,11 @@
 /// 위험 장소 타일
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:rolling_together/ui/screens/14_dangerous_zone_post_screen.dart';
+
+import '../../ui/screens/7_facility_post_screen.dart';
 
 class DangerousZoneTile extends StatelessWidget {
   DangerousZoneTile({
@@ -23,6 +27,7 @@ class DangerousZoneTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () {Get.to(DangerousZonePostScreen(context));},
       child: Card(
         child: ListTile(
           title: Text(
@@ -37,14 +42,6 @@ class DangerousZoneTile extends StatelessWidget {
           ),
         ),
       ),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => DangerousZonePostScreen(context),
-          ),
-        );
-      },
     ) ;
   }
 }

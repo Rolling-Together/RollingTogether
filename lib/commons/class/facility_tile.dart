@@ -6,6 +6,10 @@ FacilityInfo(text: '전동 휠체어 충전소', icon: Icons.ev_station)
  */
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+import '../../ui/screens/7_facility_post_screen.dart';
 
 class FacilityTile extends StatefulWidget {
   final String time; // 신고 시간
@@ -39,66 +43,69 @@ class _FacilityTileState extends State<FacilityTile> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-          horizontalTitleGap : 10, // trailing과 (title, subtitle) 간격 조절
+    return GestureDetector(
+      onTap: () {
+        Get.to(FacilityPostScreen(context));
+      },
+      child: Card(
+        child: ListTile(
+          horizontalTitleGap: 10, // trailing과 (title, subtitle) 간격 조절
           title: Text(
             facilityName,
             style: TextStyle(fontSize: 23),
           ),
-           trailing: SizedBox(
-               width: 80,
-               height: 80,
-               child: facilityPhoto
-           ),
-          subtitle:Container(
+          trailing: SizedBox(width: 80, height: 80, child: facilityPhoto),
+          subtitle: Container(
             width: MediaQuery.of(context).size.width * 0.7,
             child: Column(
-            children: [
-              Row(children: [
-                Container(
-                  height: 40,
-                  width: 40,
-                  margin: EdgeInsets.all(10),
-                  padding: EdgeInsets.all(10),
-                  color: Colors.grey,
-                  child: Center(
-                      child: Text('Icon\n1', style: TextStyle(fontSize: 10))),
+              children: [
+                Row(children: [
+                  Container(
+                    height: 40,
+                    width: 40,
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    color: Colors.grey,
+                    child: Center(
+                        child: Text('Icon\n1', style: TextStyle(fontSize: 10))),
+                  ),
+                  Container(
+                    height: 40,
+                    width: 40,
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    color: Colors.grey,
+                    child: Center(
+                        child: Text('Icon\n2', style: TextStyle(fontSize: 10))),
+                  ),
+                  Container(
+                    height: 40,
+                    width: 40,
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    color: Colors.grey,
+                    child: Center(
+                        child: Text('Icon\n3', style: TextStyle(fontSize: 10))),
+                  ),
+                  Container(
+                    height: 40,
+                    width: 40,
+                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(10),
+                    color: Colors.grey,
+                    child: Center(
+                        child: Text('Icon\n4', style: TextStyle(fontSize: 10))),
+                  ),
+                ]),
+                Row(
+                  //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [Text(address), Text(widget.time)],
                 ),
-                Container(
-                  height: 40,
-                  width: 40,
-                  margin: EdgeInsets.all(10),
-                  padding: EdgeInsets.all(10),
-                  color: Colors.grey,
-                  child: Center(
-                      child: Text('Icon\n2', style: TextStyle(fontSize: 10))),
-                ),
-                Container(
-                  height: 40,
-                  width: 40,
-                  margin: EdgeInsets.all(10),
-                  padding: EdgeInsets.all(10),
-                  color: Colors.grey,
-                  child: Center(
-                      child: Text('Icon\n3', style: TextStyle(fontSize: 10))),
-                ),
-                Container(
-                  height: 40,
-                  width: 40,
-                  margin: EdgeInsets.all(10),
-                  padding: EdgeInsets.all(10),
-                  color: Colors.grey,
-                  child: Center(
-                      child: Text('Icon\n4', style: TextStyle(fontSize: 10))),
-                ),
-              ]),
-              Row(
-                //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [Text(address), Text(widget.time)],
-              ),
-            ],
-          ),),),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
