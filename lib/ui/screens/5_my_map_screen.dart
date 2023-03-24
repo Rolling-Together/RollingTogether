@@ -108,37 +108,40 @@ class _MapSampleState extends State<MapSample> {
           },
         ),
         Align(
-          alignment: Alignment.center,
-          child: Container(
-            width: 50,
-            height: 50,
-            child: Container(
-              height: 20,//식당 이미지
-            )/*Image.asset(
-              'https://th.bing.com/th/id/OIP.CWxD3nGIp_XU34nZ8G-p9AHaFj?w=263&h=197&c=7&r=0&o=5&dpr=1.3&pid=1.7',
-            ),*/
-          ),
+            alignment: Alignment.center,
+            child: /*Image.asset('assets/images/Icon1.png', height: 50, width: 10),*/
+            Icon(Icons.icecream_rounded)
         ),
         Positioned(
           top: 50,
-          left: 40,
+          left: 20,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              InkWell(
-//onTap: () => ,
-                  child: CostomChip(
-                      '위험장소', Icon(Icons.dangerous), Colors.redAccent)),
-              SizedBox(width: 10),
-              GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _showAdditionalChips = !_showAdditionalChips;
-                    });
-                  },
-                  child: CostomChip('편의시설', Icon(Icons.place), Colors.yellow)),
-              SizedBox(width: 10),
-              CostomChip('대중교통', Icon(Icons.bus_alert_rounded), Colors.cyan)
+              TransparentButton(
+                label: "위험장소",
+                icon: Icon(Icons.dangerous),
+                onPressed: () {},
+              ),
+              SizedBox(width: 5),
+              TransparentButton(
+                label: "편의시설",
+                icon: Icon(Icons.place),
+                onPressed: () {
+                  setState(() {
+                    _showAdditionalChips = !_showAdditionalChips;
+                  });
+                },
+              ),
+              SizedBox(width: 5),
+              TransparentButton(
+                label: "대중교통",
+                icon: Icon(Icons.bus_alert_rounded),
+                onPressed: () {
+                  // Do something when the button is pressed
+                },
+              )
+
             ],
           ),
         ),
@@ -148,28 +151,55 @@ class _MapSampleState extends State<MapSample> {
             visible: _showAdditionalChips,
             child: Container(
               margin: EdgeInsets.only(top: 10),
-              child: Row(
+              child: Column(
                 children: [
-                  GestureDetector(
-                    onTap: () {},
-                    child:
-                    CostomChip('식당', Icon(Icons.fastfood), Colors.yellow),
+                  TransparentButton(
+                    label: "식당",
+                    icon: Icon(Icons.fastfood),
+                    onPressed: () {},
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: CostomChip(
-                        '카페', Icon(Icons.emoji_food_beverage), Colors.yellow),
+                  TransparentButton(
+                    label: "식당",
+                    icon: Icon(Icons.fastfood),
+                    onPressed: () {},
+                  ),TransparentButton(
+                    label: "식당",
+                    icon: Icon(Icons.fastfood),
+                    onPressed: () {},
+                  ),TransparentButton(
+                    label: "식당",
+                    icon: Icon(Icons.fastfood),
+                    onPressed: () {},
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child:
-                    CostomChip('문화', Icon(Icons.fastfood), Colors.yellow),
+                  TransparentButton(
+                    label: "식당",
+                    icon: Icon(Icons.fastfood),
+                    onPressed: () {},
                   ),
-                  GestureDetector(
-                    onTap: () {},
-                    child: CostomChip(
-                        '복합', Icon(Icons.face_outlined), Colors.yellow),
+                  TransparentButton(
+                    label: "식당",
+                    icon: Icon(Icons.fastfood),
+                    onPressed: () {},
                   ),
+                  SizedBox(width: 5),
+                  TransparentButton(
+                    label: "편의시설",
+                    icon: Icon(Icons.place),
+                    onPressed: () {
+                      setState(() {
+                        _showAdditionalChips = !_showAdditionalChips;
+                      });
+                    },
+                  ),
+                  SizedBox(width: 5),
+                  TransparentButton(
+                    label: "대중교통",
+                    icon: Icon(Icons.bus_alert_rounded),
+                    onPressed: () {
+                      // Do something when the button is pressed
+                    },
+                  )
+
                 ],
               ),
             ),
@@ -250,3 +280,97 @@ class _MapSampleState extends State<MapSample> {
 }
 
 
+
+
+class CustomChip extends StatelessWidget {
+  final String label;
+  final Icon icon;
+  final Color backgroundColor;
+  final Color borderColor;
+  final Color labelColor;
+
+  const CustomChip({
+    Key? key,
+    required this.label,
+    required this.icon,
+    required this.backgroundColor,
+    this.borderColor = Colors.black,
+    this.labelColor = Colors.white,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Chip(
+      backgroundColor: backgroundColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+        side: BorderSide(color: borderColor, width: 2.0),
+      ),
+      label: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          icon,
+          SizedBox(width: 4.0),
+          Text(
+            label,
+            style: TextStyle(
+              color: labelColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class TransparentButton extends StatefulWidget {
+  final String label;
+  final Icon icon;
+  final VoidCallback onPressed;
+
+  TransparentButton({
+    required this.label,
+    required this.icon,
+    required this.onPressed,
+  });
+
+  @override
+  _TransparentButtonState createState() => _TransparentButtonState();
+}
+
+class _TransparentButtonState extends State<TransparentButton> {
+  bool _isSelected = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: _isSelected ? Colors.blue.withOpacity(0.6) : Colors.grey.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      child: TextButton(
+        onPressed: () {
+          setState(() {
+            _isSelected = !_isSelected;
+          });
+          widget.onPressed();
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            widget.icon,
+            SizedBox(width: 8.0),
+            Text(
+              widget.label,
+              style: TextStyle(
+                color: _isSelected ? Colors.white : Colors.black,
+                fontSize: 16.0,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
