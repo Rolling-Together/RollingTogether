@@ -18,7 +18,7 @@ import '../../data/remote/dangerous_zone/controllers/add_dangerous_zone_controll
 import '../../data/remote/facility/models/facility.dart';
 
 final TextEditingController reviewTextEditingController =
-    TextEditingController();
+TextEditingController();
 
 class FacilityScreen extends StatefulWidget {
   const FacilityScreen({Key? key}) : super(key: key);
@@ -30,7 +30,7 @@ class FacilityScreen extends StatefulWidget {
 class UpdateFacilityScreenState extends State<FacilityScreen> {
   final FacilityController facilityController = Get.put(FacilityController());
   final SearchPlacesController searchPlacesController =
-      Get.put(SearchPlacesController());
+  Get.put(SearchPlacesController());
 
   final AddDangerousZoneController addDangerousZoneController = Get.put(
       AddDangerousZoneController(),
@@ -71,199 +71,217 @@ class UpdateFacilityScreenState extends State<FacilityScreen> {
     return Obx(() => facilityController.updateFacilityResult.isTrue
         ? RegisterDialog()
         : Scaffold(
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    ///대분류
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.width * 0.1,
-                        left: MediaQuery.of(context).size.width * 0.05),
-                    alignment: Alignment.centerLeft,
-                    child: const Text('편의시설', style: TextStyle(fontSize: 16)),
-                  ),
-                  Column(
-                    children: [
-                      Container(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              ///대분류
+              padding: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.width * 0.1,
+                  left: MediaQuery.of(context).size.width * 0.05),
+              alignment: Alignment.centerLeft,
+              child: const Text('편의시설', style: TextStyle(fontSize: 16)),
+            ),
+            Column(
+              children: [
+                Container(
 
-                          ///카테고리
-                          padding: EdgeInsets.only(
-                              top: MediaQuery.of(context).size.height * 0.01,
-                              bottom:
-                                  MediaQuery.of(context).size.height * 0.03),
-                          alignment: Alignment.center,
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          decoration: const BoxDecoration(),
-                          child: Obx(() => CategoryButton(
-                              facilityType: FacilityTypeUtil.toEnum(
-                                  facilityController.selectedPlace.value
-                                          ?.categoryGroupCode ??
-                                      "",
-                                  facilityController
-                                          .selectedPlace.value?.categoryName ??
-                                      "")))),
-                      Container(
-                        padding: EdgeInsets.only(
-
-                            left: MediaQuery.of(context).size.width * 0.05),
-                        alignment: Alignment.centerLeft,
-                        child: InkWell(
-                          onTap: () async {
-                            final Place? result = await Get.to(
-                                const SearchPlacesPage(),
-                                arguments: {
-                                  'latlng': facilityController.latLng
-                                });
-                            if (result == null) {
-                            } else {
-                              facilityController.selectedPlace.value = result;
-                            }
-                          },
-                          child: Container(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 16.0),
-                            height: 48.0,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[300],
-                              borderRadius: BorderRadius.circular(24.0),
-                            ),
-                            child: Row(
-                              children: const [
-                                Icon(Icons.search),
-                                SizedBox(width: 8.0),
-                                Text('장소 검색하기',
-                                    style: TextStyle(fontSize: 15.0)),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  Container(
-                    padding:
-                        EdgeInsets.all(MediaQuery.of(context).size.width * 0.2),
-                    child: Text('지도 API'),
-                  ),
-                  Container(
-                    ///주소
+                  ///카테고리
                     padding: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.05),
-                    alignment: Alignment.centerLeft,
-                    child: const Text('주소'),
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.05,
-                        top: MediaQuery.of(context).size.height * 0.01),
-                    alignment: Alignment.centerLeft,
-                    child: Obx(() {
-                      if (facilityController.selectedPlace.value != null) {
-                        return Column(
-                          children: [
-                            Text(
-                              facilityController.selectedPlace.value!.placeName,
-                              style: const TextStyle(
-                                color: Colors.black,
+                        top: MediaQuery.of(context).size.height * 0.01,
+                        bottom:
+                        MediaQuery.of(context).size.height * 0.03),
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    decoration: const BoxDecoration(),
+                    child: Obx(() => CategoryButton(
+                        facilityType: FacilityTypeUtil.toEnum(
+                            facilityController.selectedPlace.value
+                                ?.categoryGroupCode ??
+                                "",
+                            facilityController
+                                .selectedPlace.value?.categoryName ??
+                                "")))),
+                Container(
+                  padding: EdgeInsets.only(
 
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                            Text(
-                              facilityController
-                                  .selectedPlace.value!.addressName,
-                              style: const TextStyle(color: Colors.grey),
-                            ),
-                          ],
-                        );
+                      left: MediaQuery.of(context).size.width * 0.05),
+                  alignment: Alignment.centerLeft,
+                  child: InkWell(
+                    onTap: () async {
+                      final Place? result = await Get.to(
+                          const SearchPlacesPage(),
+                          arguments: {
+                            'latlng': facilityController.latLng
+                          });
+                      if (result == null) {
                       } else {
-                        return const Text('선택된 장소 없음');
+                        facilityController.selectedPlace.value = result;
                       }
-                    }),
-                  ),
-                  Column(
-                    //padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
-                    children: FacilityCheckListType.toList()
-                        .map((e) => FacilityInfo(type: e))
-                        .toList(),
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(
-                        MediaQuery.of(context).size.width * 0.05),
-                    decoration:
-                        BoxDecoration(border: Border.all(color: Colors.black)),
-                    child: TextField(
-                      controller:
-                          facilityController.reviewTextEditingController,
-                      decoration: const InputDecoration(
-                          focusedBorder: InputBorder.none),
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
+                    },
+                    child: Container(
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 16.0),
+                      height: 48.0,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(24.0),
+                      ),
+                      child: Row(
+                        children: const [
+                          Icon(Icons.search),
+                          SizedBox(width: 8.0),
+                          Text('장소 검색하기',
+                              style: TextStyle(fontSize: 15.0)),
+                        ],
+                      ),
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).size.height * 0.03),
-                    child: OutlinedButton(
-                      onPressed: () {
-                        final facilityDto = FacilityDto(
-                            placeId: facilityController.selectedPlace.value!.id,
-                            name: facilityController
-                                .selectedPlace.value!.placeName,
-                            latlng: [
-                              double.parse(
-                                  facilityController.selectedPlace.value!.y),
-                              double.parse(
-                                  facilityController.selectedPlace.value!.x)
-                            ],
-                            categoryId: FacilityTypeUtil.toEnum(
-                                    facilityController.selectedPlace.value
-                                            ?.categoryGroupCode ??
-                                        "",
-                                    facilityController.selectedPlace.value
-                                            ?.categoryName ??
-                                        "")
-                                .id,
-                            categoryName: facilityController
-                                .selectedPlace.value!.categoryName,
-                            categoryGroupCode: facilityController
-                                .selectedPlace.value!.categoryGroupCode,
-                            categoryGroupName: facilityController
-                                .selectedPlace.value!.categoryGroupName,
-                            addressName: facilityController
-                                .selectedPlace.value!.addressName,
-                            roadAddressName: facilityController
-                                .selectedPlace.value!.roadAddressName,
-                            placeUrl: facilityController
-                                .selectedPlace.value!.placeUrl,
-                            informerId: AuthController.to.myUserDto.value!.id!,
-                            informerName:
-                                AuthController.to.myUserDto.value!.name,
-                            checkListMap: {});
-
-                        facilityController.updateFacility(
-                            facilityDto, facilityController.newCheckListMap);
-
-                        final placeId = facilityDto.placeId;
-
-                        facilityController.addReview(
-                            FacilityReviewDto(
-                                userId: AuthController.to.myUserDto.value!.id!,
-                                userName: AuthController.to.myUserDto.value!.name,
-                                content: facilityController
-                                    .reviewTextEditingController.text),
-                            placeId);
-                      },
-                      child: const Text(
-                        '등록',
-                        style: TextStyle(color: Colors.black),
+                )
+              ],
+            ),
+            Container(
+              height: 150,
+              margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.04),
+              child: Stack(
+                children: [
+                  GoogleMap(
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(37,37), //컨트롤러사용시 빈값에 접근한다는 에러 발생
+                      zoom: 20,
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      width: 5,
+                      height: 5,
+                      child: Image.asset(
+                        'https://th.bing.com/th/id/OIP.RaP9RPe_tQF_LetUdg0n5gHaHa?w=186&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7',
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-          ));
+            Container(
+              ///주소
+              padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width * 0.05),
+              alignment: Alignment.centerLeft,
+              child: const Text('주소'),
+            ),
+            Container(
+              padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width * 0.05,
+                  top: MediaQuery.of(context).size.height * 0.01),
+              alignment: Alignment.centerLeft,
+              child: Obx(() {
+                if (facilityController.selectedPlace.value != null) {
+                  return Column(
+                    children: [
+                      Text(
+                        facilityController.selectedPlace.value!.placeName,
+                        style: const TextStyle(
+                          color: Colors.black,
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                      Text(
+                        facilityController
+                            .selectedPlace.value!.addressName,
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                    ],
+                  );
+                } else {
+                  return const Text('선택된 장소 없음');
+                }
+              }),
+            ),
+            Column(
+              //padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+              children: FacilityCheckListType.toList()
+                  .map((e) => FacilityInfo(type: e))
+                  .toList(),
+            ),
+            Container(
+              margin: EdgeInsets.all(
+                  MediaQuery.of(context).size.width * 0.05),
+              decoration:
+              BoxDecoration(border: Border.all(color: Colors.black)),
+              child: TextField(
+                controller:
+                facilityController.reviewTextEditingController,
+                decoration: const InputDecoration(
+                    focusedBorder: InputBorder.none),
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).size.height * 0.03),
+              child: OutlinedButton(
+                onPressed: () {
+                  final facilityDto = FacilityDto(
+                      placeId: facilityController.selectedPlace.value!.id,
+                      name: facilityController
+                          .selectedPlace.value!.placeName,
+                      latlng: [
+                        double.parse(
+                            facilityController.selectedPlace.value!.y),
+                        double.parse(
+                            facilityController.selectedPlace.value!.x)
+                      ],
+                      categoryId: FacilityTypeUtil.toEnum(
+                          facilityController.selectedPlace.value
+                              ?.categoryGroupCode ??
+                              "",
+                          facilityController.selectedPlace.value
+                              ?.categoryName ??
+                              "")
+                          .id,
+                      categoryName: facilityController
+                          .selectedPlace.value!.categoryName,
+                      categoryGroupCode: facilityController
+                          .selectedPlace.value!.categoryGroupCode,
+                      categoryGroupName: facilityController
+                          .selectedPlace.value!.categoryGroupName,
+                      addressName: facilityController
+                          .selectedPlace.value!.addressName,
+                      roadAddressName: facilityController
+                          .selectedPlace.value!.roadAddressName,
+                      placeUrl: facilityController
+                          .selectedPlace.value!.placeUrl,
+                      informerId: AuthController.to.myUserDto.value!.id!,
+                      informerName:
+                      AuthController.to.myUserDto.value!.name,
+                      checkListMap: {});
+
+                  facilityController.updateFacility(
+                      facilityDto, facilityController.newCheckListMap);
+
+                  final placeId = facilityDto.placeId;
+
+                  facilityController.addReview(
+                      FacilityReviewDto(
+                          userId: AuthController.to.myUserDto.value!.id!,
+                          userName: AuthController.to.myUserDto.value!.name,
+                          content: facilityController
+                              .reviewTextEditingController.text),
+                      placeId);
+                },
+                child: const Text(
+                  '등록',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ));
   }
 }
 
@@ -287,12 +305,12 @@ class _CategoryButtonState extends State<CategoryButton> {
   Widget build(BuildContext context) {
     return Container(
 
-        ///나중에 category디자인 필요할 때 쓰려고 Container에 담아두고 decoration부여
+      ///나중에 category디자인 필요할 때 쓰려고 Container에 담아두고 decoration부여
 /*decoration: BoxDecoration(
         color: Colors.blueGrey,
       ),*/
         child: Text(widget.facilityType.name)
-        /*
+      /*
       DropdownButton<String>(
         ///underline안보이게 할 때
 //underline: SizedBox.shrink(),
@@ -316,7 +334,7 @@ class _CategoryButtonState extends State<CategoryButton> {
       ),
       */
 
-        );
+    );
   }
 }
 
@@ -341,6 +359,7 @@ class _ImageUploaderState extends State<ImageUploader> {
     final pickedFile = await picker.pickImage(source: source);
     if (pickedFile != null) {
       setState(() {
+        _image = File(pickedFile!.path);
         facilityController.newCheckListMap[widget.type]?.files
             .add(File(pickedFile.path));
       });
@@ -379,10 +398,10 @@ class _ImageUploaderState extends State<ImageUploader> {
       ),*/
       child: _image == null
           ? InkWell(
-              onTap: () =>
-                  showDialog(context: context, builder: (_) => _optionDialog()),
-              child: const Icon(Icons.camera_alt),
-            )
+        onTap: () =>
+            showDialog(context: context, builder: (_) => _optionDialog()),
+        child: Icon(Icons.camera_alt),
+      )
           : Image.file(_image!),
     );
   }
@@ -421,7 +440,7 @@ class _FacilityInfoState extends State<FacilityInfo> {
           Container(
             width: 120,
             margin:
-                EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.2),
+            EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.2),
             child: Text(widget.type.description),
           ),
           Container(
@@ -437,12 +456,12 @@ class _FacilityInfoState extends State<FacilityInfo> {
                 setState(() {
                   dropdownValues = idx!;
                   facilityController.newCheckListMap[widget.type]?.status =
-                      idx == 1 ? true : false;
+                  idx == 1 ? true : false;
                 });
               },
               items:
-                  List.generate(3, (index) => index).map<DropdownMenuItem<int>>(
-                (idx) {
+              List.generate(3, (index) => index).map<DropdownMenuItem<int>>(
+                    (idx) {
                   return DropdownMenuItem<int>(
                     value: idx,
                     child: Text(option_list[idx]),
@@ -453,7 +472,7 @@ class _FacilityInfoState extends State<FacilityInfo> {
           ),
           Container(
             margin:
-                EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
+            EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
             child: ImageUploader(
               type: widget.type,
             ),
