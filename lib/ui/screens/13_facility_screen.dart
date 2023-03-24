@@ -32,10 +32,6 @@ class UpdateFacilityScreenState extends State<FacilityScreen> {
   final SearchPlacesController searchPlacesController =
       Get.put(SearchPlacesController());
 
-  final AddDangerousZoneController addDangerousZoneController = Get.put(
-      AddDangerousZoneController(),
-      tag: AddDangerousZoneController.tag);
-
   @override
   void dispose() {
     facilityController.dispose();
@@ -104,7 +100,6 @@ class UpdateFacilityScreenState extends State<FacilityScreen> {
                                       "")))),
                       Container(
                         padding: EdgeInsets.only(
-
                             left: MediaQuery.of(context).size.width * 0.05),
                         alignment: Alignment.centerLeft,
                         child: InkWell(
@@ -141,9 +136,31 @@ class UpdateFacilityScreenState extends State<FacilityScreen> {
                     ],
                   ),
                   Container(
-                    padding:
-                        EdgeInsets.all(MediaQuery.of(context).size.width * 0.2),
-                    child: Text('지도 API'),
+                    height: 150,
+                    margin: EdgeInsets.all(
+                        MediaQuery.of(context).size.width * 0.04),
+                    child: Stack(
+                      children: [
+                        GoogleMap(
+                          initialCameraPosition: CameraPosition(
+                            target: LatLng(facilityController.latLng!.latitude,
+                                facilityController.latLng!.longitude),
+                            //컨트롤러사용시 빈값에 접근한다는 에러 발생
+                            zoom: 20,
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            width: 5,
+                            height: 5,
+                            child: Image.asset(
+                              'https://th.bing.com/th/id/OIP.RaP9RPe_tQF_LetUdg0n5gHaHa?w=186&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7',
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   Container(
                     ///주소
@@ -165,7 +182,6 @@ class UpdateFacilityScreenState extends State<FacilityScreen> {
                               facilityController.selectedPlace.value!.placeName,
                               style: const TextStyle(
                                 color: Colors.black,
-
                               ),
                               textAlign: TextAlign.left,
                             ),
@@ -249,7 +265,8 @@ class UpdateFacilityScreenState extends State<FacilityScreen> {
                         facilityController.addReview(
                             FacilityReviewDto(
                                 userId: AuthController.to.myUserDto.value!.id!,
-                                userName: AuthController.to.myUserDto.value!.name,
+                                userName:
+                                    AuthController.to.myUserDto.value!.name,
                                 content: facilityController
                                     .reviewTextEditingController.text),
                             placeId);
