@@ -45,19 +45,19 @@
 
 ### 이동 보조기기 이용자 이동 중 사고 관련 뉴스
 
-![출처 -[https://www.yna.co.kr/view/MYH20160419017700038](https://www.yna.co.kr/view/MYH20160419017700038)](Rolling%20Together%20e97110dd0ef14c22b4c9d756c6e8174c/Untitled.png)
+![출처 -[https://www.yna.co.kr/view/MYH20160419017700038](https://www.yna.co.kr/view/MYH20160419017700038)](Untitled.png)
 
 출처 -[https://www.yna.co.kr/view/MYH20160419017700038](https://www.yna.co.kr/view/MYH20160419017700038)
 
-![출처 - [https://news.kbs.co.kr/news/view.do?ncd=3148727](https://news.kbs.co.kr/news/view.do?ncd=3148727)](Rolling%20Together%20e97110dd0ef14c22b4c9d756c6e8174c/Untitled%201.png)
+![출처 - [https://news.kbs.co.kr/news/view.do?ncd=3148727](https://news.kbs.co.kr/news/view.do?ncd=3148727)](Untitled%201.png)
 
 출처 - [https://news.kbs.co.kr/news/view.do?ncd=3148727](https://news.kbs.co.kr/news/view.do?ncd=3148727)
 
-![출처 - [https://youtu.be/l9bNtlmjaVs](https://youtu.be/l9bNtlmjaVs)](Rolling%20Together%20e97110dd0ef14c22b4c9d756c6e8174c/Untitled.jpeg)
+![출처 - [https://youtu.be/l9bNtlmjaVs](https://youtu.be/l9bNtlmjaVs)](Untitled.jpeg)
 
 출처 - [https://youtu.be/l9bNtlmjaVs](https://youtu.be/l9bNtlmjaVs)
 
-![출처 - [https://www.youtube.com/watch?v=BHXUSOm3o28](https://www.youtube.com/watch?v=BHXUSOm3o28)](Rolling%20Together%20e97110dd0ef14c22b4c9d756c6e8174c/Untitled%202.png)
+![출처 - [https://www.youtube.com/watch?v=BHXUSOm3o28](https://www.youtube.com/watch?v=BHXUSOm3o28)](Untitled%202.png)
 
 출처 - [https://www.youtube.com/watch?v=BHXUSOm3o28](https://www.youtube.com/watch?v=BHXUSOm3o28)
 
@@ -167,7 +167,7 @@ Rolling Together은 ‘커뮤니티 매핑(Community Mapping)’ 어플로서 �
 
 저희 Rolling Together가 제공하는 세부 기능들을 자세하게 소개하도록 하겠습니다.
 
-![Untitled](Rolling%20Together%20e97110dd0ef14c22b4c9d756c6e8174c/Untitled%203.png)
+![Untitled](Untitled%203.png)
 
 - **일상 생활 속의 위험 장소를 공유**
 1. 사용자가 높은 턱, 공사장, 경사로 등 일상생활 중 마주 칠 수 있는 위험장소의 위치를 등록하여 지도에 표시합니다.
