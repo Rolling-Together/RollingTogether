@@ -158,12 +158,17 @@ class _DangerousZonePostScreenState extends State<DangerousZonePostScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Text("공감"),
-                  Row(
-                    children: [
-                      Text('공유')
-                    ],
-                  )
+                  Row(children: [
+                    Icon(
+                      Icons.favorite_border,
+                      color: Colors.red,
+                    ),
+                    Text(' 2') //공감개수
+                  ]),
+                  GestureDetector(
+                    child: Text('공유'),
+                    onTap: () {},
+                  ),
 
                 ],
               )

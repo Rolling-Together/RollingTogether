@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:rolling_together/commons/enum/facility_checklist.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:rolling_together/commons/class/icon_and_photo_tile.dart';
+import 'package:get/get.dart';
+import 'package:rolling_together/commons/utils/capture_and_share_screenshot.dart';
+import 'package:flutter_share/flutter_share.dart';
 
 import '13_facility_screen.dart';
 
@@ -26,6 +33,13 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
       'pic': 'https://picsum.photos/300/30',
       'message': '저도 내일 가봐야겠습니다~~'
     },
+  ];
+
+  List<IconData> facilityIcon = [
+    Icons.accessible,
+    Icons.looks_one,
+    Icons.wc,
+    Icons.elevator
   ];
 
   Widget commentChild(data) {
@@ -80,203 +94,133 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Colors.white,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            color: Colors.black,
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: Column(
-            children: [
-              Text("마마도마 경성대점",
-                  style: TextStyle(fontSize: 30, color: Colors.black)),
-            ],
-          ),
-          bottom: PreferredSize(
-            preferredSize: Size.fromHeight(30),
-            child: Container(
-              margin: EdgeInsets.only(bottom: 10),
-              child: Container(
-                margin: EdgeInsets.all(10),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+        backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          color: Colors.black,
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: Column(
+          children: [
+            Text("마마도마 경성대점",
+                style: TextStyle(fontSize: 30, color: Colors.black)),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Center(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("부산 남구 수영로 3334번길 정현빌 1층",
                           style: TextStyle(fontSize: 15, color: Colors.black)),
                       Text("051-622-9712",
                           style: TextStyle(fontSize: 15, color: Colors.black)),
-                    ]),
-              ),
-            ),
-          )),
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 20,
-              ),
-              Container(
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(15),
+                  height: 1,
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  color: Color(0xffcD9D9D9),
+                ),
+                Container(
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         "정보 업데이트 하기",
                         style: TextStyle(fontSize: 16),
                       ),
-                      Text(
-                        "업데이트 : 2023년 02월 10일 15시 34분",
-                        style: TextStyle(fontSize: 14, color: Colors.grey),
-                      ),
-                    ],
-                  )),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                color: Color(0xffcD9D9D9),
-                margin: EdgeInsets.symmetric(vertical: 10),
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ClipOval(
-
-                              child:Container(
-                                width: 100,
-                                height:100,
-                                color: Colors.white,
-                              )
-                          ),
-
-                          Container(
-                              width: 100,
-                              height: 100,
-                              child: Center(child: Text('사진'))),
-                          Container(
-                              width: 100,
-                              height: 40,
-                              child: Center(child: Text('사진'))),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ClipOval(
-
-                              child:Container(
-                                width: 100,
-                                height:100,
-                                color: Colors.white,
-                              )
-                          ),
-
-                          Container(
-                              width: 100,
-                              height: 100,
-                              child: Center(child: Text('사진'))),
-                          Container(
-                              width: 100,
-                              height: 40,
-                              child: Center(child: Text('사진'))),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ClipOval(
-
-                              child:Container(
-                                width: 100,
-                                height:100,
-                                color: Colors.white,
-                              )
-                          ),
-
-                          Container(
-                              width: 100,
-                              height: 100,
-                              child: Center(child: Text('사진'))),
-                          Container(
-                              width: 100,
-                              height: 40,
-                              child: Center(child: Text('사진'))),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ClipOval(
-
-                              child:Container(
-                                width: 100,
-                                height:100,
-                                color: Colors.white,
-                              )
-                          ),
-
-                          Container(
-                              width: 100,
-                              height: 100,
-                              child: Center(child: Text('사진'))),
-                          Container(
-                              width: 100,
-                              height: 40,
-                              child: Center(child: Text('사진'))),
-                        ],
-                      ),
-                    ),
-
-                  ],),
-
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 10, right: 10, bottom: 10),
-                    child: CircleAvatar(
-                      child: Image.network(
-                        'https://avatars.githubusercontent.com/u/113813770?s=400&u=c4addb4d0b81eabc9faef9f13adc3dea18ddf83a&v=4',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Text('작성자 : 임은서'),
-                  Icon(Icons.star),
-                ]),
-              ),
-              Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 60,
-                  margin: EdgeInsets.symmetric(vertical: 20),
-                  color: Color(0xffcD9D9D9),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text("공감"),
-                      Row(
-                        children: [Text('공유')],
+                      GestureDetector(
+                        child: Icon(Icons.arrow_forward_ios),
+                        onTap: () {Get.to(FacilityScreen());},
                       )
                     ],
-                  )),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Text(
+                    "최종 업데이트 : 2023년 02월 10일 15시 34분",
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  color: Color(0xffcD9D9D9),
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  padding: EdgeInsets.all(10),
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 4, // 리스트 개수는 임의로 설정
+                      itemBuilder: (context, index) {
+                        return IconAndPhotoTile(
+                            facilityIcon: facilityIcon[index]);
+                      }),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child:
+                      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                    Container(
+                      margin: EdgeInsets.only(top: 10, right: 10, bottom: 10),
+                      child: CircleAvatar(
+                        child: Image.network(
+                          'https://avatars.githubusercontent.com/u/113813770?s=400&u=c4addb4d0b81eabc9faef9f13adc3dea18ddf83a&v=4',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    Text('작성자 : 임은서'),
+                    Icon(Icons.star),
+                  ]),
+                ),
+                Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 60,
+                    margin: EdgeInsets.symmetric(vertical: 20),
+                    color: Color(0xffcD9D9D9),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Row(children: [
+                          Icon(
+                            Icons.favorite_border,
+                            color: Colors.red,
+                          ),
+                          Text(' 2') //공감개수
+                        ]),
+                        GestureDetector(
+                            child: Text('공유'),
+                            onTap: () async {
+                              // 이미지를 캡쳐해서 imagePath에 저장하는 코드
+                              String? imagePath = await captureImage();
 
-              commentChild(filedata ),
-
-              Container(
+                              if (imagePath != null) {
+                                // 이미지를 SNS에 공유하는 코드
+                                await FlutterShare.shareFile(
+                                  title: 'Share Image', filePath: imagePath,
+                                );
+                              } else {
+                                // imagePath가 null일 경우 예외 처리
+                                print('Image path is null');
+                              }
+                            }
+                        ),
+                      ],
+                    )),
+                commentChild(filedata),
+                Container(
                   child: ListTile(
                     tileColor: Color(0xffF2F2F2),
                     leading: Container(
@@ -295,11 +239,12 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                         controller: commentController,
                         decoration: InputDecoration(
 
-                          ///댓글 창 배경색
+                            ///댓글 창 배경색
                             filled: true,
                             fillColor: Color(0xffE3E3E3),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
                               borderSide: BorderSide.none,
                             )),
                       ),
@@ -308,10 +253,13 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                       onTap: () {
                         addComment();
                       },
-                      child: Icon(Icons.send_sharp, size: 30, color: Colors.black),
+                      child:
+                          Icon(Icons.send_sharp, size: 30, color: Colors.black),
                     ),
-                  )),
-            ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
