@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:rolling_together/commons/class/icon_and_photo_tile.dart';
+
+import '13_facility_screen.dart';
 
 /// 7. 시설 게시글
 
@@ -134,7 +138,10 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                         "정보 업데이트 하기",
                         style: TextStyle(fontSize: 16),
                       ),
-                      Icon(Icons.arrow_forward_ios)
+                      GestureDetector(
+                        child: Icon(Icons.arrow_forward_ios),
+                        onTap: () {Get.to(FacilityScreen());},
+                      )
                     ],
                   ),
                 ),
@@ -183,7 +190,13 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text("공감"),
+                        Row(children: [
+                          Icon(
+                            Icons.favorite_border,
+                            color: Colors.red,
+                          ),
+                          Text(' 2') //공감개수
+                        ]),
                         GestureDetector(
                           child: Text('공유'),
                           onTap: () {},
