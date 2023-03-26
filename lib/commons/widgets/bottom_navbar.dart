@@ -21,7 +21,7 @@ class _BottomNavbarState extends State<BottomNavbar>
   final _pages = [
     PageStorage(
       bucket: PageStorageBucket(),
-      child: MapSample(),
+      child: MainMapWidget(),
     ),
     PageStorage(
       bucket: PageStorageBucket(),

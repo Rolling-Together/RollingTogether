@@ -51,7 +51,7 @@ class FacilityController extends GetxController {
   /// 해당 위/경도 근처에 있는 장소(편의 시설) 목록 로드
   getFacilityList(List<SharedDataCategory> facilityTypes, double latitude,
       double longitude) {
-    final categoryIds = facilityTypes.map((e) => e.id).toList();
+    final categoryIds = facilityTypes.where((element) => element.id.isNotEmpty).map((e) => e.id).toList();
     facilityService.getFacilityList(categoryIds, latitude, longitude).then(
         (value) {
       facilityList.value = value;

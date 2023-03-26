@@ -78,19 +78,27 @@ class BusService {
   }
 
   /// 해당 노선 버스 차량 목록 로드 from firestore
-  Future<List<BusDto>> getCarListFromFs(String cityCode, String routeId) async {
-    final result = await firestore
-        .collection('Buses')
-        .doc(cityCode)
-        .collection('RouteIds')
-        .doc(routeId)
-        .collection('Cars')
-        .get();
+  Future<List<BusDto>> getCarListFromFs(
+      String cityCode, List<String> routeIds) async {
+    final resultMap = <String, List<QueryDocumentSnapshot>>{};
 
-    if (result.docs.isNotEmpty) {
+    for (var routeId in routeIds) {
+      final docs = await firestore
+          .collection('Buses')
+          .doc(cityCode)
+          .collection('RouteIds')
+          .doc(routeId)
+          .collection('Cars')
+          .get();
+
+      resultMap[routeId] = docs.docs;
+    }
+
+    if (resultMap.isNotEmpty) {
       List<BusDto> list = [];
-      for (var snapshot in result.docs) {
-        list.add(BusDto.fromSnapshot(snapshot, cityCode.toString(), routeId));
+      for (var entry in resultMap.entries) {
+        list.addAll(entry.value
+            .map((e) => BusDto.fromSnapshot(e, cityCode, entry.key)));
       }
       return Future.value(list);
     } else {
