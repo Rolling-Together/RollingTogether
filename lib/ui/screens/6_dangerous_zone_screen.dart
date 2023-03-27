@@ -85,7 +85,7 @@ class _LocationScreenState extends State<LocationScreen> {
                 alignment: Alignment.centerLeft,
                 child: Text('위험 장소', style: TextStyle(fontSize: 16)),
               ),
-              Container(
+             /* Container(
 
                   ///카테고리
                   padding: EdgeInsets.only(
@@ -94,7 +94,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   alignment: Alignment.center,
                   width: MediaQuery.of(context).size.width * 0.9,
                   decoration: BoxDecoration(),
-                  child: CategoryButton()),
+                  child: CategoryButton()),*/
               /*Row(children: [
               Column(
                 children: List.generate(imageUploaders.length, (index) {
