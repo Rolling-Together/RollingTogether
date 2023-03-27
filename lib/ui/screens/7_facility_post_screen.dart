@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:rolling_together/commons/enum/facility_checklist.dart';
 import 'package:rolling_together/data/remote/auth/controller/firebase_auth_controller.dart';
@@ -7,6 +8,7 @@ import 'package:rolling_together/data/remote/facility/models/review.dart';
 import 'package:rolling_together/ui/screens/facility/modification/facility_modification_screen.dart';
 import 'package:rolling_together/commons/utils/capture_and_share_screenshot.dart';
 import 'package:flutter_share/flutter_share.dart';
+import 'package:screenshot/screenshot.dart';
 import '../../commons/class/firebase_storage.dart';
 import '../../data/remote/facility/controllers/facility_controller.dart';
 import 'package:get/get.dart';
@@ -31,42 +33,13 @@ class FacilityPostScreen extends StatefulWidget {
 
 class _FacilityPostScreenState extends State<FacilityPostScreen> {
   final formKey = GlobalKey<FormState>();
+
   final TextEditingController commentController = TextEditingController();
+  final ScreenshotController screenshotController = ScreenshotController();
 
   Widget commentChild() {
     return Column(
-      children: [
-        for (final review in widget.facilityController.reviewList)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
-            child: ListTile(
-              leading: GestureDetector(
-                onTap: () async {
-                  widget.facilityController.addReview(
-                      FacilityReviewDto(
-                          userId: AuthController.to.myUserDto.value!.id!,
-                          userName: AuthController.to.myUserDto.value!.name,
-                          content: commentController.text),
-                      widget.facilityDto.placeId);
-                },
-                child: Container(
-                  height: 50.0,
-                  width: 50.0,
-                  decoration: const BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.all(Radius.circular(50))),
-                  child: const CircleAvatar(
-                      radius: 50, child: Icon(Icons.person, size: 50)),
-                ),
-              ),
-              title: Text(
-                review.userName,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(review.content),
-            ),
-          )
-      ],
+      children: makeComments(),
     );
   }
 
@@ -79,6 +52,45 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
               content: commentController.text),
           widget.facilityDto.placeId);
       commentController.clear();
+    }
+  }
+
+  makeComments() {
+    var widgets = <Widget>[];
+    int i = 0;
+
+    for (final review in widget.facilityController.reviewList) {
+      widgets.addAll([
+        ListTile(
+          contentPadding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+          leading: GestureDetector(
+            onTap: () async {
+              widget.facilityController.addReview(
+                  FacilityReviewDto(
+                      userId: AuthController.to.myUserDto.value!.id!,
+                      userName: AuthController.to.myUserDto.value!.name,
+                      content: commentController.text),
+                  widget.facilityDto.placeId);
+            },
+            child: Container(
+              height: 50.0,
+              width: 50.0,
+              decoration: const BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.all(Radius.circular(50))),
+              child: const CircleAvatar(
+                  radius: 50, child: Icon(Icons.person, size: 50)),
+            ),
+          ),
+          title: Text(
+            review.userName,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text(review.content),
+        ),
+        if (i++ != widget.facilityController.reviewList.length - 1)
+          const Divider()
+      ]);
     }
   }
 
@@ -102,7 +114,8 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        child: SafeArea(
+        child: Screenshot(
+          controller: screenshotController,
           child: Column(
             children: [
               Container(
@@ -172,22 +185,10 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       const Text("공감"),
-                      GestureDetector(
-                          child: Text('공유'),
+                      InkWell(
+                          child: const Text('공유'),
                           onTap: () async {
-                            // 이미지를 캡쳐해서 imagePath에 저장하는 코드
-                            String? imagePath = await captureImage();
-
-                            if (imagePath != null) {
-                              // 이미지를 SNS에 공유하는 코드
-                              await FlutterShare.shareFile(
-                                title: 'Share Image',
-                                filePath: imagePath,
-                              );
-                            } else {
-                              // imagePath가 null일 경우 예외 처리
-                              print('Image path is null');
-                            }
+                            await takeScreenshotAndShare(screenshotController);
                           })
                     ],
                   )),

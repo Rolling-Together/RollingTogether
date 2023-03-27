@@ -5,6 +5,7 @@ import 'package:rolling_together/ui/screens/0_login_screen.dart';
 import 'package:rolling_together/ui/screens/7_facility_post_screen.dart';
 import 'package:rolling_together/ui/screens/9_community_screen.dart';
 
+import 'commons/utils/capture_and_share_screenshot.dart';
 import 'data/local/image_asset_controller.dart';
 import 'data/remote/auth/controller/firebase_auth_controller.dart';
 import 'data/remote/map/controller/my_map_controller.dart';

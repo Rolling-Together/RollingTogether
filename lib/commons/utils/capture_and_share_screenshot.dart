@@ -1,31 +1,30 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:screenshot/screenshot.dart';
-import 'package:path_provider/path_provider.dart';
+import 'dart:developer';
 import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter_share/flutter_share.dart';
+import 'package:screenshot/screenshot.dart';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:flutter/rendering.dart';
+import 'package:share_plus/share_plus.dart';
 
-Future<String?> captureImage() async {
-  final screenshotController = ScreenshotController();
-
+Future<void> takeScreenshotAndShare(
+    ScreenshotController screenshotController) async {
   try {
-    // 현재 화면을 캡쳐하여 바이트 배열로 저장
-    final uint8List = await screenshotController.capture();
+    Uint8List? screenshotImgFile = await screenshotController.capture();
+    final dir = await getTemporaryDirectory();
+    File saveFile = await File(
+            '${dir.path}/rt_screenshots_${DateTime.now().toIso8601String()}'
+            '.png')
+        .create();
+    await saveFile.writeAsBytes(screenshotImgFile!);
+    await ImageGallerySaver.saveImage(screenshotImgFile);
 
-    // 바이트 배열이 존재하지 않으면 null 반환
-    if (uint8List == null) return null;
-
-    // 이미지 파일을 저장할 경로 가져오기
-    final directory = await getApplicationDocumentsDirectory();
-    final imagePath = '${directory.path}/screenshot.png';
-
-    // 이미지 파일을 저장
-    final file = File(imagePath);
-    await file.writeAsBytes(uint8List);
-
-    // 이미지 파일의 경로 반환
-    return imagePath;
+    // await Share.shareFiles([saveFile.path]);
+    await Share.shareXFiles([XFile(saveFile.path)]);
   } catch (e) {
-    print('captureImage error: $e');
-    return null;
+    log(e.toString());
   }
 }
