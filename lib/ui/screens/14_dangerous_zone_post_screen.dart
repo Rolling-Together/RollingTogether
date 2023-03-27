@@ -4,8 +4,10 @@ import 'package:rolling_together/data/remote/auth/controller/firebase_auth_contr
 import 'package:rolling_together/data/remote/dangerous_zone/models/dangerous_zone_comment.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/models/dangerouszone.dart';
 import 'package:intl/intl.dart';
+import 'package:screenshot/screenshot.dart';
 
 import '../../commons/class/firebase_storage.dart';
+import '../../commons/utils/capture_and_share_screenshot.dart';
 import '../../data/remote/dangerous_zone/controllers/dangerous_zone_controller.dart';
 import '../../data/remote/user/controllers/my_data_controller.dart';
 
@@ -15,6 +17,7 @@ class DangerousZonePostScreen extends StatefulWidget {
       Get.find<DangerousZoneController>();
   final DateFormat dateFormat = DateFormat('yyyy-MM-dd HH:mm');
   final MyDataController myDataController = Get.find<MyDataController>();
+  final ScreenshotController screenshotController = ScreenshotController();
 
   _DangerousZonePostScreenState createState() =>
       _DangerousZonePostScreenState();
@@ -27,37 +30,43 @@ class _DangerousZonePostScreenState extends State<DangerousZonePostScreen> {
   Widget commentChild() {
     return Column(
       //shrinkWrap: true,
-      children: [
-        for (var i = 0;
-            i < widget.dangerousZoneController.commentList.length;
-            i++)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
-            child: ListTile(
-              leading: GestureDetector(
-                onTap: () async {},
-                child: Container(
-                  height: 50.0,
-                  width: 50.0,
-                  decoration: const BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.all(Radius.circular(50))),
-                  child: const Icon(
-                    Icons.person,
-                    size: 50,
-                  ),
-                ),
-              ),
-              title: Text(
-                widget.dangerousZoneController.commentList[i].commenterName,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle:
-                  Text(widget.dangerousZoneController.commentList[i].content),
-            ),
-          )
-      ],
+      children: makeComments(),
     );
+  }
+
+  makeComments() {
+    var widgets = <Widget>[];
+    for (var i = 0;
+        i < widget.dangerousZoneController.commentList.length;
+        i++) {
+      widgets.addAll([
+        ListTile(
+          contentPadding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+          leading: GestureDetector(
+            onTap: () async {},
+            child: Container(
+              height: 50.0,
+              width: 50.0,
+              decoration: const BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.all(Radius.circular(50))),
+              child: const Icon(
+                Icons.person,
+                size: 50,
+              ),
+            ),
+          ),
+          title: Text(
+            widget.dangerousZoneController.commentList[i].commenterName,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text(widget.dangerousZoneController.commentList[i].content),
+        ),
+        if (i != widget.dangerousZoneController.commentList.length - 1)
+          const Divider()
+      ]);
+    }
+    return widgets;
   }
 
   void addComment() {
@@ -109,10 +118,11 @@ class _DangerousZonePostScreenState extends State<DangerousZonePostScreen> {
             ),
           )),
       body: SingleChildScrollView(
-        child: SafeArea(
+        child: Screenshot(
+          controller: widget.screenshotController,
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
@@ -123,23 +133,20 @@ class _DangerousZonePostScreenState extends State<DangerousZonePostScreen> {
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: Row(children: [
                     Container(
-                      margin: EdgeInsets.only(top: 10, right: 10, bottom: 10),
+                      margin:
+                          const EdgeInsets.only(top: 10, right: 10, bottom: 10),
                       child: const CircleAvatar(
                         child: Icon(Icons.person),
                       ),
                     ),
-
                     Text(widget.dangerousZoneController.dangerousZone.value!
                         .informerName),
                     const Icon(Icons.star),
                   ])),
-              Container(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  height: 80,
-                  color: const Color(0xffcD9D9D9),
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  child: Text(widget.dangerousZoneController.dangerousZone
-                      .value!.description)),
+              Text(
+                  widget
+                      .dangerousZoneController.dangerousZone.value!.description,
+                  style: const TextStyle(fontSize: 20)),
               Container(
                   width: MediaQuery.of(context).size.width * 0.8,
                   height: 150,
@@ -211,7 +218,12 @@ class _DangerousZonePostScreenState extends State<DangerousZonePostScreen> {
                           ]),
                         ),
                       ),
-                      const Text('공유')
+                      InkWell(
+                          child: const Text('공유'),
+                          onTap: () async {
+                            await takeScreenshotAndShare(
+                                widget.screenshotController);
+                          })
                     ],
                   )),
               Obx(() => commentChild()),
@@ -225,7 +237,6 @@ class _DangerousZonePostScreenState extends State<DangerousZonePostScreen> {
                   child: const CircleAvatar(
                     radius: 50,
                     child: Icon(Icons.person),
-
                   ),
                 ),
                 title: Form(

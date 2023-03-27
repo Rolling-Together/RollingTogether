@@ -59,10 +59,9 @@ class Items {
   Items({required this.item});
 
   Items.fromJson(Map<String, dynamic> json) {
-    item = List<Item>.from(
-        (json['item'] as List<dynamic>)
-            .where((item) => item.containsKey('nodeno'))
-            .map((x) => Item.fromJson(x)));
+    item = List<Item>.from((json['item'] as List<dynamic>)
+        .where((item) => item.containsKey('nodeno'))
+        .map((x) => Item.fromJson(x)));
   }
 }
 

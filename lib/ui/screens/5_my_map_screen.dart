@@ -1,22 +1,25 @@
-import 'dart:math';
+import 'dart:developer';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rolling_together/commons/class/i_refresh_data.dart';
-import 'package:rolling_together/commons/enum/facility_checklist.dart';
 import 'package:rolling_together/commons/enum/facility_types.dart';
+import 'package:rolling_together/commons/utils/bottom_sheet.dart';
+import 'package:rolling_together/data/local/image_asset_controller.dart';
+import 'package:rolling_together/data/remote/map/controller/my_map_controller.dart';
 
-import '../../commons/utils/bottom_sheet.dart';
-import '../../commons/widgets/custom_chip.dart';
 import '13_facility_screen.dart';
 import '6_dangerous_zone_screen.dart';
 import '8_trans_screen.dart';
 
-class MapSample extends StatefulWidget implements OnRefreshDataListener {
-  late final String title;
+class MainMapWidget extends StatefulWidget implements OnRefreshDataListener {
+  final MyMapController myMapController = Get.find<MyMapController>();
 
   @override
-  _MapSampleState createState() => _MapSampleState();
+  _MainMapWidgetState createState() => _MainMapWidgetState();
 
   @override
   void refreshData() {
@@ -24,261 +27,191 @@ class MapSample extends StatefulWidget implements OnRefreshDataListener {
   }
 }
 
-class _MapSampleState extends State<MapSample> {
+class _MainMapWidgetState extends State<MainMapWidget> {
   // 애플리케이션에서 지도를 이동하기 위한 컨트롤러
-  late GoogleMapController _controller;
-
-  //Location _location = Location();
-  bool _showAdditionalChips = false;
-  LatLng centerCoords = LatLng(0.0, 0.0);
-
-  /*Future<LocationData?> getCurrentLocation() async {
-    try {
-      return await _location.getLocation();
-    } catch (e) {
-      return null;
-    }
-  }*/
-
+  late GoogleMapController googleMapController;
 
   onCameraMoved(CameraPosition position) {
-    centerCoords = position.target;
-  }
+    widget.myMapController.currentCoords.clear();
+    widget.myMapController.currentCoords
+        .addAll([position.target.latitude, position.target.longitude]);
 
-
-  // 이 값은 지도가 시작될 때 첫 번째 위치입니다.
-  final CameraPosition _initialPosition = CameraPosition(
-    target: LatLng(35.1340990, 129.1031460),
-    zoom: 14.4746,
-  );
-
-  // 지도 클릭 시 표시할 장소에 대한 마커 목록
-  final List<Marker> markers = [];
-
-  // 마커를 탭할 때 호출되는 콜백 함수
-  void onMarkerTapped(MarkerId markerId) {
-    // 마커 ID를 사용하여 특정 마커를 찾음
-    Marker tappedMarker = markers.firstWhere((marker) => marker.markerId == markerId);
-
-    if (markerId.value == "2") {
-      //식당
-      showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Bus_BottomSheet();
-        },
-      );
-    } else {
-      showModalBottomSheet(
-        context: context,
-        builder: (context) {
-          return Bus_BottomSheet();
-        },
-      );
-    }
-  }
-
-  addMarker(cordinate) {
-    int id = Random().nextInt(5);
-
-    setState(() {
-      markers.add(
-        Marker(
-          position: cordinate,
-          markerId: MarkerId(id.toString()),
-          onTap: () => onMarkerTapped(MarkerId(id.toString())),
-        ),
-      );
-    });
+    widget.myMapController.loadAllDataList();
   }
 
   @override
   Widget build(BuildContext context) {
+    log('Main GoogleMaps 새로고침');
+
     return Scaffold(
-      body: Stack(children: [
-        GoogleMap(
-          initialCameraPosition: _initialPosition,
+        body: Stack(children: [
+      Obx(
+        () => GoogleMap(
+          initialCameraPosition: CameraPosition(
+            target: LatLng(widget.myMapController.currentCoords.first,
+                widget.myMapController.currentCoords.last),
+            zoom: 15,
+          ),
           myLocationEnabled: true,
           myLocationButtonEnabled: true,
           mapType: MapType.normal,
           onMapCreated: (controller) {
-            setState(() {
-              _controller = controller;
-            });
+            googleMapController = controller;
           },
+          markers: widget.myMapController.markerSet.value,
           onCameraMove: onCameraMoved,
-          markers: markers.toSet(),
-
-          // 클릭한 위치가 중앙에 표시
-          onTap: (cordinate) {
-            _controller.animateCamera(CameraUpdate.newLatLng(cordinate));
-            addMarker(cordinate);
-          },
+          padding: const EdgeInsets.only(bottom: 100, top: 160),
+          mapToolbarEnabled: false,
         ),
-        Align(
-            alignment: Alignment.center,
-            child: /*Image.asset('assets/images/Icon1.png', height: 50, width: 10),*/
-            Icon(Icons.icecream_rounded)
-        ),
-        Positioned(
-          top: 50,
-          left: 20,
-          child: Row(
+      ),
+      Obx(() {
+        if (widget.myMapController.isChangedMarkers.value) {}
+        Future.delayed(Duration.zero, () {
+          onChangedMarkers();
+        });
+        return const SizedBox.shrink();
+      }),
+      Positioned(
+        top: 50,
+        width: MediaQuery.of(context).size.width,
+        child: Center(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TransparentButton(
-                label: "위험장소",
-                icon: Icon(Icons.dangerous),
-                onPressed: () {},
+            children: <Widget>[
+              Wrap(
+                spacing: 6.0,
+                children: [
+                  SharedDataCategory.dangerousZone,
+                  SharedDataCategory.facility,
+                  SharedDataCategory.publicTransport
+                ].map((e) => addChips(e)).toList(),
               ),
-              SizedBox(width: 5),
-              TransparentButton(
-                label: "편의시설",
-                icon: Icon(Icons.place),
-                onPressed: () {
-                  setState(() {
-                    _showAdditionalChips = !_showAdditionalChips;
-                  });
-                },
-              ),
-              SizedBox(width: 5),
-              TransparentButton(
-                label: "대중교통",
-                icon: Icon(Icons.bus_alert_rounded),
-                onPressed: () {
-                  // Do something when the button is pressed
-                },
-              )
-
+              const SizedBox(height: 8.0),
+              Visibility(
+                  visible: widget.myMapController.lastSelectedCategorySet
+                      .contains(SharedDataCategory.facility),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Wrap(
+                      spacing: 6.0,
+                      children: SharedDataCategory.toList()
+                          .map((e) => addChips(e))
+                          .toList(),
+                    ),
+                  )),
             ],
           ),
         ),
-        Positioned(
-          top: 80,
+      ),
+      Obx(() => widget.myMapController.isClickedReportDangerousZone.value
+          ? Opacity(
+              opacity: 0.5,
+              child: Container(
+                color: Colors.black,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.place_outlined,
+                          size: 50, color: Colors.blue),
+                      const SizedBox(height: 20),
+                      MaterialButton(
+                        onPressed: () {
+                          setState(() {
+                            widget.myMapController.isClickedReportDangerousZone
+                                .value = false;
+                          });
+                          Get.to(LocationScreen(), arguments: {
+                            'latlng': widget.myMapController.currentCoords
+                          });
+                        },
+                        child: const Text('여기로 위치 지정'),
+                      ),
+                      CloseButton(
+                        onPressed: () {
+                          setState(() {
+                            widget.myMapController.isClickedReportDangerousZone
+                                .value = false;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            )
+          : const SizedBox()),
+      Obx(() => Positioned(
+          right: 16,
+          bottom: 24,
           child: Visibility(
-            visible: _showAdditionalChips,
-            child: Container(
-              margin: EdgeInsets.only(top: 10),
-              child: Column(
-                children: [
-                  TransparentButton(
-                    label: "식당",
-                    icon: Icon(Icons.fastfood),
-                    onPressed: () {},
-                  ),
-
-                  TransparentButton(
-                    label: "식당",
-                    icon: Icon(Icons.fastfood),
-                    onPressed: () {},
-                  ),TransparentButton(
-                    label: "식당",
-                    icon: Icon(Icons.fastfood),
-                    onPressed: () {},
-                  ),TransparentButton(
-                    label: "식당",
-                    icon: Icon(Icons.fastfood),
-                    onPressed: () {},
-
-                  ),
-                  TransparentButton(
-                    label: "식당",
-                    icon: Icon(Icons.fastfood),
-                    onPressed: () {},
-                  ),
-                  TransparentButton(
-                    label: "식당",
-                    icon: Icon(Icons.fastfood),
-                    onPressed: () {},
-                  ),
-                  SizedBox(width: 5),
-                  TransparentButton(
-                    label: "편의시설",
-                    icon: Icon(Icons.place),
-                    onPressed: () {
-                      setState(() {
-                        _showAdditionalChips = !_showAdditionalChips;
-                      });
-                    },
-                  ),
-                  SizedBox(width: 5),
-                  TransparentButton(
-                    label: "대중교통",
-                    icon: Icon(Icons.bus_alert_rounded),
-                    onPressed: () {
-                      // Do something when the button is pressed
-                    },
-                  )
-
-                ],
-              ),
+            visible: !widget.myMapController.isClickedReportDangerousZone.value,
+            child: FloatingActionButton(
+              elevation: 10,
+              onPressed: () {
+                showOptions(context);
+              },
+              child: const Text('글쓰기'),
             ),
-          ),
-        ),
-        Positioned(
-          right: 5,
-          bottom: 100,
-          child: FloatingActionButton(
-            elevation: 10,
-            onPressed: () {
-              showOptions(context, markers, _controller);
-            },
-            child: Text('글쓰기'),
-          ),
-        ),
-        /*Positioned(
-              right: 5,
-              bottom: 150,
-              child: FloatingActionButton(
-                onPressed: () async {
-                  LocationData? locationData = await getCurrentLocation();
-                  if (locationData != null) {
-                    _controller.animateCamera(CameraUpdate.newLatLng(
-                      LatLng(11.11, 22.22),
-                    ));
-                  }
-                },
-                child: Icon(Icons.my_location),
-              ),
-
-            ),*/
-      ]),
-
-      // floatingActionButton 클릭시 줌 아웃
-      /*floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            _controller.animateCamera(CameraUpdate.zoomOut());
-          },
-          child: Icon(Icons.zoom_out),
-        )*/
-    );
+          ))),
+    ]));
   }
 
-  void showOptions(BuildContext context, List<Marker> markers,
-      GoogleMapController controller) {
+  FilterChip addChips(SharedDataCategory category) => FilterChip(
+        label: Text(category.name),
+        avatar: Icon(category.iconData),
+        selected:
+            widget.myMapController.lastSelectedCategorySet.contains(category),
+        selectedColor: Colors.lightBlueAccent,
+        backgroundColor: Colors.white,
+        shadowColor: Colors.white24,
+        showCheckmark: false,
+        onSelected: (bool value) {
+          setState(() {
+            if (value) {
+              if (!widget.myMapController.lastSelectedCategorySet
+                  .contains(category)) {
+                widget.myMapController
+                    .onChangedSelectedCategory([category], true);
+              }
+            } else {
+              widget.myMapController
+                  .onChangedSelectedCategory([category], false);
+            }
+          });
+        },
+      );
+
+  void showOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return Container(
+        return SizedBox(
           height: 200,
           child: Column(
             children: <Widget>[
               ListTile(
-                title: Text('위험장소'),
+                title: const Text('위험장소'),
                 onTap: () {
-                  Get.to(LocationScreen(), arguments: {'latlng': centerCoords});
+                  Navigator.pop(context);
+                  widget.myMapController.isClickedReportDangerousZone.value =
+                      true;
                 },
               ),
               ListTile(
-                title: Text('편의시설'),
+                title: const Text('편의시설'),
                 onTap: () {
-                  Get.to(FacilityScreen(), arguments: {'latlng': centerCoords});
+                  Get.to(FacilityScreen(), arguments: {
+                    'latlng': widget.myMapController.currentCoords
+                  });
                 },
               ),
               ListTile(
-                title: Text('대중교통'),
+                title: const Text('대중교통'),
                 onTap: () {
-                  Get.to(TransScreen(), arguments: {'latlng': centerCoords});
+                  Get.to(TransScreen(), arguments: {
+                    'latlng': widget.myMapController.currentCoords
+                  });
                 },
               ),
             ],
@@ -287,100 +220,99 @@ class _MapSampleState extends State<MapSample> {
       },
     );
   }
-}
 
+  onChangedMarkers() {
+    final newMarkers = <Marker>{};
 
+    for (final entry in widget.myMapController.lastFacilityListMap.entries) {
+      final list = entry.value;
+      if (list.isEmpty) {
+        continue;
+      }
 
+      newMarkers.addAll(entry.value.map((e) => Marker(
+          markerId:
+              MarkerId(widget.myMapController.toMarkerId(entry.key, e.placeId)),
+          position: LatLng(e.latlng.first, e.latlng.last),
+          infoWindow: InfoWindow(
+              title: e.name,
+              snippet: e.categoryName,
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return FacilityInfoBottomSheet(e);
+                    });
+              }),
+          icon: BitmapDescriptor.fromBytes(
+            widget.myMapController.imageAssetLoader.markerIconsMap[entry.key]!,
+          ))));
+    }
 
-class CustomChip extends StatelessWidget {
-  final String label;
-  final Icon icon;
-  final Color backgroundColor;
-  final Color borderColor;
-  final Color labelColor;
+    for (final dangerousZone in widget.myMapController.lastDangerousZoneList) {
+      newMarkers.add(Marker(
+          markerId: MarkerId(widget.myMapController
+              .toMarkerId(SharedDataCategory.dangerousZone, dangerousZone.id!)),
+          position:
+              LatLng(dangerousZone.latlng.first, dangerousZone.latlng.last),
+          infoWindow: InfoWindow(
+              title: dangerousZone.description,
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return DangerousZoneBottomSheet(dangerousZone);
+                    });
+              }),
+          icon: BitmapDescriptor.fromBytes(
+            widget.myMapController.imageAssetLoader
+                .markerIconsMap[SharedDataCategory.dangerousZone]!,
+          )));
+    }
 
-  const CustomChip({
-    Key? key,
-    required this.label,
-    required this.icon,
-    required this.backgroundColor,
-    this.borderColor = Colors.black,
-    this.labelColor = Colors.white,
-  }) : super(key: key);
+    for (final busStop in widget.myMapController.lastBusStopList) {
+      newMarkers.add(Marker(
+          markerId: MarkerId(widget.myMapController.toMarkerId(
+              SharedDataCategory.busStop,
+              '${busStop.citycode}-${busStop.nodeid}')),
+          position: LatLng(
+              double.parse(busStop.gpslati), double.parse(busStop.gpslong)),
+          infoWindow: InfoWindow(
+              title: busStop.nodenm,
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return BusBottomSheet(busStop);
+                    });
+              }),
+          icon: BitmapDescriptor.fromBytes(
+            widget.myMapController.imageAssetLoader
+                .markerIconsMap[SharedDataCategory.busStop]!,
+          )));
+    }
 
-  @override
-  Widget build(BuildContext context) {
-    return Chip(
-      backgroundColor: backgroundColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-        side: BorderSide(color: borderColor, width: 2.0),
-      ),
-      label: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          icon,
-          SizedBox(width: 4.0),
-          Text(
-            label,
-            style: TextStyle(
-              color: labelColor,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+    for (final metroStation in widget.myMapController.lastMetroStationList) {
+      newMarkers.add(Marker(
+          markerId: MarkerId(widget.myMapController.toMarkerId(
+              SharedDataCategory.metroStation, metroStation.routeNumber)),
+          position: LatLng(metroStation.latitude, metroStation.longitude),
+          infoWindow: InfoWindow(
+              title: metroStation.name,
+              snippet: '지하철',
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return SubwayBottomSheet(metroStation);
+                    });
+              }),
+          icon: BitmapDescriptor.fromBytes(
+            widget.myMapController.imageAssetLoader
+                .markerIconsMap[SharedDataCategory.metroStation]!,
+          )));
+    }
 
-
-class TransparentButton extends StatefulWidget {
-  final String label;
-  final Icon icon;
-  final VoidCallback onPressed;
-
-  TransparentButton({
-    required this.label,
-    required this.icon,
-    required this.onPressed,
-  });
-
-  @override
-  _TransparentButtonState createState() => _TransparentButtonState();
-}
-
-class _TransparentButtonState extends State<TransparentButton> {
-  bool _isSelected = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: _isSelected ? Colors.blue.withOpacity(0.6) : Colors.grey.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(30.0),
-      ),
-      child: TextButton(
-        onPressed: () {
-          setState(() {
-            _isSelected = !_isSelected;
-          });
-          widget.onPressed();
-        },
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            widget.icon,
-            SizedBox(width: 8.0),
-            Text(
-              widget.label,
-              style: TextStyle(
-                color: _isSelected ? Colors.white : Colors.black,
-                fontSize: 16.0,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+    widget.myMapController.markerSet.value = newMarkers;
   }
 }

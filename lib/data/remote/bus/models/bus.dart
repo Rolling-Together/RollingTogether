@@ -17,6 +17,9 @@ class BusDto {
   // 노선 id : BSB5200083100(83-1번 버스)
   late String routeId;
 
+  // 노선 이름 : 83-1번
+  String? routeNm;
+
   BusDto(
       {required this.vehicleNo,
       required this.lift,

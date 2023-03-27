@@ -29,6 +29,9 @@ class BusController extends GetxController {
   ///  노선 운행 차량 목록
   final RxMap<String, BusDto> busCarListMap = RxMap();
 
+  ///  버스 정류장 경유하는 노선과 노선별 버스 목록(유저 입력 데이터가 있는)
+  final RxMap<String, List<BusDto>> busListAtBusStopMap = RxMap();
+
   String cityCode = '';
 
   var latlng = <double>[];
@@ -75,7 +78,7 @@ class BusController extends GetxController {
     busService.getCarListFromTago(cityCode, routeId).then((value) {
       final carsFromTago = value.response.body.items.item;
 
-      busService.getCarListFromFs(cityCode, routeId).then((carsFromFs) {
+      busService.getCarListFromFs(cityCode, [routeId]).then((carsFromFs) {
         final cars = <String, BusDto>{};
         for (final car in carsFromTago) {
           cars[car.vehicleno] = BusDto(
@@ -107,7 +110,7 @@ class BusController extends GetxController {
   /// 해당 노선 버스 차량 목록 로드
   getCarListFromFs(String cityCode, String routeId) {
     editedCarMaps.clear();
-    busService.getCarListFromFs(cityCode, routeId).then((value) {
+    busService.getCarListFromFs(cityCode, [routeId]).then((value) {
       carList.value = value;
     }, onError: (obj) {
       carList.value = obj;
@@ -130,5 +133,31 @@ class BusController extends GetxController {
     }, onError: (obj) {
       updateResult.value = false;
     });
+  }
+
+  /// firestore에 등록되어 있는 해당 버스 정류장을 경유하는 버스 목록 로드
+  getCarListFromFsByBusStop(String cityCode, String nodeId) {
+    busService.getBusListAtBusStop(cityCode, nodeId).then((value) {
+      final routes = value.body!.items.item;
+      busService
+          .getCarListFromFs(
+              cityCode,
+              routes
+                  .where((element) =>
+                      element.routeNo.isNotEmpty && element.routeId.isNotEmpty)
+                  .map((e) => e.routeId)
+                  .toSet()
+                  .toList())
+          .then((busList) {
+        Map<String, List<BusDto>> map = {};
+        for (final route in routes) {
+          map[route.routeNo] = busList
+              .where((element) => element.routeId == route.routeId)
+              .toList();
+        }
+
+        busListAtBusStopMap.value = map;
+      }, onError: (obj) {});
+    }, onError: (obj) {});
   }
 }

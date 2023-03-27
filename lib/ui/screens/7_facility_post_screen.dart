@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:rolling_together/commons/enum/facility_checklist.dart';
 import 'package:rolling_together/data/remote/auth/controller/firebase_auth_controller.dart';
@@ -7,6 +8,7 @@ import 'package:rolling_together/data/remote/facility/models/review.dart';
 import 'package:rolling_together/ui/screens/facility/modification/facility_modification_screen.dart';
 import 'package:rolling_together/commons/utils/capture_and_share_screenshot.dart';
 import 'package:flutter_share/flutter_share.dart';
+import 'package:screenshot/screenshot.dart';
 import '../../commons/class/firebase_storage.dart';
 import '../../data/remote/facility/controllers/facility_controller.dart';
 import 'package:get/get.dart';
@@ -14,8 +16,6 @@ import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:rolling_together/commons/class/icon_and_photo_tile.dart';
-
-
 
 import '13_facility_screen.dart';
 
@@ -33,44 +33,13 @@ class FacilityPostScreen extends StatefulWidget {
 
 class _FacilityPostScreenState extends State<FacilityPostScreen> {
   final formKey = GlobalKey<FormState>();
-  final TextEditingController commentController = TextEditingController();
 
+  final TextEditingController commentController = TextEditingController();
+  final ScreenshotController screenshotController = ScreenshotController();
 
   Widget commentChild() {
-
     return Column(
-      children: [
-        for (final review in widget.facilityController.reviewList)
-          Padding(
-            padding: const EdgeInsets.fromLTRB(2.0, 8.0, 2.0, 0.0),
-            child: ListTile(
-              leading: GestureDetector(
-                onTap: () async {
-                  widget.facilityController.addReview(
-                      FacilityReviewDto(
-                          userId: AuthController.to.myUserDto.value!.id!,
-                          userName: AuthController.to.myUserDto.value!.name,
-                          content: commentController.text),
-                      widget.facilityDto.placeId);
-                },
-                child: Container(
-                  height: 50.0,
-                  width: 50.0,
-                  decoration: const BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.all(Radius.circular(50))),
-                  child: const CircleAvatar(
-                      radius: 50, child: Icon(Icons.person, size: 50)),
-                ),
-              ),
-              title: Text(
-                review.userName,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              subtitle: Text(review.content),
-            ),
-          )
-      ],
+      children: makeComments(),
     );
   }
 
@@ -86,6 +55,45 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
     }
   }
 
+  makeComments() {
+    var widgets = <Widget>[];
+    int i = 0;
+
+    for (final review in widget.facilityController.reviewList) {
+      widgets.addAll([
+        ListTile(
+          contentPadding: const EdgeInsets.fromLTRB(8.0, 4.0, 8.0, 4.0),
+          leading: GestureDetector(
+            onTap: () async {
+              widget.facilityController.addReview(
+                  FacilityReviewDto(
+                      userId: AuthController.to.myUserDto.value!.id!,
+                      userName: AuthController.to.myUserDto.value!.name,
+                      content: commentController.text),
+                  widget.facilityDto.placeId);
+            },
+            child: Container(
+              height: 50.0,
+              width: 50.0,
+              decoration: const BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.all(Radius.circular(50))),
+              child: const CircleAvatar(
+                  radius: 50, child: Icon(Icons.person, size: 50)),
+            ),
+          ),
+          title: Text(
+            review.userName,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text(review.content),
+        ),
+        if (i++ != widget.facilityController.reviewList.length - 1)
+          const Divider()
+      ]);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     widget.facilityController.getAllReviews(widget.facilityDto.placeId);
@@ -94,7 +102,6 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
-
           icon: const Icon(Icons.arrow_back),
           color: Colors.black,
           onPressed: () => Get.back(),
@@ -103,13 +110,12 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
           children: [
             Text(widget.facilityDto.name,
                 style: const TextStyle(color: Colors.black)),
-
           ],
         ),
       ),
       body: SingleChildScrollView(
-        child: SafeArea(
-
+        child: Screenshot(
+          controller: screenshotController,
           child: Column(
             children: [
               Container(
@@ -129,7 +135,6 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                 height: 20,
               ),
               SizedBox(
-
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: Row(
                     children: [
@@ -143,7 +148,6 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                               arguments: {'facilityDto': widget.facilityDto});
                         },
                       ),
-
                       Text(
                         "업데이트 : ${FacilityPostScreen.dateFormat.format(widget.facilityDto.dateTime.toDate())}",
                         style:
@@ -181,9 +185,11 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       const Text("공감"),
-                      Row(
-                        children: const [Text('공유')],
-                      )
+                      InkWell(
+                          child: const Text('공유'),
+                          onTap: () async {
+                            await takeScreenshotAndShare(screenshotController);
+                          })
                     ],
                   )),
               Obx(() => commentChild()),
@@ -221,7 +227,6 @@ class _FacilityPostScreenState extends State<FacilityPostScreen> {
                 ),
               ),
             ],
-
           ),
         ),
       ),

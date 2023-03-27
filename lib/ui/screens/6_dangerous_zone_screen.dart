@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rolling_together/commons/enum/facility_types.dart';
 import 'package:rolling_together/data/remote/auth/controller/firebase_auth_controller.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/controllers/add_dangerous_zone_controller.dart';
 import 'package:rolling_together/data/remote/dangerous_zone/models/dangerouszone.dart';
+import 'package:rolling_together/data/remote/map/controller/my_map_controller.dart';
 import 'package:rolling_together/data/remote/reverse_geocoding/controllers/reverse_geocoding_controller.dart';
 
 class LocationScreen extends StatefulWidget {
@@ -23,6 +25,8 @@ class _LocationScreenState extends State<LocationScreen> {
       Get.put(ReverseGeocodingController());
 
   final TextEditingController descriptionController = TextEditingController();
+
+  final MyMapController myMapController = Get.find<MyMapController>();
 
   @override
   void dispose() {
@@ -53,8 +57,8 @@ class _LocationScreenState extends State<LocationScreen> {
     final user = AuthController.to.myUserDto.value;
 
     if (user != null && addDangerousZoneController.latlng.isEmpty) {
-      final arguments = Get.arguments;
-      final LatLng latlng = arguments['latlng'];
+      final LatLng latlng = LatLng(myMapController.currentCoords.first,
+          myMapController.currentCoords.last);
 
       addDangerousZoneController
           .initData([latlng.latitude, latlng.longitude], user.id!, user.name);
@@ -65,130 +69,132 @@ class _LocationScreenState extends State<LocationScreen> {
 
     return Scaffold(body: Obx(() {
       if (addDangerousZoneController.addNewDangerousZoneResult.isTrue) {
+        myMapController.onChangedSelectedCategory(
+            [SharedDataCategory.dangerousZone], true);
         return RegisterDialog();
       } else {
         return SingleChildScrollView(
           ///textfield가 늘어남에 따라 스크롤 가능하게
-          child: Container(
-            child: Column(
-              children: [
-                Container(
-                  ///대분류
-                  padding: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.width * 0.1,
-                      left: MediaQuery.of(context).size.width * 0.05),
-                  alignment: Alignment.centerLeft,
-                  child: Text('위험 장소', style: TextStyle(fontSize: 16)),
-                ),
-                Container(
+          child: Column(
+            children: [
+              Container(
+                ///대분류
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.width * 0.1,
+                    left: MediaQuery.of(context).size.width * 0.05),
+                alignment: Alignment.centerLeft,
+                child: Text('위험 장소', style: TextStyle(fontSize: 16)),
+              ),
+              Container(
 
-                    ///카테고리
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.01,
-                        bottom: MediaQuery.of(context).size.height * 0.03),
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    decoration: BoxDecoration(),
-                    child: CategoryButton()),
-                /*Row(children: [
-                Column(
-                  children: List.generate(imageUploaders.length, (index) {
-                    return imageUploaders[index];
-                  }),
-                ),*/
-                ImageUploader(),
-                //]),
-                Container(
-                  height: 150,
-                  margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
-                  child: Stack(
-                    children: [
-                      GoogleMap(
-                        initialCameraPosition: CameraPosition(
-                        target: LatLng(addDangerousZoneController.latlng[0], addDangerousZoneController.latlng[1]),
+                  ///카테고리
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.01,
+                      bottom: MediaQuery.of(context).size.height * 0.03),
+                  alignment: Alignment.center,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  decoration: BoxDecoration(),
+                  child: CategoryButton()),
+              /*Row(children: [
+              Column(
+                children: List.generate(imageUploaders.length, (index) {
+                  return imageUploaders[index];
+                }),
+              ),*/
+              ImageUploader(),
+              //]),
+              Container(
+                height: 150,
+                margin:
+                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+                child: Stack(
+                  children: [
+                    GoogleMap(
+                      initialCameraPosition: CameraPosition(
+                        target: LatLng(addDangerousZoneController.latlng[0],
+                            addDangerousZoneController.latlng[1]),
                         zoom: 14,
                       ),
                     ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                            width: 5,
-                            height: 5,
-                            child: Image.asset(
-              'https://th.bing.com/th/id/OIP.RaP9RPe_tQF_LetUdg0n5gHaHa?w=186&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7',
-            ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        width: 5,
+                        height: 5,
+                        child: Image.asset(
+                          'https://th.bing.com/th/id/OIP.RaP9RPe_tQF_LetUdg0n5gHaHa?w=186&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7',
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                Container(
-
-                    ///주소
-                    padding: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.05),
-                    alignment: Alignment.centerLeft,
-                    child: Text('주소')),
-                Container(
-                  ///주소 불러오는 값 임의로 지정해놨음
-                  padding: EdgeInsets.only(
-                      left: MediaQuery.of(context).size.width * 0.05,
-                      top: MediaQuery.of(context).size.height * 0.01),
-                  alignment: Alignment.centerLeft,
-                  child: Obx(() {
-                    if (reverseGeocodingController.addressResult.value ==
-                        null) {
-                      return const Text('주소 로드 실패');
-                    } else {
-                      final document =
-                          reverseGeocodingController.addressResult.value!;
-                      String addressName = document.address.addressName;
-                      return Text(addressName);
-                    }
-                  }),
-                ),
-                Container(
-                  margin:
-                      EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
-                  decoration:
-                      BoxDecoration(border: Border.all(color: Colors.black)),
-                  child: TextField(
-                    decoration:
-                        InputDecoration(focusedBorder: InputBorder.none),
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    controller: descriptionController,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).size.height * 0.03),
-                  child: OutlinedButton(
-                    onPressed: () {
-                      addDangerousZoneController.addDangerousZone(
-                          DangerousZoneDto(
-                              categoryId: '0',
-                              description: descriptionController.text,
-                              latlng: addDangerousZoneController.latlng,
-                              informerId:
-                                  addDangerousZoneController.myUIdInFirebase,
-                              tipOffPhotos: [],
-                              likes: [],
-                              likeCounts: 0,
-                              addressName: reverseGeocodingController
-                                  .addressResult.value!.address.addressName,
-                              informerName:
-                                  addDangerousZoneController.myUserName),
-                          addDangerousZoneController.imageList);
-                    },
-                    child: Text(
-                      '등록',
-                      style: TextStyle(color: Colors.black),
                     ),
+                  ],
+                ),
+              ),
+              Container(
+
+                  ///주소
+                  padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width * 0.05),
+                  alignment: Alignment.centerLeft,
+                  child: Text('주소')),
+              Container(
+                ///주소 불러오는 값 임의로 지정해놨음
+                padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.05,
+                    top: MediaQuery.of(context).size.height * 0.01),
+                alignment: Alignment.centerLeft,
+                child: Obx(() {
+                  if (reverseGeocodingController.addressResult.value ==
+                      null) {
+                    return const Text('주소 로드 실패');
+                  } else {
+                    final document =
+                        reverseGeocodingController.addressResult.value!;
+                    String addressName = document.address.addressName;
+                    return Text(addressName);
+                  }
+                }),
+              ),
+              Container(
+                margin:
+                    EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+                decoration:
+                    BoxDecoration(border: Border.all(color: Colors.black)),
+                child: TextField(
+                  decoration:
+                      InputDecoration(focusedBorder: InputBorder.none),
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  controller: descriptionController,
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).size.height * 0.03),
+                child: OutlinedButton(
+                  onPressed: () {
+                    addDangerousZoneController.addDangerousZone(
+                        DangerousZoneDto(
+                            categoryId: '0',
+                            description: descriptionController.text,
+                            latlng: addDangerousZoneController.latlng,
+                            informerId:
+                                addDangerousZoneController.myUIdInFirebase,
+                            tipOffPhotos: [],
+                            likes: [],
+                            likeCounts: 0,
+                            addressName: reverseGeocodingController
+                                .addressResult.value!.address.addressName,
+                            informerName:
+                                addDangerousZoneController.myUserName),
+                        addDangerousZoneController.imageList);
+                  },
+                  child: Text(
+                    '등록',
+                    style: TextStyle(color: Colors.black),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       }

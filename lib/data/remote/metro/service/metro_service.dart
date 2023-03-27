@@ -17,11 +17,12 @@ class MetroService {
   Future<Map<String, MetroStationDto>> loadMetroStationMap() async {
     if (busanMetroStationMap.isEmpty) {
       final jsonFile =
-          await rootBundle.loadString('assets/busan_metro_station_list.json');
+          await rootBundle.loadString('assets/data/busan_metro_station_list'
+              '.json');
 
       Map<String, dynamic> decodedData = json.decode(jsonFile);
       decodedData.forEach((key, value) {
-        busanMetroStationMap[key] = MetroStationDto.fromJson(value);
+        busanMetroStationMap[key] = MetroStationDto.fromJson(value, key);
       });
     }
     return busanMetroStationMap;
@@ -48,7 +49,7 @@ class MetroService {
     /// http://data.humetro.busan.kr/voc/api/open_api_convenience.tnn?
     /// act=json&scode=101&serviceKey=
     final response = await http.get(Uri.parse(
-        " http://data.humetro.busan.kr/voc/api/open_api_convenience.tnn"
+        "http://data.humetro.busan.kr/voc/api/open_api_convenience.tnn"
         "?act=json&scode=$sCode&serviceKey=$dataGoKrRestApiKey"));
 
     if (response.statusCode == 200) {
