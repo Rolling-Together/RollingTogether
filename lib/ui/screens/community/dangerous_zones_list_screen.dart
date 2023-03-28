@@ -39,7 +39,7 @@ class DangerousZoneListScreenState extends State<DangerousZoneListScreen> {
     return Scaffold(
       body: Column(children: [
         Obx(() => Container(
-            margin: const EdgeInsets.all(10),
+            margin: const EdgeInsets.only( bottom: 10, left: 10, right: 10),
             padding: const EdgeInsets.all(10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
