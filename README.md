@@ -168,12 +168,12 @@ We implemented the "Rolling Together" service using the above technologies.
 
 - **Share public transportation information**
 
-[ bus ]
+### bus
 
 1. Provide the route number and serial number of the low-floor bus.
 2. Users can select the route number and serial number to share whether or not the wheelchair lift of the low-floor bus is operating normally through a post.
 
-[ subway ]
+### subway
 
 1. Provides information on elevators and wheelchair lifts that go down to the subway platform and go up to the ground.
 2. Users can select a station to share information about normal operation of elevators and wheelchair lifts and other additional information through posts.
@@ -244,7 +244,7 @@ We, Rolling Together, expect to be able to **overcome these limitations** by usi
 - **Revitalization of the local economy**
     
      The increase in outing is expected to expand the consumer base, which is expected to stimulate the local economy.
-- **How to run**
+### How to run
 
 Here are the steps to download the Flutter app from [https://github.com/Rolling-Together/RollingTogether.git](https://github.com/Rolling-Together/RollingTogether.git) and run it on Android Studio:
 
