@@ -44,6 +44,8 @@ class ProfileScreen extends StatelessWidget implements OnRefreshDataListener {
                       Flexible(
                         fit: FlexFit.loose,
                         child: Container(
+                          margin : EdgeInsets.only(
+                              left : MediaQuery.of(context).size.width * 0.05,),
                             alignment: Alignment.centerLeft,
                             child: Row(
                               children: [
@@ -77,11 +79,18 @@ class ProfileScreen extends StatelessWidget implements OnRefreshDataListener {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfffE9EAEC),
+      //backgroundColor: Color(0xfffE9EAEC),
       body: SingleChildScrollView(
         child: Column(
           children: [
             UserInfo(context),
+            Container(
+              margin : EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.05,
+                left: MediaQuery.of(context).size.width * 0.05,),
+              child : Divider(
+              height: MediaQuery.of(context).size.height*0.1,
+              color: Colors.black38,
+            ),),
             MyLikeDangerousZonesWidget(),
             MySharedDangerousZonesWidget(),
           ],
@@ -176,7 +185,7 @@ class MyLikeDangerousZonesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-        top: MediaQuery.of(context).size.height * 0.05,
+        //top: MediaQuery.of(context).size.height * 0.05,
         right: MediaQuery.of(context).size.width * 0.05,
         left: MediaQuery.of(context).size.width * 0.05,
       ),
