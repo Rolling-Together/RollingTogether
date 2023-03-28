@@ -146,17 +146,17 @@ class UpdateFacilityScreenState extends State<FacilityScreen> {
                             target: LatLng(facilityController.latLng!.latitude,
                                 facilityController.latLng!.longitude),
                             //컨트롤러사용시 빈값에 접근한다는 에러 발생
-                            zoom: 20,
+                            zoom: 18,
                           ),
                         ),
                         Align(
                           alignment: Alignment.center,
-                          child: Container(
-                            width: 5,
-                            height: 5,
+                          child: Center(
                             child: Image.asset(
-                              'https://th.bing.com/th/id/OIP.RaP9RPe_tQF_LetUdg0n5gHaHa?w=186&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7',
-                            ),
+                                'assets/images/center_circle.png',
+                                color: Colors.blueGrey,
+                                width: 26,
+                                height: 26),
                           ),
                         ),
                       ],

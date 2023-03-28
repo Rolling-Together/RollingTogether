@@ -35,7 +35,7 @@ class MetroService {
     List<MetroStationDto> aroundStations = [];
     for (var station in busanMetroStationMap.values) {
       if (haversineDistance(lat, lon, station.latitude, station.longitude) <=
-          1000) {
+          500) {
         aroundStations.add(station);
       }
     }

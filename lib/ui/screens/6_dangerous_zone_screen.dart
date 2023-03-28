@@ -85,7 +85,7 @@ class _LocationScreenState extends State<LocationScreen> {
                 alignment: Alignment.centerLeft,
                 child: Text('위험 장소', style: TextStyle(fontSize: 16)),
               ),
-             /* Container(
+              /* Container(
 
                   ///카테고리
                   padding: EdgeInsets.only(
@@ -113,17 +113,14 @@ class _LocationScreenState extends State<LocationScreen> {
                       initialCameraPosition: CameraPosition(
                         target: LatLng(addDangerousZoneController.latlng[0],
                             addDangerousZoneController.latlng[1]),
-                        zoom: 14,
+                        zoom: 18,
                       ),
                     ),
                     Align(
                       alignment: Alignment.center,
-                      child: Container(
-                        width: 5,
-                        height: 5,
-                        child: Image.asset(
-                          'https://th.bing.com/th/id/OIP.RaP9RPe_tQF_LetUdg0n5gHaHa?w=186&h=186&c=7&r=0&o=5&dpr=1.3&pid=1.7',
-                        ),
+                      child: Center(
+                        child: Image.asset('assets/images/center_circle.png',
+                            color: Colors.blueGrey, width: 26, height: 26),
                       ),
                     ),
                   ],
@@ -143,8 +140,7 @@ class _LocationScreenState extends State<LocationScreen> {
                     top: MediaQuery.of(context).size.height * 0.01),
                 alignment: Alignment.centerLeft,
                 child: Obx(() {
-                  if (reverseGeocodingController.addressResult.value ==
-                      null) {
+                  if (reverseGeocodingController.addressResult.value == null) {
                     return const Text('주소 로드 실패');
                   } else {
                     final document =
@@ -160,8 +156,7 @@ class _LocationScreenState extends State<LocationScreen> {
                 decoration:
                     BoxDecoration(border: Border.all(color: Colors.black)),
                 child: TextField(
-                  decoration:
-                      InputDecoration(focusedBorder: InputBorder.none),
+                  decoration: InputDecoration(focusedBorder: InputBorder.none),
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   controller: descriptionController,

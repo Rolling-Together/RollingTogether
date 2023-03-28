@@ -10,7 +10,8 @@ class FacilityService {
   /// 매개변수 : 카테고리 목록
   Future<List<FacilityDto>> getFacilityList(
       List<String> facilityTypes, double latitude, double longitude) async {
-    const rangeKM = 0.005;
+    const rangeKM = 0.01;
+
     final minLat = (latitude) - rangeKM;
     final maxLat = (latitude) + rangeKM;
     final minLon = (longitude) - rangeKM;

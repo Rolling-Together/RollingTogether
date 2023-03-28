@@ -42,7 +42,7 @@ class DangerousZoneController extends GetxController {
     if (!force) {
       final dist =
           haversineDistance(lastLatLng[0], lastLatLng[1], latitude, longitude);
-      if (dist < 1000.0) {
+      if (dist < 500.0) {
         return;
       }
     }

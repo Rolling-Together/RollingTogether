@@ -27,18 +27,19 @@ class CommunityScreen extends StatefulWidget implements OnRefreshDataListener {
 
   @override
   void refreshData() {
-    if (communityController.lastCoords.first !=
-            myMapController.currentCoords.first ||
-        communityController.lastCoords.last !=
-            myMapController.currentCoords.last) {
-      communityController.lastCoords.value = myMapController.currentCoords;
-    }
-    communityController.reverseGeocoding();
+    createState();
   }
 }
 
-class _CommunityScreenState extends State<CommunityScreen> {
+class _CommunityScreenState extends State<CommunityScreen>
+    implements OnRefreshDataListener {
   SharedDataCategory selectedCategory = SharedDataCategory.all;
+
+  @override
+  void refreshData() {
+    // how to redraw this widget
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {

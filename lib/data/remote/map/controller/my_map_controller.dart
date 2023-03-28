@@ -119,7 +119,7 @@ class MyMapController extends GetxController {
     if (lastLoadedCoords.isNotEmpty) {
       if (haversineDistance(currentCoords.first, currentCoords.last,
               lastLoadedCoords.first, lastLoadedCoords.last) <
-          1000.0) {
+          500.0) {
         return;
       }
     }

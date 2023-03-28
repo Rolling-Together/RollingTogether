@@ -8,7 +8,7 @@ class DangerousZoneService {
   /// 해당 위/경도 근처에 있는 위험 장소 목록 로드
   Future<List<DangerousZoneDto>> getDangerousZoneList(
       double latitude, double longitude) async {
-    const rangeKM = 0.005;
+    const rangeKM = 0.01;
     final minLat = (latitude) - rangeKM;
     final maxLat = (latitude) + rangeKM;
     final minLon = (longitude) - rangeKM;
