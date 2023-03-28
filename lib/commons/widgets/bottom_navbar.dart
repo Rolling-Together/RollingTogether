@@ -49,7 +49,9 @@ class _BottomNavbarState extends State<BottomNavbar>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
+
         body: IndexedStack(
           index: _selectedIndex,
           children: _pages,

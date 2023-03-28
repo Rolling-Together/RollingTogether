@@ -102,6 +102,7 @@ class DangerousZoneService {
       for (var snapshot in result.docs) {
         list.add(DangerousZoneCommentDto.fromSnapshot(snapshot));
       }
+      list.sort((a, b) => b.dateTime.compareTo(a.dateTime));
       return Future.value(list);
     } else {
       return Future.error(List.empty());

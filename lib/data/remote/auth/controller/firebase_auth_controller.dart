@@ -5,6 +5,7 @@ import 'package:rolling_together/data/remote/user/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:rolling_together/data/remote/grade/service/user_grade_service.dart';
 
+import '../../../../commons/widgets/bottom_navbar.dart';
 import '../../../../ui/screens/init_map_screen.dart';
 import '../../user/service/report_list_service.dart';
 
@@ -112,7 +113,7 @@ class AuthController extends GetxController {
       myUser.userGradeDto = grade;
       myUserDto.value = myUser;
 
-      Get.to(const InitMapScreen());
+      Get.to( const BottomNavbar());
     }, onError: (obj) {});
   }
 }

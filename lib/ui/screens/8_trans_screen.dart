@@ -53,8 +53,8 @@ class _TransScreenState extends State<TransScreen> {
       final LatLng latlng = arguments['latlng'];
 
       busController.latlng = [latlng.latitude, latlng.longitude];
-      busController.myUIdInFirebase = user.id!;
-      busController.myUserName = '박준성';
+      busController.myUIdInFirebase = AuthController.to.myUserDto.value!.id!;
+      busController.myUserName = AuthController.to.myUserDto.value!.name;
 
       busController.getBusStopList(latlng.latitude, latlng.longitude);
     }
@@ -73,8 +73,8 @@ class _TransScreenState extends State<TransScreen> {
                       top: MediaQuery.of(context).size.height * 0.05),
                   alignment: Alignment.center,
                   width: MediaQuery.of(context).size.width * 0.9,
-                  decoration: BoxDecoration(),
-                  child: CategoryButton()),
+                  decoration: const BoxDecoration(),
+                  child: const CategoryButton()),
               Container(
 
                   ///버스 노선 목록
@@ -113,7 +113,7 @@ class _TransScreenState extends State<TransScreen> {
                     busController.updateCarStatus(
                         busController.editedCarMaps.values.toList());
                   },
-                  child: Text(
+                  child: const Text(
                     '업데이트',
                     style: TextStyle(color: Colors.black),
                   ),
@@ -146,34 +146,41 @@ class _CategoryButtonState extends State<CategoryButton> {
 /*decoration: BoxDecoration(
         color: Colors.blueGrey,
       ),*/
-        child: Obx(() {
-      if (busController.busStopList.isNotEmpty) {
-        busController.cityCode = busController.busStopList.first.citycode;
-        return DropdownButton<bus_stop_list_response.Item>(
-          ///underline안보이게 할 때
+        child: Column(
+      children: [
+        const Text('정류장 목록'),
+        Obx(() {
+          if (busController.busStopList.isNotEmpty) {
+            busController.cityCode = busController.busStopList.first.citycode;
+            return DropdownButton<bus_stop_list_response.Item>(
+              ///underline안보이게 할 때
 //underline: SizedBox.shrink(),
-          items: busController.busStopList
-              .map((item) => DropdownMenuItem(
-                    value: item,
-                    child: Text(item.nodenm),
-                  ))
-              .toList(),
-          isExpanded: true,
-          value: selectedItem,
-          icon: const Icon(Icons.arrow_drop_down),
-          elevation: 16,
-          onChanged: (value) {
-            setState(() {
-              selectedItem = value;
-              busController.getBusListAtBusStop(
-                  busController.cityCode, value!.nodeid);
-            });
-          },
-        );
-      } else {
-        return Text('정류장 목록');
-      }
-    }));
+              items: busController.busStopList
+                  .map((item) => DropdownMenuItem(
+                        value: item,
+                        child: Text(item.nodenm),
+                      ))
+                  .toList(),
+              isExpanded: true,
+              value: selectedItem,
+              icon: const Icon(Icons.arrow_drop_down),
+              elevation: 16,
+              onChanged: (value) {
+                setState(() {
+                  selectedItem = value;
+                  busController.getBusListAtBusStop(
+                      busController.cityCode, value!.nodeid);
+                });
+              },
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        })
+      ],
+    ));
   }
 }
 
@@ -196,33 +203,40 @@ class BusRouteListState extends State<BusRouteListButton> {
 /*decoration: BoxDecoration(
         color: Colors.blueGrey,
       ),*/
-        child: Obx(() {
-      if (busController.busStopInfo.isNotEmpty) {
-        return DropdownButton<bus_list_at_bus_stop_response.Item>(
-          ///underline안보이게 할 때
+        child: Column(
+      children: [
+        const Text('노선 목록'),
+        Obx(() {
+          if (busController.busStopInfo.isNotEmpty) {
+            return DropdownButton<bus_list_at_bus_stop_response.Item>(
+              ///underline안보이게 할 때
 //underline: SizedBox.shrink(),
-          isExpanded: true,
-          value: selectedItem,
-          icon: const Icon(Icons.arrow_drop_down),
-          elevation: 16,
-          onChanged: (value) {
-            setState(() {
-              selectedItem = value;
-              busController.getCarListFromTago(
-                  busController.cityCode, value!.routeId);
-            });
-          },
-          items: busController.busStopInfo
-              .map((item) => DropdownMenuItem(
-                    value: item,
-                    child: Text(item.routeNo),
-                  ))
-              .toList(),
-        );
-      } else {
-        return const Text('노선 목록 불러오는 중...');
-      }
-    }));
+              isExpanded: true,
+              value: selectedItem,
+              icon: const Icon(Icons.arrow_drop_down),
+              elevation: 16,
+              onChanged: (value) {
+                setState(() {
+                  selectedItem = value;
+                  busController.getCarListFromTago(
+                      busController.cityCode, value!.routeId);
+                });
+              },
+              items: busController.busStopInfo
+                  .map((item) => DropdownMenuItem(
+                        value: item,
+                        child: Text(item.routeNo),
+                      ))
+                  .toList(),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        })
+      ],
+    ));
   }
 }
 
