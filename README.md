@@ -139,6 +139,19 @@ The resolution points to materialize the goal are as follows.
 - Subway, bus information: Republic of Korea public data portal Open API
 - Address: Kakao Local API
 
+### App
+|   Firebase   |    Flutter    |  Google Maps  |
+|:------------:|:-------------:|:-------------:|
+|  ![](firebaselogo.png) | ![](flutter.png) | ![](Google_Maps_Logo_2020.svg.png) |
+
+|   Firebase   |    Flutter    |  Google Maps  |
+|:------------:|:-------------:|:-------------:|
+|  ![](firebaselogo.png) | ![](flutter.png) | ![](Google_Maps_Logo_2020.svg.png) |
+
+|   Firebase   |    Flutter    |  Google Maps  |
+|:------------:|:-------------:|:-------------:|
+|  ![](firebaselogo.png) | ![](flutter.png) | ![](Google_Maps_Logo_2020.svg.png) |
+
 We implemented the "Rolling Together" service using the above technologies.
 
 - Firebase is a platform that provides backend services, providing various functions such as user authentication, data storage, and file storage. In "Rolling Together", the Firebase Realtime Database is used to store information posted by users in real time, and user authentication is implemented using Firebase Authentication.
