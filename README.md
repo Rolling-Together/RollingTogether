@@ -1,10 +1,37 @@
 # Rolling Together
 
-날짜: 2023년 2월 6일
+<aside>
+💡 이동 보조기기(수동/전동 휠체어, 전동 스쿠터) 이용자의 편리한 일상생활(생활편의)을 위한 정보 공유 커뮤니티
+
+</aside>
+
+# 목차
+
+1. 서론
+    - 배경 및 필요성
+    - 목적
+    - 연구 방법
+2. 문제점
+    - 대중교통 이용의 어려움
+    - 장애인 편의 시설 부족
+    - 일상생활 속 위험 요소 부족
+3. 해결 및 구현 방안
+    - 사용한 기술
+    - 일상 생활 속의 위험 장소를 공유
+    - 장소에 대한 이용 리뷰를 공유
+    - 대중교통 정보 공유
+        - 버스
+        - 지하철
+    - 장애인 편의 시설 위치 정보 제공
+    - 이동 보조기기 사용 가이드 제공
+4. 기대 효과
+    - 시장조사 및 Rolling Together만의 차별점
+    - 기대 효과
+        - 개인
+        - 사회
+5. 프로젝트 실행 방법
 
 # 1. 개요
-
-**팀의 아이디어에 대한 소개**
 
 ---
 
@@ -12,52 +39,31 @@
 
 누군가에게는 사소한 일상생활이 그들에게는 걸림돌이 되면서 외출은 마음편히 나갈 수 있는 것이 아닌, 계획을 가지고 나가야하는 힘든 여정이 되었습니다.
 
-그분들에게 더 이상 외출을 미지의 모험이 아닌, 소소한 일상으로 만들어 드리기 위해 
+그분들에게 더 이상 외출을 미지의 모험이 아닌, 소소한 일상으로 만들어 드리기 위해
 
-바퀴가 달린 이동보조기기를 이용하시는 분들이 함께 정보를 공유하며 이동하자는 의미를 담은 
+바퀴가 달린 이동보조기기를 이용하시는 분들이 함께 정보를 공유하며 이동하자는 의미를 담은
 
 **Rolling Together 서비스**를 생각하게 되었습니다.
 
-> **어플리케이션 개요**
-> 
-
-<aside>
-💡 이동 보조기기(수동/전동 휠체어, 전동 스쿠터) 이용자의 편리한 일상생활(생활편의)을 위한 정보 공유 커뮤니티
-
-</aside>
-
-- 사용자의 이동성 개선
-- 생활 중 안전 사고 방지
-- 장애인 편의 시설 정보 제공
-
-궁극적으로 장애인이 공공시설과 문화시설에 대한 접근 정보 부족으로 일상 생활에서 불편을 겪는 문제를 해결하기 위해, 지도에 접근 가능, 위험장소 등을 표시하여 **배리어-프리(사회적 약자들이 편하게 살아갈 수 있게 물리적인 장애물, 심리적인 벽을 제거하는 운동 및 정책)**을 실현할 수 있도록 도울 것입니다.
-
 # 2. 제안 배경
-
-**선택한 주제에서 해결하고자 하는 목표가 무엇인지 또 그에 대한 계기는 무엇인가요?**
 
 ---
 
-> **문제를 인식한 계기**
-> 
-
-이동 보조기기를 사용하는 지인과 함께 낯선 장소로 이동할 일이 생겼을 때, 집을 나서기 전부터 목적지까지 가는 모든 이동 과정을 미리 알아보고 가야 한다는 점이 매우 불편했습니다. 특히 인도로 이동할 때 혼자서 올라가지 못하는 턱, 경사로가 따로 없어 내려갈 때 위험한 높은 턱이 많았었습니다. 이러한 경험과 더불어 뉴스에서 관련 내용을 접하고 관련 논문을 찾아보면서 점점 문제의 심각성을 깨닫게 되었습니다.
-
 ### 이동 보조기기 이용자 이동 중 사고 관련 뉴스
 
-![출처 -[https://www.yna.co.kr/view/MYH20160419017700038](https://www.yna.co.kr/view/MYH20160419017700038)](Untitled.png)
+![https://www.notion.soUntitled.png](https://www.notion.soUntitled.png)
 
 출처 -[https://www.yna.co.kr/view/MYH20160419017700038](https://www.yna.co.kr/view/MYH20160419017700038)
 
-![출처 - [https://news.kbs.co.kr/news/view.do?ncd=3148727](https://news.kbs.co.kr/news/view.do?ncd=3148727)](Untitled%201.png)
+![https://www.notion.soUntitled%201.png](https://www.notion.soUntitled%201.png)
 
 출처 - [https://news.kbs.co.kr/news/view.do?ncd=3148727](https://news.kbs.co.kr/news/view.do?ncd=3148727)
 
-![출처 - [https://youtu.be/l9bNtlmjaVs](https://youtu.be/l9bNtlmjaVs)](Untitled.jpeg)
+![https://www.notion.soUntitled.jpeg](https://www.notion.soUntitled.jpeg)
 
 출처 - [https://youtu.be/l9bNtlmjaVs](https://youtu.be/l9bNtlmjaVs)
 
-![출처 - [https://www.youtube.com/watch?v=BHXUSOm3o28](https://www.youtube.com/watch?v=BHXUSOm3o28)](Untitled%202.png)
+![https://www.notion.soUntitled%202.png](https://www.notion.soUntitled%202.png)
 
 출처 - [https://www.youtube.com/watch?v=BHXUSOm3o28](https://www.youtube.com/watch?v=BHXUSOm3o28)
 
@@ -69,8 +75,8 @@
 
 출처 - [https://www.earticle.net/Article/A413981](https://www.earticle.net/Article/A413981)
 
-> **인터뷰를 통해 알게 된 더 많은 문제점**
-> 
+## 문제점
+
 - **지인 인터뷰**
 
 “저상 버스 이용 시 눈치가 보이고, 작동 여부를 알 수 없어서 거의 이용하지 않아요.”
@@ -85,15 +91,9 @@
 
 “약속 장소를 정할 때 한 시간은 부족해요. 그 장소에 계단은 없는지, 경사로와 엘리베이터는 있는지 확인하려면 길게는 일주일도 걸립니다. 비 장애인들에게는 간단한 일이 우리에게는 말도 안되게 어려워요.”
 
-> **문제 제기**
-> 
+ 교통약자는 인간으로서의 존엄과 가치 및 행복을 추구할 권리를 보장받기 위하여 교통약자가 아닌 사람들이 이용하는 모든 교통수단, 여객시설 및 도로를 차별 없이 안전하고 편리하게 이용하여 이동할 수 있는 권리를 가진다.
 
-<aside>
-<img src="https://www.notion.so/icons/judicial-scales_gray.svg" alt="https://www.notion.so/icons/judicial-scales_gray.svg" width="40px" /> 교통약자는 인간으로서의 존엄과 가치 및 행복을 추구할 권리를 보장받기 위하여 교통약자가 아닌 사람들이 이용하는 모든 교통수단, 여객시설 및 도로를 차별 없이 안전하고 편리하게 이용하여 이동할 수 있는 권리를 가진다.
-
-</aside>
-
-위는 「교통약자 이동편의 증진법」 제3조입니다. 대한민국은 교통약자의 이동권을 법으로써 보장하고 있습니다. 하지만, 여러 사례들을 미루어 볼 때, **실제로 이들의 이동권이 제대로 보장되고 있다고 할 수 있을까요?**
+위는 대한민국 「교통약자 이동편의 증진법」 제3조입니다. 대한민국은 교통약자의 이동권을 법으로써 보장하고 있습니다. 하지만, 여러 사례들을 미루어 볼 때, **실제로 이들의 이동권이 제대로 보장되고 있다고 할 수 있을까요?**
 
 당연한 권리를 제대로 누리지 못하고 있는 현상황에 대해 아래와 같은 3가지 문제를 제기합니다.
 
@@ -110,10 +110,10 @@
 - 장애인 화장실, 전동보조기기 충전소에 관한 정보의 접근성이 떨어집니다.
 - 가게 내 경사로와 문턱 유무를 자세히 알 수 없습니다.
 
-> **해결 목표**
+> 해결 목표
 > 
 
-따라서 위의 문제점들을 해결하기 위해 저희 Rolling Together는 
+따라서 위의 문제점들을 해결하기 위해 저희는
 
 ## **“이동보조기기 사용자들의 일상생활 속 불편함 최소화”**
 
@@ -121,53 +121,41 @@
 
 목표를 구체화하기 위한 해결포인트는 다음과 같습니다.
 
-<aside>
 💡 보행이 불안하지 않도록 해 이동권을 확대
-
-</aside>
-
-<aside>
 💡 안전사고 예방
-
-</aside>
-
-<aside>
 💡 이동 보조기기를 사용하는 교통약자와 관련한 정보 접근성을 개선
 
-</aside>
+# Solution for UN SDGs 11
+
+![Untitled](Rolling%20Together%2013d39e4f3a0148c4aa29fde8eb9df0c3/Untitled.png)
 
 # 3. 해결 및 구현 방안
 
-**제시한 주제를 어떤 구글의 기술을 활용해 해결할 예정인가요?**
-
 ---
 
-> **개발 구현 계획**
-> 
+### 사용한 기술
 
-| 개발 API | UI, UX | 프로젝트 관리 및 소통 |
-| --- | --- | --- |
-| - 지도 : Google Maps
-- 정보 공유 : Firebase Firestore
-- 앱 개발 : Flutter
-- 주소 정보(Geocoding) : Nominatim | Figma, Dribble | - Notion
-- Github 
-- Google Meet
-- Whimsical |
+![firebaselogo.png](Rolling%20Together%2013d39e4f3a0148c4aa29fde8eb9df0c3/firebaselogo.png)
 
-> **서비스 소개**
-> 
+![flutter.png](Rolling%20Together%2013d39e4f3a0148c4aa29fde8eb9df0c3/flutter.png)
 
-Rolling Together은 ‘커뮤니티 매핑(Community Mapping)’ 어플로서 익명의 대중들이 자발적으로 실시간 참여가 가능하기 때문에 다량의 정보가 빠르게 업데이트 및 공유 될 수 있습니다.
+![Google_Maps_Logo_2020.svg.png](Rolling%20Together%2013d39e4f3a0148c4aa29fde8eb9df0c3/Google_Maps_Logo_2020.svg.png)
 
-저희는 커뮤니티 매핑을 사용하여 휠체어 이용자들이 그들의 시선으로 직접 정보 플랫폼을 구축해나가도록 할 것입니다. 
+- 백엔드: Firebase
+- 앱 구현: Flutter
+- 지도: Google Maps
+- 지하철, 버스 정보: 대한민국 공공데이터포털 Open API
+- 주소: 카카오 Local API
 
-> **세부 내용**
-> 
+위와 같은 기술들을 사용하여 "Rolling Together" 서비스를 구현하였습니다.
 
-저희 Rolling Together가 제공하는 세부 기능들을 자세하게 소개하도록 하겠습니다.
+- Firebase는 백엔드 서비스를 제공하는 플랫폼으로, 사용자 인증, 데이터 저장, 파일 저장 등 다양한 기능을 제공합니다. "Rolling Together"에서는 Firebase Realtime Database를 사용하여 사용자가 게시한 정보를 실시간으로 저장하고, Firebase Authentication을 사용하여 사용자 인증을 구현하였습니다.
+- Flutter는 Google에서 개발한 모바일 앱 개발 프레임워크로, 하나의 코드로 iOS와 Android 모두를 지원합니다. "Rolling Together" 앱은 Flutter로 구현되었으며, Flutter의 다양한 위젯들을 이용하여 UI를 구성하였습니다.
+- Google Maps는 지도 API로, 지도 데이터를 제공하고 지도를 표시하는 기능을 제공합니다. "Rolling Together"에서는 Google Maps API를 사용하여 지도를 표시하고, 사용자가 게시한 정보들을 지도 위에 마커로 표시하였습니다.
+- 대한민국 공공데이터포털 Open API는 대한민국 공공 데이터를 제공하는 API로, "Rolling Together"에서는 버스와 지하철 정보를 제공하는 API를 사용하여 해당 정보들을 앱 내에서 제공하였습니다.
+- 카카오 Local API는 주소 검색과 좌표 변환 등의 기능을 제공하는 API로, "Rolling Together"에서는 사용자가 검색한 주소를 기반으로 해당 장소의 좌표를 구하고 지도 상에 마커로 표시하는 기능을 구현하는 데 사용하였습니다.
 
-![Untitled](Untitled%203.png)
+![https://www.notion.soUntitled%203.png](https://www.notion.soUntitled%203.png)
 
 - **일상 생활 속의 위험 장소를 공유**
 1. 사용자가 높은 턱, 공사장, 경사로 등 일상생활 중 마주 칠 수 있는 위험장소의 위치를 등록하여 지도에 표시합니다.
@@ -186,7 +174,7 @@ Rolling Together은 ‘커뮤니티 매핑(Community Mapping)’ 어플로서 �
 [ 버스 ]
 
 1. 저상버스의 노선번호와 일련번호를 제공합니다.
-2. 사용자는 노선번호, 일련번호를 선택하여  저상버스의 휠체어 리프트 정상작동 여부를 게시글을 통해 공유할 수 있습니다.
+2. 사용자는 노선번호, 일련번호를 선택하여 저상버스의 휠체어 리프트 정상작동 여부를 게시글을 통해 공유할 수 있습니다.
 
 [ 지하철 ]
 
@@ -197,34 +185,22 @@ Rolling Together은 ‘커뮤니티 매핑(Community Mapping)’ 어플로서 �
 1. 지도상의 마커를 통해 장애인 편의시설 (전동 휠체어 충전소, 장애인 화장실)의 기본적인 위치 정보를 제공합니다.
 2. 사용자가 장애인 편의시설에 대한 리뷰도 남길 수 있도록 합니다.
 3. 시설물의 종류 별로 마커의 색깔과 아이콘을 구별합니다. 사용자는 색상으로 분류된 마커를 통해 본인이 찾고 싶은 시설물의 정보를 한 눈에 구별할 수 있습니다.
-
 - **이동 보조기기 사용 가이드 제공**
 1. 휠체어, 전동휠체어, 전동 스쿠터 등 이동보조기기 사용에 대한 잘 정리된 설명서를 제공합니다.
 2. 전동 휠체어 충전소나 장애인 화장실 이용 방법에 대한 설명서도 제공합니다.
 
 # 4. 기대 효과
 
-**이 프로젝트가 어떤 문제를 해결하나요? 또 이 프로젝트를 어떻게 개선시켜나갈 것인가요?**
-
 ---
 
-> **시장조사 및 Rolling Together만의 차별점**
+> 시장조사 및 Rolling Together만의 차별점
 > 
 
-|  | Rolling Together | 윌체어 | 베프지도 | 서울또타지하철 |
-| --- | --- | --- | --- | --- |
-| 장애인 편의시설 정보 제공 | O | △
-(식당, 카페만 정보제공) | O | X |
-| 대중교통 장애인 편의시설 정보 제공 | O | X | X | O |
-| 장애인 편의시설 사용가능 여부 | O | X | X | X |
-| 거리 위험 정보 제공 | O | X | X | X |
-| 정보 제공 소통 방향 | 양방향 | 일방향 | 양방향 | 일방향 |
-
-기존에 존재하던 서비스들은 주로 사용자에게 정보를 일방적으로 제공하는 것에 초점이 맞춰져 있었기 때문에 **빠른 정보 업데이트가 되지 않았습니다. 다양한 공공시설 및 문화시설들에 대한 정보를 제공하는 것에도 분명한 한계**가 존재했습니다. 
+기존에 존재하던 서비스들은 주로 사용자에게 정보를 일방적으로 제공하는 것에 초점이 맞춰져 있었기 때문에 **빠른 정보 업데이트가 되지 않았습니다. 다양한 공공시설 및 문화시설들에 대한 정보를 제공하는 것에도 분명한 한계**가 존재했습니다.
 
 저희 Rolling Together은 다양한 항목들에 대한 커뮤니티 매핑을 이용해 **이러한 한계들을 극복**할 수 있을 것으로 예상합니다. 추가적으로, **이동 보조기기와 시설 사용에 대한 잘 정리된 설명서**를 제공하여 사용자들이 매끄럽게 일상을 이어나갈 수 있도록 도울 것입니다.
 
-> **기대 효과**
+> 기대 효과
 > 
 
 **개인**
@@ -271,3 +247,13 @@ Rolling Together은 ‘커뮤니티 매핑(Community Mapping)’ 어플로서 �
 - **지역 경제 활성화**
     
     외출 증가로 소비층이 확대 될 것으로 기대되며, 이로 인해 지역 경제가 활성화 될 것으로 예상됩니다.
+    
+- **How to run**
+
+Here are the steps to download the Flutter app from [https://github.com/Rolling-Together/RollingTogether.git](https://github.com/Rolling-Together/RollingTogether.git) and run it on Android Studio:
+
+1. Install Flutter and Android Studio.
+2. Go to [https://github.com/Rolling-Together/RollingTogether.git](https://github.com/Rolling-Together/RollingTogether.git) and download the app.
+3. Open Android Studio and select File -> Open from the menu, then open the downloaded app folder.
+4. Once Android Studio loads the project, select Run -> Run from the top menu.
+5. Select an emulator or connect a mobile device to run the app.
