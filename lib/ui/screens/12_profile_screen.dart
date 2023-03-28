@@ -26,7 +26,7 @@ class ProfileScreen extends StatelessWidget implements OnRefreshDataListener {
             child: CircleAvatar(
               radius: MediaQuery.of(context).size.width * 0.1,
               backgroundImage: NetworkImage(
-                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3kK3Z6UVOjkLVXUdz12gq9MyuAzT7pIxaQw&usqp=CAU',
+                'https://i.pinimg.com/236x/ac/0f/41/ac0f419e977af681516e00829c5393ee.jpg',
               ),
             ),
           ),
@@ -44,6 +44,8 @@ class ProfileScreen extends StatelessWidget implements OnRefreshDataListener {
                       Flexible(
                         fit: FlexFit.loose,
                         child: Container(
+                          margin : EdgeInsets.only(
+                              left : MediaQuery.of(context).size.width * 0.05,),
                             alignment: Alignment.centerLeft,
                             child: Row(
                               children: [
@@ -77,11 +79,18 @@ class ProfileScreen extends StatelessWidget implements OnRefreshDataListener {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Colors.yellowAccent,
+      //backgroundColor: Color(0xfffE9EAEC),
       body: SingleChildScrollView(
         child: Column(
           children: [
             UserInfo(context),
+            Container(
+              margin : EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.05,
+                left: MediaQuery.of(context).size.width * 0.05,),
+              child : Divider(
+              height: MediaQuery.of(context).size.height*0.1,
+              color: Colors.black38,
+            ),),
             MyLikeDangerousZonesWidget(),
             MySharedDangerousZonesWidget(),
           ],
@@ -103,10 +112,20 @@ class MyLikeDangerousZonesWidget extends StatelessWidget {
   ///게시글 1개당 폼
   Widget postItem(BuildContext context, DangerousZoneDto dangerousZoneDto) {
     return Container(
+      decoration: BoxDecoration(
+        boxShadow: [BoxShadow(color : Colors.grey.withOpacity(0.7),
+        blurRadius: 5.0, spreadRadius: 0.0, offset: const Offset(3,3))],
+        borderRadius: BorderRadius.circular(8.0),
+        color: Color(0xfffF5F5F5),
+      ),
       margin: EdgeInsets.only(
           right: MediaQuery.of(context).size.width * 0.025,
           left: MediaQuery.of(context).size.width * 0.025,
           top: MediaQuery.of(context).size.height * 0.02),
+      padding: EdgeInsets.only(
+          top: MediaQuery.of(context).size.width * 0.02,
+          right: MediaQuery.of(context).size.width * 0.02,
+          left: MediaQuery.of(context).size.width * 0.02),
       child: InkWell(
           onTap: () {
             Get.to(DangerousZonePostScreen(),
@@ -121,9 +140,12 @@ class MyLikeDangerousZonesWidget extends StatelessWidget {
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done &&
                           snapshot.hasData) {
-                        return Image.network(
-                          snapshot.data.toString(),
-                          fit: BoxFit.fill,
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.network(
+                            snapshot.data.toString(),
+                            fit: BoxFit.fill,
+                          ),
                         );
                       } else {
                         return const Icon(Icons.remove, size: 50);
@@ -163,7 +185,7 @@ class MyLikeDangerousZonesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-        top: MediaQuery.of(context).size.height * 0.03,
+        //top: MediaQuery.of(context).size.height * 0.05,
         right: MediaQuery.of(context).size.width * 0.05,
         left: MediaQuery.of(context).size.width * 0.05,
       ),
@@ -190,7 +212,8 @@ class MyLikeDangerousZonesWidget extends StatelessWidget {
                         return postItem(context,
                             myDataController.myLikesDangerousZoneList[index]);
                       }))),
-          const Divider(
+          Divider(
+            height: MediaQuery.of(context).size.height*0.1,
             color: Colors.black38,
           )
         ],
@@ -205,10 +228,20 @@ class MySharedDangerousZonesWidget extends StatelessWidget {
   ///게시글 1개당 폼
   Widget postItem(BuildContext context, DangerousZoneDto dangerousZoneDto) {
     return Container(
+      decoration: BoxDecoration(
+        boxShadow: [BoxShadow(color : Colors.grey.withOpacity(0.7),
+            blurRadius: 5.0, spreadRadius: 0.0, offset: const Offset(3,3))],
+        borderRadius: BorderRadius.circular(8.0),
+        color: Color(0xfffF5F5F5),
+      ),
       margin: EdgeInsets.only(
           right: MediaQuery.of(context).size.width * 0.025,
           left: MediaQuery.of(context).size.width * 0.025,
           top: MediaQuery.of(context).size.height * 0.02),
+      padding: EdgeInsets.only(
+          top: MediaQuery.of(context).size.width * 0.02,
+          right: MediaQuery.of(context).size.width * 0.02,
+          left: MediaQuery.of(context).size.width * 0.02),
       child: InkWell(
           onTap: () {
             Get.to(DangerousZonePostScreen(),
@@ -224,9 +257,12 @@ class MySharedDangerousZonesWidget extends StatelessWidget {
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done &&
                           snapshot.hasData) {
-                        return Image.network(
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                            child : Image.network(
                           snapshot.data.toString(),
                           fit: BoxFit.fill,
+                        ),
                         );
                       } else {
                         return const Icon(Icons.remove, size: 50);
@@ -276,7 +312,7 @@ class MySharedDangerousZonesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-        top: MediaQuery.of(context).size.height * 0.03,
+        top: MediaQuery.of(context).size.height * 0.01,
         right: MediaQuery.of(context).size.width * 0.05,
         left: MediaQuery.of(context).size.width * 0.05,
       ),
@@ -303,7 +339,8 @@ class MySharedDangerousZonesWidget extends StatelessWidget {
                         return postItem(context,
                             myDataController.mySharedDangerousZoneList[index]);
                       }))),
-          const Divider(
+          Divider(
+            height: MediaQuery.of(context).size.height*0.1,
             color: Colors.black38,
           )
         ],
