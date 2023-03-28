@@ -35,15 +35,9 @@
 
 ---
 
-It is not easy for wheelchair users and those who use mobility aids such as electric wheelchairs and electric scooters to simply go for a walk outside the house. There are many things to consider, such as construction facilities that cannot be passed even on a single outing, high chins, and whether or not there is a toilet for the disabled.
+**Rolling Together** is a service that aims to help wheelchair users and individuals who use mobility aids such as electric wheelchairs and electric scooters to navigate their daily lives with ease. For these individuals, even a simple walk outside the house can be a daunting task as they need to consider various factors such as construction facilities, high curbs, and the availability of disabled toilets.
 
-For some, trivial daily life becomes a stumbling block for them, and going out has become a difficult journey that requires a plan, not a comfortable way to go out.
-
-To make going out no longer an unknown adventure for them, but a small daily life.
-
-It contains the meaning that people who use wheeled mobility aids should share information and move together.
-
-**Rolling Together Service** came to mind.
+We understand that these trivial daily life obstacles can often become a hindrance for them, making going out a difficult journey that requires careful planning rather than a comfortable way to enjoy the outdoors. Rolling Together was created with the purpose of changing this reality and providing a platform for individuals who use wheeled mobility aids to share information and move together. Through this service, we aim to make going out a small daily life and not an unknown adventure.
 
 # 2. Proposal background
 
@@ -193,9 +187,7 @@ We implemented the "Rolling Together" service using the above technologies.
 > Market research and the difference between Rolling Together
 >
 
-Because existing services were mainly focused on providing information to users unilaterally, **fast information was not updated. There were also clear limitations** in providing information on various public and cultural facilities.
-
-We, Rolling Together, expect to be able to **overcome these limitations** by using community mapping for various items. In addition, **well-organized instructions for using mobility aids and facilities** will be provided to help users go about their daily lives smoothly.
+Existing services mainly focused on providing information to users unilaterally, which caused fast information updates to be limited. We expect to overcome these limitations by using community mapping for various items. In addition, we will provide well-organized instructions for using mobility aids and facilities to help users go about their daily lives smoothly.
 
 > Expected effect
 >
