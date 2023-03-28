@@ -110,7 +110,8 @@ class _DangerousZonePostScreenState extends State<DangerousZonePostScreen> {
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(30),
             child: Container(
-              margin: EdgeInsets.only(bottom: 10),
+              alignment: Alignment.centerLeft,
+              margin: EdgeInsets.only(bottom: 10, left: MediaQuery.of(context).size.width*0.1),
               child: Text(
                   widget
                       .dangerousZoneController.dangerousZone.value!.addressName,
@@ -125,10 +126,6 @@ class _DangerousZonePostScreenState extends State<DangerousZonePostScreen> {
               const SizedBox(
                 height: 20,
               ),
-              Text(
-                "신고일시 : ${widget.dateFormat.format(widget.dangerousZoneController.dangerousZone.value!.dateTime.toDate())}",
-                style: const TextStyle(fontSize: 20),
-              ),
               SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: Row(children: [
@@ -142,11 +139,18 @@ class _DangerousZonePostScreenState extends State<DangerousZonePostScreen> {
                     Text(widget.dangerousZoneController.dangerousZone.value!
                         .informerName),
                     const Icon(Icons.star),
+                        Text(
+                      "신고일시 : ${widget.dateFormat.format(widget.dangerousZoneController.dangerousZone.value!.dateTime.toDate())}",
+                      style: const TextStyle(fontSize: 10),
+                    ),
                   ])),
-              Text(
+              Container(
+                padding: EdgeInsets.only(right: MediaQuery.of(context).size.width*0.05,
+                   left: MediaQuery.of(context).size.width*0.05),
+                child : Text(
                   widget
                       .dangerousZoneController.dangerousZone.value!.description,
-                  style: const TextStyle(fontSize: 20)),
+                  style: const TextStyle(fontSize: 20)),),
               Container(
                   width: MediaQuery.of(context).size.width * 0.8,
                   height: 150,
