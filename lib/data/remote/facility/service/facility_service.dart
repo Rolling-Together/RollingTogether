@@ -111,6 +111,9 @@ class FacilityService {
       for (var snapshot in result.docs) {
         list.add(FacilityReviewDto.fromSnapshot(snapshot));
       }
+
+      list.sort((a, b) => b.dateTime.compareTo(a.dateTime));
+
       return Future.value(list);
     } else {
       return Future.value(List.empty());

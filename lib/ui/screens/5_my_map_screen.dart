@@ -79,12 +79,12 @@ class _MainMapWidgetState extends State<MainMapWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Wrap(
-                spacing: 6.0,
+                spacing: 8.0,
                 children: [
                   SharedDataCategory.dangerousZone,
                   SharedDataCategory.facility,
                   SharedDataCategory.publicTransport
-                ].map((e) => addChips(e)).toList(),
+                ].map((e) => addMainChips(e)).toList(),
               ),
               const SizedBox(height: 8.0),
               Visibility(
@@ -95,7 +95,7 @@ class _MainMapWidgetState extends State<MainMapWidget> {
                     child: Wrap(
                       spacing: 6.0,
                       children: SharedDataCategory.toList()
-                          .map((e) => addChips(e))
+                          .map((e) => addExtraChips(e))
                           .toList(),
                     ),
                   )),
@@ -103,44 +103,6 @@ class _MainMapWidgetState extends State<MainMapWidget> {
           ),
         ),
       ),
-      Obx(() => widget.myMapController.isClickedReportDangerousZone.value
-          ? Opacity(
-              opacity: 0.5,
-              child: Container(
-                color: Colors.black,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.place_outlined,
-                          size: 50, color: Colors.blue),
-                      const SizedBox(height: 20),
-                      MaterialButton(
-                        onPressed: () {
-                          setState(() {
-                            widget.myMapController.isClickedReportDangerousZone
-                                .value = false;
-                          });
-                          Get.to(LocationScreen(), arguments: {
-                            'latlng': widget.myMapController.currentCoords
-                          });
-                        },
-                        child: const Text('여기로 위치 지정'),
-                      ),
-                      CloseButton(
-                        onPressed: () {
-                          setState(() {
-                            widget.myMapController.isClickedReportDangerousZone
-                                .value = false;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            )
-          : const SizedBox()),
       Obx(() => Positioned(
           right: 16,
           bottom: 24,
@@ -154,18 +116,59 @@ class _MainMapWidgetState extends State<MainMapWidget> {
               child: const Text('글쓰기'),
             ),
           ))),
+      const Center(
+        child: Icon(Icons.icecream_rounded),
+      )
     ]));
   }
 
-  FilterChip addChips(SharedDataCategory category) => FilterChip(
+  FilterChip addMainChips(SharedDataCategory category) => FilterChip(
         label: Text(category.name),
         avatar: Icon(category.iconData),
         selected:
             widget.myMapController.lastSelectedCategorySet.contains(category),
-        selectedColor: Colors.lightBlueAccent,
+        selectedColor: const Color.fromARGB(255, 222, 222, 222),
         backgroundColor: Colors.white,
-        shadowColor: Colors.white24,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(30.0))),
+        elevation: 4.0,
+        side: const BorderSide(color: Colors.transparent, width: 0.0),
         showCheckmark: false,
+        shadowColor: Colors.black,
+        selectedShadowColor: Colors.black,
+        onSelected: (bool value) {
+          setState(() {
+            if (value) {
+              if (!widget.myMapController.lastSelectedCategorySet
+                  .contains(category)) {
+                widget.myMapController
+                    .onChangedSelectedCategory([category], true);
+              }
+            } else {
+              widget.myMapController
+                  .onChangedSelectedCategory([category], false);
+            }
+          });
+        },
+      );
+
+  FilterChip addExtraChips(SharedDataCategory category) => FilterChip(
+        label: Text(
+          category.name,
+          style: const TextStyle(fontSize: 12.0),
+        ),
+        avatar: Icon(category.iconData),
+        selected:
+            widget.myMapController.lastSelectedCategorySet.contains(category),
+        selectedColor: const Color.fromARGB(178, 204, 204, 204),
+        shadowColor: Colors.black,
+        selectedShadowColor: Colors.black,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(30.0))),
+        elevation: 4.0,
+        side: const BorderSide(color: Colors.transparent, width: 0.0),
+        showCheckmark: false,
+        backgroundColor: Colors.white,
         onSelected: (bool value) {
           setState(() {
             if (value) {
@@ -193,16 +196,18 @@ class _MainMapWidgetState extends State<MainMapWidget> {
               ListTile(
                 title: const Text('위험장소'),
                 onTap: () {
-                  Navigator.pop(context);
-                  widget.myMapController.isClickedReportDangerousZone.value =
-                      true;
+                  Get.to(LocationScreen(), arguments: {
+                    'latlng': LatLng(widget.myMapController.currentCoords.first,
+                        widget.myMapController.currentCoords.last)
+                  });
                 },
               ),
               ListTile(
                 title: const Text('편의시설'),
                 onTap: () {
                   Get.to(FacilityScreen(), arguments: {
-                    'latlng': widget.myMapController.currentCoords
+                    'latlng': LatLng(widget.myMapController.currentCoords.first,
+                        widget.myMapController.currentCoords.last)
                   });
                 },
               ),
@@ -210,7 +215,8 @@ class _MainMapWidgetState extends State<MainMapWidget> {
                 title: const Text('대중교통'),
                 onTap: () {
                   Get.to(TransScreen(), arguments: {
-                    'latlng': widget.myMapController.currentCoords
+                    'latlng': LatLng(widget.myMapController.currentCoords.first,
+                        widget.myMapController.currentCoords.last)
                   });
                 },
               ),
