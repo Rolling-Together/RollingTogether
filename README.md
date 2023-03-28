@@ -121,7 +121,7 @@ The resolution points to materialize the goal are as follows.
 
 # Solution for UN SDGs 11
 
-![Untitled] (Untitled.png)
+![](Untitled.png)
 # 3. Solution and implementation plan
 
 ---
