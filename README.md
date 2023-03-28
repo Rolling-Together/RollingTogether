@@ -158,7 +158,7 @@ The resolution points to materialize the goal are as follows.
 
 We implemented the "Rolling Together" service using the above technologies.
 
-- Firebase is a platform that provides backend services, providing various functions such as user authentication, data storage, and file storage. In "Rolling Together", the Firebase Realtime Database is used to store information posted by users in real time, and user authentication is implemented using Firebase Authentication.
+- Firebase is a platform that provides backend services, providing various functions such as user authentication, data storage, and file storage. In "Rolling Together", the Firebase Firestore is used to store information posted by users in real time, and user authentication is implemented using Firebase Authentication.
 - Flutter is a mobile app development framework developed by Google that supports both iOS and Android with one code. The "Rolling Together" app was implemented with Flutter, and the UI was composed using various widgets of Flutter.
 - Google Maps is a map API, providing the ability to provide map data and display maps. In "Rolling Together", the Google Maps API was used to display the map, and information posted by users was displayed as markers on the map.
 - Korea public data portal Open API is an API that provides public data in Korea, and "Rolling Together" uses an API that provides bus and subway information to provide the information within the app.
