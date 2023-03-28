@@ -86,35 +86,35 @@ class _MainMapWidgetState extends State<MainMapWidget> {
                   SharedDataCategory.publicTransport
                 ].map((e) => addChips(e)).toList(),
               ),
-              const SizedBox(height: 8.0),
-              Visibility(
-                  visible: widget.myMapController.lastSelectedCategorySet
-                      .contains(SharedDataCategory.facility),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Wrap(
-                      spacing: 6.0,
-                      children: SharedDataCategory.toList()
-                          .map((e) => addChips(e))
-                          .toList(),
-                    ),
-                  )),
+              Padding(
+                padding: const EdgeInsets.only(top: 5.0 ,left: 10.0),
+                child: Visibility(
+                    visible: widget.myMapController.lastSelectedCategorySet
+                        .contains(SharedDataCategory.facility),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Wrap(
+                        spacing: 6.0,
+                        children: SharedDataCategory.toList()
+                            .map((e) => addChips(e))
+                            .toList(),
+                      ),
+                    )),
+              ),
             ],
           ),
         ),
       ),
       Obx(() => widget.myMapController.isClickedReportDangerousZone.value
           ? Opacity(
-              opacity: 0.5,
+              opacity: 0.6,
               child: Container(
                 color: Colors.black,
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.place_outlined,
-                          size: 50, color: Colors.blue),
-                      const SizedBox(height: 20),
+                      Image.asset('assets/images/welfare_marker_icon.png'),
                       MaterialButton(
                         onPressed: () {
                           setState(() {
@@ -147,6 +147,7 @@ class _MainMapWidgetState extends State<MainMapWidget> {
           child: Visibility(
             visible: !widget.myMapController.isClickedReportDangerousZone.value,
             child: FloatingActionButton(
+              //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
               elevation: 10,
               onPressed: () {
                 showOptions(context);
@@ -157,14 +158,23 @@ class _MainMapWidgetState extends State<MainMapWidget> {
     ]));
   }
 
+
   FilterChip addChips(SharedDataCategory category) => FilterChip(
+
         label: Text(category.name),
         avatar: Icon(category.iconData),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20),
+    ),
         selected:
             widget.myMapController.lastSelectedCategorySet.contains(category),
-        selectedColor: Colors.lightBlueAccent,
-        backgroundColor: Colors.white,
-        shadowColor: Colors.white24,
+        selectedColor: Colors.purple.withOpacity(0.1),
+
+
+        shadowColor: Colors.grey,
+        surfaceTintColor: Colors.grey.withOpacity(0.1),//그림자주고 이코드없으면 탁해짐
+        elevation: 7.0,
+        //shadowColor: Colors.white24,
         showCheckmark: false,
         onSelected: (bool value) {
           setState(() {
@@ -316,3 +326,4 @@ class _MainMapWidgetState extends State<MainMapWidget> {
     widget.myMapController.markerSet.value = newMarkers;
   }
 }
+
