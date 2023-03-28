@@ -134,11 +134,10 @@ The resolution points to materialize the goal are as follows.
 
 ### Skills used
 
-![firebaselogo.png](firebaselogo.png)
+|   Firebase   |    Flutter    |  Google Maps  |
+|:------------:|:-------------:|:-------------:|
+|  ![](firebaselogo.png) | ![](flutter.png) | ![](Google_Maps_Logo_2020.svg.png) |
 
-![flutter.png](flutter.png)
-
-![Google_Maps_Logo_2020.svg.png](Google_Maps_Logo_2020.svg.png)
 
 - Backend: Firebase
 - App Implementation: Flutter
