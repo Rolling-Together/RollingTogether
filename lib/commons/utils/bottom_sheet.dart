@@ -423,10 +423,8 @@ class _BusListScreenState extends State<BusBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.busController.busListAtBusStopMap.isEmpty) {
       widget.busController.getCarListFromFsByBusStop(
           widget.busStop.citycode, widget.busStop.nodeid);
-    }
 
     return Obx(() {
       if (widget.busController.busListAtBusStopMap.isEmpty) {

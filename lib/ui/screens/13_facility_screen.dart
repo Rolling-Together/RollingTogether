@@ -394,13 +394,14 @@ class _ImageUploaderState extends State<ImageUploader> {
       /*decoration: BoxDecoration(
         border: Border.all(color: Colors.black),
       ),*/
-      child: _image == null
+      child: facilityController.newCheckListMap[widget.type]!.files.isEmpty
           ? InkWell(
               onTap: () =>
                   showDialog(context: context, builder: (_) => _optionDialog()),
               child: const Icon(Icons.camera_alt),
             )
-          : Image.file(_image!),
+          : Image.file(
+              facilityController.newCheckListMap[widget.type]!.files.first),
     );
   }
 }

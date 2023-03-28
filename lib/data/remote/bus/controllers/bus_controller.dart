@@ -40,6 +40,15 @@ class BusController extends GetxController {
 
   final editedCarMaps = <String, BusDto>{};
 
+  @override
+  dispose() {
+    busListAtBusStopMap.clear();
+    busCarListMap.clear();
+    busStopList.clear();
+    carList.clear();
+    super.dispose();
+  }
+
   /// 버스 정류장 정보 로드
   /// nodeId : 정류소id, DJB8001793
   getBusListAtBusStop(String cityCode, String nodeId) {
