@@ -78,7 +78,12 @@ class _CommunityScreenState extends State<CommunityScreen>
                 );
               }).toList(),
             ),
-            const SizedBox(height: 10.0),
+            Row(
+              children: [
+                const Text('인기 게시글'),
+                Icon(Icons.favorite_border)
+              ],
+            ),
             if (selectedCategory == SharedDataCategory.dangerousZone)
               Expanded(child: DangerousZoneListScreen())
             else if (selectedCategory == SharedDataCategory.facility)

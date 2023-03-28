@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../commons/class/i_refresh_data.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GuideScreen extends StatelessWidget implements OnRefreshDataListener {
   const GuideScreen({Key? key}) : super(key: key);
@@ -83,43 +84,7 @@ class GuideScreen extends StatelessWidget implements OnRefreshDataListener {
           ),
           Padding(
             padding: const EdgeInsets.only(top:10.0, left: 20, right: 20),
-            child: Card(
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10.0, left: 25, bottom: 10),
-                      child: Image.network(
-                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAuzQh7k-LQEabGZbYOznBbEP221dVD7EVPQ&usqp=CAU',
-                        height: MediaQuery.of(context).size.height * 0.15,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text('지하철 계단은 ?', style: TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16
-                          ),),
-                          SizedBox(height: 10,),
-                          Text('올바른 리프트 사용법', style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 18
-                          ),)
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            child: YoutubeCard(youtubeLink: "유튜브링크넣는곳"),
           ),
         ],
       ),
@@ -129,5 +94,63 @@ class GuideScreen extends StatelessWidget implements OnRefreshDataListener {
   @override
   void refreshData() {
     // TODO: implement refreshData
+  }
+}
+
+
+
+class YoutubeCard extends StatelessWidget {
+  final String youtubeLink;
+
+  YoutubeCard({required this.youtubeLink});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        if (await canLaunch(youtubeLink)) {
+          await launch(youtubeLink);
+        } else {
+          throw 'Could not launch $youtubeLink';
+        }
+      },
+      child: Card(
+        child: Row(
+          children: [
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10.0, left: 25, bottom: 10),
+                child: Image.network(
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAuzQh7k-LQEabGZbYOznBbEP221dVD7EVPQ&usqp=CAU',
+                  height: MediaQuery.of(context).size.height * 0.15,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Text('지하철 계단은 ?', style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16
+                    ),),
+                    SizedBox(height: 10,),
+                    Text('올바른 리프트 사용법', style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18
+                    ),)
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
