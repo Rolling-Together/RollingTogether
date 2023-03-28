@@ -127,7 +127,7 @@
 
 # Solution for UN SDGs 11
 
-![Untitled](Rolling%20Together%2013d39e4f3a0148c4aa29fde8eb9df0c3/Untitled.png)
+![Untitled](Untitled.png)
 
 # 3. 해결 및 구현 방안
 
@@ -135,11 +135,11 @@
 
 ### 사용한 기술
 
-![firebaselogo.png](Rolling%20Together%2013d39e4f3a0148c4aa29fde8eb9df0c3/firebaselogo.png)
+![firebaselogo.png](firebaselogo.png)
 
-![flutter.png](Rolling%20Together%2013d39e4f3a0148c4aa29fde8eb9df0c3/flutter.png)
+![flutter.png](flutter.png)
 
-![Google_Maps_Logo_2020.svg.png](Rolling%20Together%2013d39e4f3a0148c4aa29fde8eb9df0c3/Google_Maps_Logo_2020.svg.png)
+![Google_Maps_Logo_2020.svg.png](Google_Maps_Logo_2020.svg.png)
 
 - 백엔드: Firebase
 - 앱 구현: Flutter
@@ -155,7 +155,6 @@
 - 대한민국 공공데이터포털 Open API는 대한민국 공공 데이터를 제공하는 API로, "Rolling Together"에서는 버스와 지하철 정보를 제공하는 API를 사용하여 해당 정보들을 앱 내에서 제공하였습니다.
 - 카카오 Local API는 주소 검색과 좌표 변환 등의 기능을 제공하는 API로, "Rolling Together"에서는 사용자가 검색한 주소를 기반으로 해당 장소의 좌표를 구하고 지도 상에 마커로 표시하는 기능을 구현하는 데 사용하였습니다.
 
-![https://www.notion.soUntitled%203.png](https://www.notion.soUntitled%203.png)
 
 - **일상 생활 속의 위험 장소를 공유**
 1. 사용자가 높은 턱, 공사장, 경사로 등 일상생활 중 마주 칠 수 있는 위험장소의 위치를 등록하여 지도에 표시합니다.
