@@ -45,7 +45,7 @@ We understand that these trivial daily life obstacles can often become a hindran
 
 ### Accident news while moving users of mobility aids
 
-![Source -[https://www.yna.co.kr/view/MYH20160419017700038](https://www.yna.co.kr/view/MYH20160419017700038)](Untitled.png)
+![Source -[https://www.yna.co.kr/view/MYH20160419017700038](https://www.yna.co.kr/view/MYH20160419017700038)](news1.png)
 
 Source -[https://www.yna.co.kr/view/MYH20160419017700038](https://www.yna.co.kr/view/MYH20160419017700038)
 
