@@ -140,19 +140,19 @@ The resolution points to materialize the goal are as follows.
 - Address: Kakao Local API
 
 ### App
-|   1   |    2    |  3  |
+|   Main   |    Guide    |  My profile  |
 |:------------:|:-------------:|:-------------:|
 |  ![](sc_main.png) | ![](sc_guide.png) | ![](sc_my_profile.png) |
 
-|   4   |    5    |  6  |
+|   Community   |    Report bus    |  Report dangerouszone  |
 |:------------:|:-------------:|:-------------:|
 |  ![](sc_community.png) | ![](sc_report_bus.png) | ![](sc_report_dangerouszone.png) |
 
-|   7   |    8    |  9  |
+|   Report Facility   |    Subway    |  Bus  |
 |:------------:|:-------------:|:-------------:|
 |  ![](sc_report_facility.png) | ![](sc_subway_bottomsheet.png) | ![](sc_bus_bottomsheet.png) |
 
-|   10   |    11    |  12  |
+|   Dangerouszone   |    Facility    |  Dangerouszone post  |
 |:------------:|:-------------:|:-------------:|
 |  ![](sc_dangerouszone_bottomsheet.png) | ![](sc_facility_bottomsheet.png) | ![](sc_post_dangerouszone.png) |
 
