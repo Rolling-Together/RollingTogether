@@ -28,24 +28,28 @@ class FacilityInfoBottomSheet extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: SizedBox(
-          height: MediaQuery.of(context).size.height / 3,
+          height: MediaQuery.of(context).size.height / 3.5,
           child: Column(
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  '장소 명 : ${facilityDto.name}',
+                  '${facilityDto.name}',
                   style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 17),
+                      fontWeight: FontWeight.bold, fontSize: 25, ),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  '주소 : ${facilityDto.addressName}',
+                  '${facilityDto.addressName}',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600, fontSize: 16
+                  ),
                 ),
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Padding(
@@ -53,22 +57,26 @@ class FacilityInfoBottomSheet extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.looks_one),
-                        Text(
-                            '1층 : ${facilityDto.checkList[FacilityCheckListType.floorFirst]!.status.toExistenceKr()}',
-                            style: const TextStyle(fontSize: 13)),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.accessible),
-                        Text(
-                          '경사로 : ${facilityDto.checkList[FacilityCheckListType.wheelChair]!.status.toExistenceKr()}',
-                          style: const TextStyle(fontSize: 13),
+                        const Icon(Icons.looks_one, size: 30),
+                        SizedBox(height: 3.0),
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              fontSize: 14.5,
+                              color: Colors.black,
+                            ),
+                            children: [
+                              TextSpan(text: '1층 ', style: TextStyle(fontSize: 14.5),),
+                              TextSpan(
+                                text: '${facilityDto.checkList[FacilityCheckListType.floorFirst]!.status.toExistenceKr()}',
+                                style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14.5
+                              ),
+                              ),
+                            ]
+                        ),
                         ),
                       ],
                     ),
@@ -78,22 +86,85 @@ class FacilityInfoBottomSheet extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.elevator),
-                        Text(
-                            '엘리베이터 : ${facilityDto.checkList[FacilityCheckListType.elevator]!.status.toExistenceKr()}',
-                            style: const TextStyle(fontSize: 13)),
+                        const Icon(Icons.accessible, size: 30),
+                        SizedBox(height: 3.0),
+                        RichText(
+                          text: TextSpan(
+                              style: TextStyle(
+                                fontSize: 14.5,
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(text: '경사로 ', style: TextStyle(fontSize: 14.5),),
+                                TextSpan(
+                                  text: '${facilityDto.checkList[FacilityCheckListType.wheelChair]!.status.toExistenceKr()}',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                      fontSize: 14.5
+                                  ),
+                                ),
+                              ]
+                          ),
+                        ),
                       ],
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(6.0),
+                    padding: const EdgeInsets.only(top: 19.0, bottom: 6.0, left: 6.0, right: 6.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.wc),
-                        Text(
-                            '화장실 : ${facilityDto.checkList[FacilityCheckListType.toilet]!.status.toExistenceKr()}',
-                            style: const TextStyle(fontSize: 13)),
+                        const Icon(Icons.elevator, size: 30),
+                        SizedBox(height: 4.0),
+                        RichText(
+                          text: TextSpan(
+                              style: TextStyle(
+                                fontSize: 14.5,
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(text: '엘레베이터 \n', style: TextStyle(fontSize: 14.5),),
+                                TextSpan(
+                                  text: '     ${facilityDto.checkList[FacilityCheckListType.elevator]!.status.toExistenceKr()}',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                      fontSize: 14.5
+                                  ),
+                                ),
+                              ]
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 19.0, bottom: 6.0, left: 6.0, right: 6.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.wc, size: 30),
+                        SizedBox(height: 4.0),
+                        RichText(
+                          text: TextSpan(
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(text: '장애인 화장실 \n', style: TextStyle(fontSize: 14.5),),
+                                TextSpan(
+                                  text: '       ${facilityDto.checkList[FacilityCheckListType.toilet]!.status.toExistenceKr()}',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                      fontSize: 14.5
+                                  ),
+                                ),
+                              ]
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -121,20 +192,23 @@ class DangerousZoneBottomSheet extends StatelessWidget {
               arguments: {'dangerousZoneDto': dangerousZoneDto});
         },
         child: SizedBox(
-          height: MediaQuery.of(context).size.height / 4,
+          height: MediaQuery.of(context).size.height / 3,
           child: Row(
             children: [
               Container(
-                  height: 150,
-                  width: 150,
-                  padding: const EdgeInsets.all(10.0),
+                  height: MediaQuery.of(context).size.height / 4,
+                  width: MediaQuery.of(context).size.width / 2,
+                  padding: const EdgeInsets.only(left: 15.0, right: 10.0),
                   child: FutureBuilder(
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done &&
                           snapshot.hasData) {
-                        return Image.network(
-                          snapshot.data.toString(),
-                          fit: BoxFit.cover,
+                        return ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: Image.network(
+                            snapshot.data.toString(),
+                            fit: BoxFit.cover,
+                          ),
                         );
                       } else {
                         return const Icon(Icons.warning_amber_outlined,
@@ -147,22 +221,29 @@ class DangerousZoneBottomSheet extends StatelessWidget {
                         : Future.error(''),
                   )),
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(dangerousZoneDto.description,
                         style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16)),
+                            fontWeight: FontWeight.w700, fontSize: 30, letterSpacing: 3, color: Colors.red)),
                     SizedBox(
                       height: 4,
                     ),
-                    Text(dangerousZoneDto.addressName),
+                    Container(
+                      //width: MediaQuery.of(context).size.height //가로길이 제한코드, 오버플로우가 안나지만 주소가 두줄로 표시
+                      child: Text(dangerousZoneDto.addressName,
+                        style: const TextStyle(
+                          fontSize: 17.0, fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
                     SizedBox(
                       height: 8,
                     ),
                     Text(
-                      '업데이트 날짜 : ${DateFormat('MM/dd HH:mm').format(dangerousZoneDto.dateTime.toDate())}',
+                      '업데이트 : ${DateFormat('MM/dd HH:mm').format(dangerousZoneDto.dateTime.toDate())}',
                     ),
                     Text(
                       '작성자 : ${dangerousZoneDto.informerName}',
@@ -217,7 +298,7 @@ class _BusListScreenState extends State<BusBottomSheet> {
           children: [
             Text(
               routeNo,
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 17),
             ),
             Icon(
               expandStateMap[routeNo]!
@@ -239,26 +320,62 @@ class _BusListScreenState extends State<BusBottomSheet> {
         physics: const NeverScrollableScrollPhysics(),
         itemCount: busList.length,
         itemBuilder: (BuildContext context, int index) {
-          return Column(
-            children: [
-              Row(
+          return Container(
+              padding: EdgeInsets.all(10.0),
+            child: Row(
                 children: [
                   Text(busList[index].vehicleNo,
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
-                  Text(widget.dateFormat
-                      .format(busList[index].updated!.toDate())),
+                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+            Expanded(
+            child: Column(
+            children: [
+              RichText(
+                text: TextSpan(
+                    style: TextStyle(
+                      fontSize: 14.5,
+                      color: Colors.black,
+                    ),
+                    children: [
+                      TextSpan(text: '리프트 ', style: TextStyle(fontSize: 14.5),),
+                      TextSpan(
+                        text: '${busList[index].lift.toExistenceKr()}',
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14.5
+                        ),
+                      ),
+                    ]
+                ),
+              ),
+              RichText(
+                text: TextSpan(
+                    style: TextStyle(
+                      fontSize: 14.5,
+                      color: Colors.black,
+                    ),
+                    children: [
+                      TextSpan(text: '리프트 작동 ', style: TextStyle(fontSize: 14.5),),
+                      TextSpan(
+                        text: '${busList[index].lift.toStatusKr()}',
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14.5
+                        ),
+                      ),
+                    ]
+                ),
+              ),
                 ],
               ),
-              const SizedBox(
-                height: 4,
-              ),
-              Row(
-                children: [
-                  Text('리프트 : ${busList[index].lift.toExistenceKr()}'),
-                  Text('리프트 작동 : ${busList[index].lift.toStatusKr()}'),
-                ],
-              )
-            ],
+          ),
+                  Text(
+                      '        수정'
+                          '\n${widget.dateFormat
+                          .format(busList[index].updated!.toDate())}',
+                      style: const TextStyle(fontSize: 12)),
+                ],)
           );
         },
       ),
@@ -287,11 +404,28 @@ class _BusListScreenState extends State<BusBottomSheet> {
       }
 
       return Container(
-        height: MediaQuery.of(context).size.height * 0.4,
-        padding: const EdgeInsets.all(8.0),
+        height: MediaQuery.of(context).size.height * 0.5,
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            Text('버스 정류장 : ${widget.busStop.nodenm}'),
+            RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.black
+                ),
+              children: [
+                TextSpan(text: '${widget.busStop.nodenm}'),
+                TextSpan(
+                  text: ' 정류장',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 13
+                  ),
+                ),
+              ],
+            ),
+            ),
             const SizedBox(height: 8),
             Expanded(
               child: ListView.builder(
@@ -342,7 +476,7 @@ class _SubwayBottomSheetState extends State<SubwayBottomSheet> {
     }
 
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.3,
+      height: MediaQuery.of(context).size.height * 0.35,
       child: Obx(() {
         if (widget.metroController.convenienceInfoInMetroStation.value ==
             null) {
@@ -350,10 +484,23 @@ class _SubwayBottomSheetState extends State<SubwayBottomSheet> {
         }
 
         return Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(18.0),
             child: Column(
               children: [
-                Text(widget.metroStationDto.name),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(widget.metroStationDto.name,
+                      style: TextStyle(
+                        fontSize: 20, 
+                      ),
+                    ),
+                    Text(' 지하철', style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey
+                    ),)
+                  ],
+                ),
                 const SizedBox(
                   height: 8,
                 ),
@@ -367,19 +514,19 @@ class _SubwayBottomSheetState extends State<SubwayBottomSheet> {
   getGridView() {
     final items = [
       [
-        '내부 휠체어리프트',
+        '내부 \n휠체어리프트',
         '${widget.metroController.convenienceInfoInMetroStation.value!.wlI}대'
       ],
       [
-        '외부 휠체어리프트',
+        '외부 \n휠체어리프트',
         '${widget.metroController.convenienceInfoInMetroStation.value!.wlO}대'
       ],
       [
-        '내부 엘리베이터',
+        '내부 \n엘리베이터',
         '${widget.metroController.convenienceInfoInMetroStation.value!.elI}대'
       ],
       [
-        '외부 엘리베이터 ',
+        '외부 \n엘리베이터 ',
         ' ${widget.metroController.convenienceInfoInMetroStation.value!.elO}대'
       ],
       [
@@ -408,10 +555,11 @@ class _SubwayBottomSheetState extends State<SubwayBottomSheet> {
       itemBuilder: (BuildContext context, int index) {
         return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text(items[index][0],
-              style: const TextStyle(fontSize: 12),
+              style: const TextStyle(fontSize: 14),
               textAlign: TextAlign.center),
           Text(items[index][1],
-              style: const TextStyle(fontSize: 11), textAlign: TextAlign.center)
+              style: const TextStyle(fontSize: 16, color: Colors.red, fontWeight: FontWeight.bold), textAlign: TextAlign.center,
+          )
         ]);
       },
     );

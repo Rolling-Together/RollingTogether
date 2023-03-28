@@ -86,6 +86,7 @@ class _MainMapWidgetState extends State<MainMapWidget> {
                   SharedDataCategory.publicTransport
                 ].map((e) => addMainChips(e)).toList(),
               ),
+
               const SizedBox(height: 8.0),
               Visibility(
                   visible: widget.myMapController.lastSelectedCategorySet
@@ -99,16 +100,19 @@ class _MainMapWidgetState extends State<MainMapWidget> {
                           .toList(),
                     ),
                   )),
+
             ],
           ),
         ),
       ),
+
       Obx(() => Positioned(
           right: 16,
           bottom: 24,
           child: Visibility(
             visible: !widget.myMapController.isClickedReportDangerousZone.value,
             child: FloatingActionButton(
+              //shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
               elevation: 10,
               onPressed: () {
                 showOptions(context);
@@ -122,11 +126,17 @@ class _MainMapWidgetState extends State<MainMapWidget> {
     ]));
   }
 
+
   FilterChip addMainChips(SharedDataCategory category) => FilterChip(
+
         label: Text(category.name),
         avatar: Icon(category.iconData),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(20),
+    ),
         selected:
             widget.myMapController.lastSelectedCategorySet.contains(category),
+
         selectedColor: const Color.fromARGB(255, 222, 222, 222),
         backgroundColor: Colors.white,
         shape: const RoundedRectangleBorder(
@@ -167,6 +177,7 @@ class _MainMapWidgetState extends State<MainMapWidget> {
             borderRadius: BorderRadius.all(Radius.circular(30.0))),
         elevation: 4.0,
         side: const BorderSide(color: Colors.transparent, width: 0.0),
+
         showCheckmark: false,
         backgroundColor: Colors.white,
         onSelected: (bool value) {
@@ -322,3 +333,4 @@ class _MainMapWidgetState extends State<MainMapWidget> {
     widget.myMapController.markerSet.value = newMarkers;
   }
 }
+
