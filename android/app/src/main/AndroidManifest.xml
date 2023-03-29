@@ -20,6 +20,7 @@
     <application
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true"
         android:label="rolling_together">
         <activity
             android:name=".MainActivity"

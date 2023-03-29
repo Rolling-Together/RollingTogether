@@ -84,7 +84,7 @@ class GuideScreen extends StatelessWidget implements OnRefreshDataListener {
           ),
           Padding(
             padding: const EdgeInsets.only(top:10.0, left: 20, right: 20),
-            child: YoutubeCard(youtubeLink: "https://www.naver.com/"),
+            child: YoutubeCard(youtubeLink: "https://www.youtube.com/watch?v=YXfzapAgLSo"),
           ),
         ],
       ),
@@ -108,8 +108,9 @@ class YoutubeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        if (await canLaunch(youtubeLink)) {
-          await launch(youtubeLink);
+        final uri = Uri.parse(youtubeLink);
+        if (await canLaunchUrl(uri)) {
+          await launchUrl(uri);
         } else {
           throw 'Could not launch $youtubeLink';
         }
