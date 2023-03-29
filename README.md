@@ -75,7 +75,7 @@ Source - [https://www.earticle.net/Article/A413981](https://www.earticle.net/Art
 
 “I notice when using a low-floor bus, and I rarely use it because I don’t know if it works.”
 
-“On my way to the sidewalk, I fell and hurt myself because my chin was high.”
+“On the way to the sidewalk, I fell and hurt myself because my chin was high.”
 
 “There are a lot of things I need to know when I go to a place for the first time, but I don’t go out because it’s annoying.”
 
