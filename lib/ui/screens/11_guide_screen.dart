@@ -84,7 +84,7 @@ class GuideScreen extends StatelessWidget implements OnRefreshDataListener {
           ),
           Padding(
             padding: const EdgeInsets.only(top:10.0, left: 20, right: 20),
-            child: YoutubeCard(youtubeLink: "https://www.youtube.com/watch?v=YXfzapAgLSo"),
+            child: YoutubeCard(youtubeLink: "https://www.youtube.com/watch?v=OM3xc5Ledhk"),
           ),
         ],
       ),
