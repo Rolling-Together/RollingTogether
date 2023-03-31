@@ -1,3 +1,5 @@
+![](solutionchallenge-2023-Website-EventBanners-@2x.png)
+
 # Rolling Together
 
 <aside>
