@@ -154,7 +154,7 @@ The resolution points to materialize the goal are as follows.
 
 |   Dangerouszone   |    Facility    |  Dangerouszone post  |
 |:------------:|:-------------:|:-------------:|
-|  ![](sc_dangerouszone_bottomsheet.png) | ![](sc_facility_bottomsheet.png) | ![](sc_post_dangerouszone.png) |
+|  ![](sc_dangerouszone_bottomsheet.png) | ![](sc_facility_bottomsheets.png) | ![](sc_post_dangerouszone.png) |
 
 We implemented the "Rolling Together" service using the above technologies.
 
