@@ -75,7 +75,7 @@ Source - [https://www.earticle.net/Article/A413981](https://www.earticle.net/Art
 
 “I notice when using a low-floor bus, and I rarely use it because I don’t know if it works.”
 
-“On the way to India, I fell and got hurt because of my high chin.”
+“On the way to the sidewalk, I fell and hurt myself because my chin was high.”
 
 “There are a lot of things I need to know when I go to a place for the first time, but I don’t go out because it’s annoying.”
 
@@ -154,7 +154,7 @@ The resolution points to materialize the goal are as follows.
 
 |   Dangerouszone   |    Facility    |  Dangerouszone post  |
 |:------------:|:-------------:|:-------------:|
-|  ![](sc_dangerouszone_bottomsheet.png) | ![](sc_facility_bottomsheet.png) | ![](sc_post_dangerouszone.png) |
+|  ![](sc_dangerouszone_bottomsheet.png) | ![](sc_facility_bottomsheets.png) | ![](sc_post_dangerouszone.png) |
 
 We implemented the "Rolling Together" service using the above technologies.
 
